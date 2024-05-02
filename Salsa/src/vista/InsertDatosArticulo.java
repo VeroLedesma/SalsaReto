@@ -1,4 +1,4 @@
-package view;
+package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import controlador.Controlador;
-import excepciones.CreateException;
+
 import modelo.Articulo;
 import modelo.Temporada;
 
