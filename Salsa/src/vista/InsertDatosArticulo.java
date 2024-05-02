@@ -1,4 +1,4 @@
-package view;
+package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -14,11 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import clases.Articulo;
-import clases.Temporada;
-import controller.Controlador;
-import controller.Dao;
-import excepciones.CreateException;
+import controlador.Controlador;
+
+import modelo.Articulo;
+import modelo.Temporada;
 
 public class InsertDatosArticulo extends JDialog {
 

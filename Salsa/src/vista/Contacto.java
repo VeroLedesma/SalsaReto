@@ -1,4 +1,4 @@
-package view;
+package vista;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -10,21 +10,11 @@ import javax.swing.border.EmptyBorder;
 
 public class Contacto extends JDialog {
 
-	private final JPanel contentPanel = new JPanel();
-
 	/**
-	 * Launch the application.
+	 * 
 	 */
-	public static void main(String[] args) {
-		try {
-			Contacto dialog = new Contacto();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	private static final long serialVersionUID = 1L;
+	private final JPanel contentPanel = new JPanel();
 	/**
 	 * Create the dialog.
 	 */
