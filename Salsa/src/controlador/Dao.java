@@ -1,6 +1,10 @@
 package controlador;
 
 
+import modelo.Articulo;
+import modelo.Persona;
+
+
 public interface Dao {
 
 	// Comprobacion de inicio de sesion
