@@ -1,4 +1,4 @@
-package view;
+package vista;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,7 +20,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import controller.Dao;
+import controlador.Dao;
 
 public class Ajustes extends JDialog {
 
