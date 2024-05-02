@@ -1,7 +1,10 @@
 package controlador;
 
+<<<<<<< HEAD
 import modelo.Articulo;
 import modelo.Persona;
+=======
+>>>>>>> 4e0de91b5a39f571c30e00b7cd9f090ca4a6ad46
 
 public interface Dao {
 

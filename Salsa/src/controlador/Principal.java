@@ -1,10 +1,20 @@
 package controlador;
 
+import modelo.Persona;
+import vista.Login;
+
 public class Principal {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		// Instanciamos y creamos un objeto para el controlador y para la persona
+		Controlador controladorRutas = new Controlador();
+		Persona persona = new Persona();
+
+		// Definimos que el modo sea oscuro
+		boolean oscuro = false;
+
+		// Le pasamos la ventana principal que en nuestro caso es el Login
+		Login login = new Login(controladorRutas, persona, oscuro);
+		login.setVisible(true);
 
 	}
-
-}
