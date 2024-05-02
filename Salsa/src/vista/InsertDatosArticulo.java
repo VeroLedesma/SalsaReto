@@ -14,11 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import clases.Articulo;
-import clases.Temporada;
-import controller.Controlador;
-import controller.Dao;
+import controlador.Controlador;
 import excepciones.CreateException;
+import modelo.Articulo;
+import modelo.Temporada;
 
 public class InsertDatosArticulo extends JDialog {
 
