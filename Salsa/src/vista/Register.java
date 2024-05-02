@@ -23,11 +23,11 @@ import javax.swing.JTextField;
 
 import com.toedter.calendar.JDateChooser;
 
-import clases.Persona;
-import clases.Sexo;
-import clases.Trabajador;
-import clases.Usuario;
-import controller.Controlador;
+import controlador.Controlador;
+import modelo.Persona;
+import modelo.Sexo;
+import modelo.Trabajador;
+import modelo.Usuario;
 
 public class Register extends JDialog implements ActionListener, MouseListener {
 

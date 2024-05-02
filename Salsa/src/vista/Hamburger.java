@@ -10,9 +10,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import clases.Persona;
-import controller.Controlador;
-import controller.Dao;
+import controlador.Controlador;
+import modelo.Persona;
 
 public class Hamburger extends JDialog {
 
