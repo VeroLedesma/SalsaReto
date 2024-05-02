@@ -17,4 +17,4 @@ public class Principal {
 		Login login = new Login(controladorRutas, persona, oscuro);
 		login.setVisible(true);
 
-	}
+	}}
