@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controller.Controlador;
+import controlador.Controlador;
 
 public class Main extends JDialog {
 
