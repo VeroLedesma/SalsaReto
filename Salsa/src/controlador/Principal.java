@@ -1,6 +1,6 @@
 package controlador;
 
-import modelo.clases.Persona;
+import modelo.Persona;
 import vista.Login;
 
 public class Principal {
@@ -17,4 +17,4 @@ public class Principal {
 		Login login = new Login(controladorRutas, persona, oscuro);
 		login.setVisible(true);
 
-	}
+	}}

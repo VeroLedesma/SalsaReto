@@ -1,5 +1,9 @@
 package controlador;
 
+import modelo.Articulo;
+import modelo.ImpleDB;
+import modelo.Persona;
+
 public class Controlador {
 
 	public Persona iniciarSesion(Persona per) {
