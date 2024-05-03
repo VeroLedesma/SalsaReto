@@ -13,7 +13,7 @@ import javax.swing.border.EmptyBorder;
 import controlador.Controlador;
 import modelo.Persona;
 
-public class Hamburger extends JDialog {
+public class Hamburger extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -24,20 +24,21 @@ public class Hamburger extends JDialog {
 	private Controlador controladorRutas;
 	private Login login;
 	private Persona persona;
+	private boolean oscuro;
 
 	/**
 	 * Create the frame.
+	 * 
+	 * @param b
 	 */
-	public Hamburger() {
+	public Hamburger(Main main, boolean b) {
+		super(main);
+		setModal(b);
 		Hamburguesa(controladorRutas, false);
 	}
 
-	public Hamburger(Controlador controladorRutas, boolean oscuro) {
-		Hamburguesa(controladorRutas, oscuro);
-	}
-
-	public void Hamburguesa(Controlador controladorRutas ,boolean oscuro) {
-
+	public void Hamburguesa(Controlador controladorRutas, boolean oscuro) {
+		this.oscuro = oscuro;
 		setBounds(100, 100, 700, 709);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -56,58 +57,50 @@ public class Hamburger extends JDialog {
 		contentPane.add(panel2);
 
 		btnIndex = createButton("Inicio");
-		btnIndex.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				inicio(oscuro);
-			}
-		});
+		btnIndex.addActionListener(this);
 		btnIndex.setBounds(254, 183, 176, 42);
 		contentPane.add(btnIndex);
 
 		btnSettings = createButton("Ajustes");
-		btnSettings.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ajustes(oscuro);
-			}
-		});
+		btnSettings.addActionListener(this);
 		btnSettings.setBounds(254, 247, 176, 42);
 		contentPane.add(btnSettings);
 
 		btnContact = createButton("Contacto");
-		btnContact.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				contacto();
-			}
-		});
+		btnContact.addActionListener(this);
 		btnContact.setBounds(254, 309, 176, 42);
 		contentPane.add(btnContact);
 
 		btnAdministration = createButton("Administración");
-		btnAdministration.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				administracion(controladorRutas, oscuro);
-			}
-		});
+		btnAdministration.addActionListener(this);
 		btnAdministration.setBounds(240, 373, 202, 42);
 		contentPane.add(btnAdministration);
 
 		btnLogout = createButton("Cerrar sesión");
-		btnLogout.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				logout(oscuro);
-			}
-		});
 		btnLogout.setBounds(254, 437, 176, 42);
 		contentPane.add(btnLogout);
 		if (oscuro) {
 			cambioFondo();
 		}
+	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btnIndex)) {
+			inicio(oscuro);
+		}
+		if (e.getSource().equals(btnSettings)) {
+			ajustes(oscuro);
+		}
+		if (e.getSource().equals(btnContact)) {
+			contacto();
+		}
+		if (e.getSource().equals(btnAdministration)) {
+			administracion(controladorRutas, oscuro);
+		}
+		if (e.getSource().equals(btnLogout)) {
+			logout(oscuro);
+		}
 	}
 
 	private JButton createButton(String text) {
@@ -123,32 +116,32 @@ public class Hamburger extends JDialog {
 	protected void logout(boolean oscuro) {
 		Login log = new Login(controladorRutas, persona, oscuro);
 		log.setVisible(true);
-		setVisible(false);
+		this.dispose();
 	}
 
 	protected void administracion(Controlador controladorRutas, boolean oscuro) {
 		Administracion admin = new Administracion(controladorRutas, oscuro);
 		admin.setVisible(true);
-		setVisible(false);
+		this.dispose();
 
 	}
 
 	protected void contacto() {
 		Contacto contact = new Contacto();
 		contact.setVisible(true);
-		setVisible(false);
+		this.dispose();
 	}
 
 	protected void ajustes(boolean oscuro) {
-		Ajustes settings = new Ajustes(controladorRutas ,oscuro);
+		Ajustes settings = new Ajustes(oscuro, this, true);
 		settings.setVisible(true);
-		setVisible(false);
+		this.dispose();
 	}
 
 	protected void inicio(boolean oscuro) {
 		Main index = new Main(login, oscuro, controladorRutas);
 		index.setVisible(true);
-		setVisible(false);
+		this.dispose();
 	}
 
 	private void cambioFondo() {
@@ -162,4 +155,5 @@ public class Hamburger extends JDialog {
 		contentPane.setBackground(Color.DARK_GRAY);
 
 	}
+
 }

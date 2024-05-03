@@ -14,8 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controlador.Controlador;
+import java.awt.Font;
 
-public class Main extends JDialog {
+public class Main extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel BodyLayout, emptyRow, itemsPanel;
@@ -55,39 +56,24 @@ public class Main extends JDialog {
 		itemsPanel.setLayout(new GridLayout(0, 4, 8, 10));
 
 		btnCamisetas = new JButton("Camisetas");
-		btnCamisetas.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnCamisetas.addActionListener(this);
 		btnCamisetas.setBounds(226, 363, 165, 46);
 		BodyLayout.add(btnCamisetas);
 
 		btnSudaderas = new JButton("Sudaderas");
-		btnSudaderas.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+
 		btnSudaderas.setBounds(656, 363, 165, 46);
 		BodyLayout.add(btnSudaderas);
 
 		btnPantalones = new JButton("Pantalones");
-		btnPantalones.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		
 		btnPantalones.setBounds(449, 363, 165, 46);
 		BodyLayout.add(btnPantalones);
 
-		btnMenu = new JButton("Menú");
-		btnMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				menuHam();
-			}
-		});
-		btnMenu.setBounds(914, 38, 113, 30);
+		btnMenu = new JButton("Menu");
+		btnMenu.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnMenu.addActionListener(this);
+		btnMenu.setBounds(877, 10, 113, 30);
 		BodyLayout.add(btnMenu);
 
 		// Agrega los elementos a la rejilla de artículos
@@ -98,11 +84,18 @@ public class Main extends JDialog {
 		}
 	}
 
-	protected void menuHam() {
-		Hamburger ham = new Hamburger();
-		ham.setVisible(true);
-		setVisible(false);
-		
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		if (e.getSource().equals(btnMenu)) {
+			irAlMenu();
+		}
+	}
+
+	private void irAlMenu() {
+		Hamburger ven = new Hamburger(this, true);
+		ven.setVisible(true);
+		this.dispose();
 	}
 
 }
