@@ -20,9 +20,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import controlador.Dao;
-
-public class Ajustes extends JDialog {
+public class Ajustes extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -31,11 +29,13 @@ public class Ajustes extends JDialog {
 	private JComboBox comboBox;
 	private JSeparator separator_2;
 	private JTextField textField, textField_1;
-
+	private JButton btnVolver;
 	// Comprobar si anda en modo diurno o nocturno
 	private boolean oscuro;
 
-	public Ajustes(Dao dao, boolean oscuro) {
+	public Ajustes(boolean oscuro, Hamburger hamburger, boolean b) {
+		super(hamburger);
+		setModal(b);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 626, 472);
 		contentPane = new JPanel();
@@ -70,13 +70,8 @@ public class Ajustes extends JDialog {
 		labelOscuro.setBounds(409, 185, 48, 22);
 		contentPane.add(labelOscuro);
 
-		JButton btnVolver = new JButton("Volver");
-		btnVolver.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				volver(dao ,oscuro);
-			}
-		});
+		btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(this);
 		btnVolver.setBounds(10, 10, 85, 21);
 		contentPane.add(btnVolver);
 
@@ -136,6 +131,14 @@ public class Ajustes extends JDialog {
 		cargarPreferenciaTema();
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btnVolver)) {
+			volver();
+		}
+
+	}
+
 	private void cargarPreferenciaTema() {
 		// Obtener las preferencias compartidas para la clase Ajustes
 		Preferences prefs = Preferences.userNodeForPackage(Ajustes.class);
@@ -146,10 +149,10 @@ public class Ajustes extends JDialog {
 		cambiarTema(oscuro ? 1 : 0);
 	}
 
-	protected void volver(Dao dao, boolean oscuro) {
-		Hamburger ham = new Hamburger(dao, oscuro);
+	protected void volver() {
+		Hamburger ham = new Hamburger(null, oscuro);
 		ham.setVisible(true);
-		setVisible(false);
+		this.dispose();
 	}
 
 	// Método para cambiar el tema de la aplicación según el valor del slider
@@ -200,4 +203,5 @@ public class Ajustes extends JDialog {
 			guardarPreferenciaTema();
 		}
 	}
+
 }
