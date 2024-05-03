@@ -28,13 +28,14 @@ import modelo.Persona;
 import modelo.Sexo;
 import modelo.Trabajador;
 import modelo.Usuario;
+import utilidades.Utilidades;
 
 public class Register extends JDialog implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextField textNombre, textEmail, textDni, textApellido, tFEmailConfirmado, textDireccion, textNumeroSS;
-	private JLabel Seleccione, lblPregunta, lblEmail, lblContrasena, lblDni, lblSexo,lblPrimerApellido,lblConfirmarEmail, lblConfirmeLaContrasea,
+	private JTextField textNombre, textEmail, textDni, textApellido, textDireccion, textNumeroSS;
+	private JLabel Seleccione, lblPregunta, lblEmail, lblContrasena, lblDni, lblSexo,lblPrimerApellido, lblConfirmeLaContrasea,
 	lblDireccion, lblNewLabel, lblDireccion_1, lblSexo_1, lblFechaDeRegistro, lblNmeroSeguridadSocial, lblInicioSesion,
 	lblCamposObligatorios, lblFecNa, lblNombre;	
 	private JButton btnRegistro;
@@ -103,7 +104,7 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 
 		lblSexo = new JLabel("Fecha de nacimiento ");
 		lblSexo.setFont(new Font("Dialog", Font.BOLD, 12));
-		lblSexo.setBounds(456, 361, 147, 14);
+		lblSexo.setBounds(456, 166, 147, 14);
 		getContentPane().add(lblSexo);
 
 		lblPrimerApellido = new JLabel("Primer apellido*");
@@ -115,16 +116,6 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		textApellido.setColumns(10);
 		textApellido.setBounds(456, 126, 237, 29);
 		getContentPane().add(textApellido);
-
-		tFEmailConfirmado = new JTextField();
-		tFEmailConfirmado.setColumns(10);
-		tFEmailConfirmado.setBounds(456, 191, 237, 29);
-		getContentPane().add(tFEmailConfirmado);
-
-		lblConfirmarEmail = new JLabel("Confirmar Email *");
-		lblConfirmarEmail.setFont(new Font("Dialog", Font.BOLD, 12));
-		lblConfirmarEmail.setBounds(456, 166, 138, 14);
-		getContentPane().add(lblConfirmarEmail);
 
 		lblConfirmeLaContrasea = new JLabel("Confirma la contraseña*");
 		lblConfirmeLaContrasea.setFont(new Font("Dialog", Font.BOLD, 12));
@@ -168,7 +159,7 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		dateFechaNacimiento.setBounds(456, 386, 165, 23);
+		dateFechaNacimiento.setBounds(456, 197, 165, 23);
 		getContentPane().add(dateFechaNacimiento);
 
 		JLabel lblCamposObligatorios = new JLabel("Campos obligatorios *");
@@ -195,21 +186,21 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 
 		lblFechaDeRegistro = new JLabel("Fecha de registro ");
 		lblFechaDeRegistro.setFont(new Font("Dialog", Font.BOLD, 12));
-		lblFechaDeRegistro.setBounds(456, 497, 147, 14);
+		lblFechaDeRegistro.setBounds(456, 466, 147, 14);
 		getContentPane().add(lblFechaDeRegistro);
 
 		dateFRegistro = new JDateChooser();
-		dateFRegistro.setBounds(456, 522, 165, 23);
+		dateFRegistro.setBounds(456, 495, 165, 23);
 		getContentPane().add(dateFRegistro);
 
 		textNumeroSS = new JTextField();
 		textNumeroSS.setColumns(10);
-		textNumeroSS.setBounds(456, 450, 237, 29);
+		textNumeroSS.setBounds(456, 412, 237, 29);
 		getContentPane().add(textNumeroSS);
 
 		lblNmeroSeguridadSocial = new JLabel("Número Seguridad Social *");
 		lblNmeroSeguridadSocial.setFont(new Font("Dialog", Font.BOLD, 12));
-		lblNmeroSeguridadSocial.setBounds(456, 424, 214, 14);
+		lblNmeroSeguridadSocial.setBounds(456, 387, 214, 14);
 		getContentPane().add(lblNmeroSeguridadSocial);
 
 		passConfirmar = new JPasswordField();
@@ -237,11 +228,11 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		dateFRegistro.setVisible(false);
 		
 		lblPregunta = new JLabel("¿Ya tienes cuenta?");
-		lblPregunta.setBounds(262, 650, 114, 13);
+		lblPregunta.setBounds(265, 626, 114, 13);
 		getContentPane().add(lblPregunta);
 		
 		lblInicioSesion = new JLabel("Inicia Sesion");
-		lblInicioSesion.setBounds(375, 650, 78, 13);
+		lblInicioSesion.setBounds(370, 624, 78, 13);
 		lblInicioSesion.addMouseListener(this);
 		lblInicioSesion.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblInicioSesion.setForeground(new Color(0, 51, 255));
@@ -266,7 +257,6 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 	private void cambioFondo() {
 		//contentPane.setBackground(Color.DARK_GRAY); Acá creo que debo ver si viene del padre
 		lblFechaDeRegistro.setForeground(Color.WHITE);
-		lblConfirmarEmail.setForeground(Color.WHITE);
 		lblConfirmeLaContrasea.setForeground(Color.WHITE);
 		lblContrasena.setForeground(Color.WHITE);
 		lblDireccion.setForeground(Color.WHITE);
@@ -311,20 +301,62 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 	}
 
 	private boolean camposObligatoriosCompletos() {
+
 		boolean correcto = false;
 		char[] contrasena = passContrasena.getPassword();
 		char[] confirmarContrasena = passConfirmar.getPassword();
+
+		String dni = textDni.getText();
+		String email = textEmail.getText();
 		
-		// Comprobacion de que todos los campos que sean rellenados 
-		// Si los campos obligatorios no estan rellenados salta el mensaje de error
-		if (!textNombre.getText().isEmpty() && contrasena.length > 0 && !textEmail.getText().isEmpty()
-				&& confirmarContrasena.length > 0 && (checkBoxUsuario.isSelected() || checkBoxTrabajador.isSelected())
+
+		// Validar DNI y email con el utilidades2
+		boolean dniValido = Utilidades.validarDNI(dni);
+		boolean emailValido = Utilidades.validarEmail(email);
+
+		// Verificar que todos los campos obligatorios estén completos
+		if (!textNombre.getText().isEmpty() && contrasena.length >= 5 && contrasena.length <= 8 && dniValido
+				&& emailValido && !email.isEmpty() && confirmarContrasena.length > 0
+				&& (checkBoxUsuario.isSelected() || checkBoxTrabajador.isSelected())
 				&& dateFechaNacimiento.getDate() != null) {
 			correcto = true;
+		} else {
+			// Mostrar mensajes de error de cada uno de los apartados
+			if (textNombre.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Por favor, ingrese su nombre.", "Campo obligatorio vacío",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			if (contrasena.length < 5 || contrasena.length > 8) {
+				JOptionPane.showMessageDialog(this, "La contraseña debe tener entre 5 y 8 caracteres.",
+						"Error en la contraseña", JOptionPane.ERROR_MESSAGE);
+			}
+			if (!dniValido) {
+				JOptionPane.showMessageDialog(this, "El DNI ingresado no es válido.", "Error en el DNI",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			if (!emailValido || email.isEmpty()) {
+				JOptionPane.showMessageDialog(this, "El email ingresado no es válido.", "Error en el email",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			if (confirmarContrasena.length == 0) {
+				JOptionPane.showMessageDialog(this, "Por favor, confirme su contraseña.", "Campo obligatorio vacío",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			if (!(checkBoxUsuario.isSelected() || checkBoxTrabajador.isSelected())) {
+				JOptionPane.showMessageDialog(this, "Por favor, seleccione si es Usuario o Trabajador.",
+						"Campo obligatorio no seleccionado", JOptionPane.ERROR_MESSAGE);
+			}
+			if (dateFechaNacimiento.getDate() == null) {
+				JOptionPane.showMessageDialog(this, "Por favor, seleccione su fecha de nacimiento.",
+						"Campo obligatorio no seleccionado", JOptionPane.ERROR_MESSAGE);
+			}
 		}
+
 		return correcto;
 	}
-
+	
+	
+	
 	private void seleccionarUsuario() {
 		if (checkBoxUsuario.isSelected()) {
 			// Deshabilitar el campo de número de seguridad social
@@ -337,6 +369,7 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		}
 	}
 
+	
 	private void seleccionarTrabajador() {
 		if (checkBoxTrabajador.isSelected()) {
 			// Deshabilitar el campo de número de seguridad social
@@ -390,5 +423,4 @@ public class Register extends JDialog implements ActionListener, MouseListener {
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
-
-}
+    }
