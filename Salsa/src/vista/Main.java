@@ -1,6 +1,7 @@
 package vista;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -13,9 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controlador.Controlador;
-import java.awt.Font;
-
 public class Main extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -25,7 +23,7 @@ public class Main extends JDialog implements ActionListener {
 
 	// Interfaz
 
-	public Main(Login login, boolean modal, Controlador cont) {
+	public Main(Login login, boolean modal) {
 		super(login);
 		setModal(modal);
 		setBounds(100, 100, 1082, 836);
@@ -66,7 +64,7 @@ public class Main extends JDialog implements ActionListener {
 		BodyLayout.add(btnSudaderas);
 
 		btnPantalones = new JButton("Pantalones");
-		
+
 		btnPantalones.setBounds(449, 363, 165, 46);
 		BodyLayout.add(btnPantalones);
 

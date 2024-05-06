@@ -31,9 +31,9 @@ public class Ajustes extends JDialog implements ActionListener {
 	private JTextField textField, textField_1;
 	private JButton btnVolver;
 	// Comprobar si anda en modo diurno o nocturno
-	private boolean oscuro;
+	// private boolean oscuro;
 
-	public Ajustes(boolean oscuro, Hamburger hamburger, boolean b) {
+	public Ajustes(Hamburger hamburger, boolean b) {
 		super(hamburger);
 		setModal(b);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -53,7 +53,7 @@ public class Ajustes extends JDialog implements ActionListener {
 		slider.setBounds(203, 188, 200, 22);
 		slider.setMinimum(0);
 		slider.setMaximum(1);
-		slider.setValue(oscuro ? 1 : 0);
+		// slider.setValue(oscuro ? 1 : 0);
 		slider.setOpaque(false);
 		contentPane.add(slider);
 
@@ -124,7 +124,8 @@ public class Ajustes extends JDialog implements ActionListener {
 		slider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				cambiarTema(slider.getValue()); // Llama al método cambiarTema con el valor actual del slider
+				// cambiarTema(slider.getValue()); // Llama al método cambiarTema con el valor
+				// actual del slider
 			}
 		});
 
@@ -144,64 +145,64 @@ public class Ajustes extends JDialog implements ActionListener {
 		Preferences prefs = Preferences.userNodeForPackage(Ajustes.class);
 		// Obtener la preferencia del tema guardada, con un valor predeterminado de
 		// falso (tema claro)
-		oscuro = prefs.getBoolean("temaOscuro", true);
+		// oscuro = prefs.getBoolean("temaOscuro", true);
 		// Aplicar el tema según la preferencia cargada
-		cambiarTema(oscuro ? 1 : 0);
+		// cambiarTema(oscuro ? 1 : 0);
 	}
 
 	protected void volver() {
-		Hamburger ham = new Hamburger(null, oscuro);
+		Hamburger ham = new Hamburger(null, true);
 		ham.setVisible(true);
 		this.dispose();
 	}
 
 	// Método para cambiar el tema de la aplicación según el valor del slider
-	private void cambiarTema(int valor) {
-		if (valor == 0) {
-			// Cambiar al tema claro
-			contentPane.setBackground(Color.WHITE);
-			labelTema.setForeground(Color.BLACK);
-			labelClaro.setForeground(Color.BLACK);
-			labelOscuro.setForeground(Color.BLACK);
-			lblTiendaIdioma.setForeground(Color.BLACK);
-			lblUsuario.setForeground(Color.BLACK);
-			lblEmail.setForeground(Color.BLACK);
-
-			// Guardar selección tema claro
-			oscuro = false;
-
-		} else if (valor == 1) {
-			// Cambiar al tema oscuro
-			contentPane.setBackground(Color.DARK_GRAY);
-			labelTema.setForeground(Color.WHITE);
-			labelClaro.setForeground(Color.WHITE);
-			labelOscuro.setForeground(Color.WHITE);
-			lblTiendaIdioma.setForeground(Color.WHITE);
-			lblUsuario.setForeground(Color.WHITE);
-			lblEmail.setForeground(Color.WHITE);
-
-			// Guardar selección tema oscuro
-			oscuro = true;
-		}
-	}
+//	private void cambiarTema(int valor) {
+//		if (valor == 0) {
+//			// Cambiar al tema claro
+//			contentPane.setBackground(Color.WHITE);
+//			labelTema.setForeground(Color.BLACK);
+//			labelClaro.setForeground(Color.BLACK);
+//			labelOscuro.setForeground(Color.BLACK);
+//			lblTiendaIdioma.setForeground(Color.BLACK);
+//			lblUsuario.setForeground(Color.BLACK);
+//			lblEmail.setForeground(Color.BLACK);
+//
+//			// Guardar selección tema claro
+//			oscuro = false;
+//
+//		} else if (valor == 1) {
+//			// Cambiar al tema oscuro
+//			contentPane.setBackground(Color.DARK_GRAY);
+//			labelTema.setForeground(Color.WHITE);
+//			labelClaro.setForeground(Color.WHITE);
+//			labelOscuro.setForeground(Color.WHITE);
+//			lblTiendaIdioma.setForeground(Color.WHITE);
+//			lblUsuario.setForeground(Color.WHITE);
+//			lblEmail.setForeground(Color.WHITE);
+//
+//			// Guardar selección tema oscuro
+//			oscuro = true;
+//		}
+//	}
 
 	// Método para guardar la selección del tema
-	private void guardarPreferenciaTema() {
-		// Obtener las preferencias compartidas para la clase Ajustes
-		Preferences prefs = Preferences.userNodeForPackage(Ajustes.class);
-		// Guardar la preferencia del tema
-		prefs.putBoolean("temaOscuro", oscuro);
-	}
+	// private void guardarPreferenciaTema() {
+	// Obtener las preferencias compartidas para la clase Ajustes
+	// Preferences prefs = Preferences.userNodeForPackage(Ajustes.class);
+	// Guardar la preferencia del tema
+	// prefs.putBoolean("temaOscuro", oscuro);
+	// }
 
 	// Sobreescribe el método setVisible para guardar la preferencia del tema al
 	// cerrar la ventana
-	@Override
-	public void setVisible(boolean visible) {
-		super.setVisible(visible);
-		// Si la ventana se está cerrando, guardar la preferencia del tema
-		if (!visible) {
-			guardarPreferenciaTema();
-		}
-	}
+//	@Override
+//	public void setVisible(boolean visible) {
+//		super.setVisible(visible);
+//		// Si la ventana se está cerrando, guardar la preferencia del tema
+//		if (!visible) {
+//			guardarPreferenciaTema();
+//		}
+//	}
 
 }

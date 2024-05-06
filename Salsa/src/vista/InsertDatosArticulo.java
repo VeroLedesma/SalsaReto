@@ -3,6 +3,7 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -15,27 +16,31 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import controlador.Controlador;
-
+import excepciones.CreateException;
 import modelo.Articulo;
 import modelo.Temporada;
 
-public class InsertDatosArticulo extends JDialog {
+public class InsertDatosArticulo extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField tfModelo, tfNombre, tfPrecio, tfStock, tfColor, tfCodArticulo, tfPorcentaje;
 	private JComboBox<Temporada> comboBoxTemporada;
 	private JButton btnSubirDatos;
-	
+
 	// Lógica para la conexión
-	private Controlador controladorRutas;
+	// private static Controlador cont = new Controlador();
 
 	/**
 	 * Create the dialog.
+	 * 
+	 * @param modal
+	 * @param administracion
 	 */
-	public InsertDatosArticulo(Controlador controladorRutas, boolean oscuro) {
-		this.controladorRutas = controladorRutas;
-		
+	public InsertDatosArticulo(Administracion administracion, boolean modal) {
+		// InsertDatosArticulo.cont = controladorRutas;
+		super(administracion);
+		setModal(modal);
 		setBounds(100, 100, 859, 704);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -43,7 +48,7 @@ public class InsertDatosArticulo extends JDialog {
 		contentPanel.setLayout(null);
 
 		JLabel logo = new JLabel("");
-		logo.setBounds(262, 35, 254, 69);
+		logo.setBounds(262, 35, 292, 69);
 		logo.setIcon(new ImageIcon(getClass().getResource("/assets/logo.png")));
 		contentPanel.add(logo);
 
@@ -113,7 +118,8 @@ public class InsertDatosArticulo extends JDialog {
 		contentPanel.add(tfStock);
 
 		btnSubirDatos = new JButton("Subir Datos");
-		btnSubirDatos.setBounds(250, 552, 359, 60);
+		btnSubirDatos.addActionListener(this);
+		btnSubirDatos.setBounds(55, 562, 203, 60);
 		btnSubirDatos.setFont(new Font("Dialog", Font.BOLD, 18));
 		contentPanel.add(btnSubirDatos);
 
@@ -135,8 +141,19 @@ public class InsertDatosArticulo extends JDialog {
 		comboBoxTemporada.setEditable(true);
 		comboBoxTemporada.setBounds(103, 256, 196, 28);
 		contentPanel.add(comboBoxTemporada);
+
+		JButton btnNewButton = new JButton("Modificar");
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnNewButton.setBounds(344, 563, 155, 60);
+		contentPanel.add(btnNewButton);
+
+		JButton btnVolver = new JButton("volver");
+		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnVolver.setBounds(722, 10, 113, 35);
+		contentPanel.add(btnVolver);
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnSubirDatos)) {
 			subirDatos();
@@ -145,7 +162,11 @@ public class InsertDatosArticulo extends JDialog {
 
 	private void subirDatos() {
 		Articulo art = new Articulo();
-		controladorRutas.altaArticulo(art);
+		try {
+			cargarDatosArticulo(art);
+		} catch (CreateException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void cargarDatosArticulo(Articulo articulo) throws CreateException {
@@ -161,7 +182,7 @@ public class InsertDatosArticulo extends JDialog {
 		float porcent = Float.parseFloat(porcentaje);
 		articulo.setPorcentajeDecuento(porcent);
 		String precio = tfPrecio.getText();
-		int precio2 = Integer.parseInt(precio);
+		Float precio2 = Float.parseFloat(precio);
 		articulo.setPrecio(precio2);
 		articulo.setModelo(tfModelo.getText());
 		articulo.setTemporada((Temporada) comboBoxTemporada.getSelectedItem());

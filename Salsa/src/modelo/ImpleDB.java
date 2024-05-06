@@ -1,11 +1,11 @@
 package modelo;
 
-
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import controlador.Dao;
 
@@ -15,58 +15,49 @@ public class ImpleDB implements Dao {
 	private Connection conn;
 	private PreparedStatement stmt;
 	private ResultSet resultSet;
-	
+
 	// Consultas a la Base de Datos
-	private final String CONSULTA_COMPROBAR_USUARIO = "SELECT dni, nombre, apellido FROM persona WHERE email = ? AND contrasena = ?";
+	private final String CONSULTA_COMPROBAR_USUARIO = "SELECT email, contrasena FROM persona";
 	private final String ALTA_PERSONA = "INSERT INTO persona (dni, nombre, apellido, fechaNac, contrasena, direccion, email, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	private final String ALTA_TRABAJADOR = "INSERT INTO trabajador (dni, nss) VALUES (?, ?)";
 	private final String ALTA_USUARIO = "INSERT INTO usuario (dni, fechaReg) VALUES (?, ?)";
-	private final String ALTA_ARTICULO = "INSERT INTO articulo (cod_articulo, color, modelo, temporada, precio, descuento) VALUES (?, ?, ?, ?, ?, ?, ?)";
-     
+	private final String ALTA_ARTICULO = "INSERT INTO articulo (cod_articulo, color, modelo, temporada, precio, descuento) VALUES (?, ?, ?, ?, ?, ?)";
+
 	@Override
-	public Persona iniciarSesion(Persona persona) {
-	    String nombre, apellido;
-	    conn = ConnectionMysql.openConnection();
-	    
-	    if (persona.getEmail() == null || persona.getContrasena() == null) {
-	        System.out.println("Email o contraseña no pueden ser nulos.");
-	        return persona;
-	    }
+	public List<Persona> iniciarSesion() {
+//arreglar este metodo que lo que hara sera verificar la existencia del usuario que inicie sesion en la aplicacion
 
-	    try {
-	        stmt = conn.prepareStatement(CONSULTA_COMPROBAR_USUARIO);
-	        stmt.setString(1, persona.getEmail());
-	        stmt.setString(2, persona.getContrasena());
-	        resultSet = stmt.executeQuery();
+		List<Persona> personas = new ArrayList<Persona>();
+		conn = ConnectionMysql.openConnection();
+		try {
 
-	        if (resultSet.next()) {
-	            nombre = resultSet.getString("nombre");
-	            apellido = resultSet.getString("apellido");
+			stmt = conn.prepareStatement(CONSULTA_COMPROBAR_USUARIO);
 
-	            System.out.println("Bienvenido, " + nombre + " " + apellido);
-	            
-	        } else {
-	            System.out.println("Email/Contraseña inválidas. Por favor, inténtalo de nuevo.");
-	            
-	        }
+			resultSet = stmt.executeQuery();
+			while (resultSet.next()) {
+				Persona per = new Persona();
+				per.setEmail(resultSet.getString("email"));
+				per.setContrasena(resultSet.getString("contrasena"));
+				personas.add(per);
+			}
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        System.out.println("Error al intentar comprobar el usuario.");
-	    } finally {
-	        try {
-	            if (resultSet != null) {
-	                resultSet.close();
-	            }
-	            if (stmt != null) {
-	                stmt.close();
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        ConnectionMysql.closeConnection();
-	    }
-	    return persona;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Error al intentar comprobar el usuario.");
+		} finally {
+			try {
+				if (resultSet != null) {
+					resultSet.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			ConnectionMysql.closeConnection();
+		}
+		return personas;
 	}
 
 	@Override
@@ -93,7 +84,7 @@ public class ImpleDB implements Dao {
 				stmt.setString(2, ((Trabajador) per).getNnss());
 				stmt.executeUpdate();
 			} else if (per instanceof Usuario) {
-				// Inserción en la tabla usuario (simplemente inserta el DNI y la fecha de 
+				// Inserción en la tabla usuario (simplemente inserta el DNI y la fecha de
 				stmt = conn.prepareStatement(ALTA_USUARIO);
 				stmt.setString(1, per.getDni());
 				stmt.setString(2, ((Usuario) per).getFechaRegistro().toString()); // Fecha de registro actual
@@ -108,11 +99,14 @@ public class ImpleDB implements Dao {
 			return false;
 		} finally {
 			try {
-				if (stmt != null)
+				if (stmt != null) {
 					stmt.close();
-			} catch (SQLException e) {}
-			if (conn != null)
+				}
+			} catch (SQLException e) {
+			}
+			if (conn != null) {
 				ConnectionMysql.closeConnection();
+			}
 		}
 	}
 
@@ -148,4 +142,3 @@ public class ImpleDB implements Dao {
 	}
 
 }
-
