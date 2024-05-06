@@ -1,7 +1,7 @@
 package vista;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,10 +10,9 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controlador.Controlador;
 import modelo.Persona;
 
-public class Hamburger extends JDialog {
+public class Hamburger extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -21,27 +20,29 @@ public class Hamburger extends JDialog {
 	private JPanel panel, panel2;
 
 	// Controlador
-	private Controlador controladorRutas;
+	// private Controlador controladorRutas;
 	private Login login;
 	private Persona persona;
 
 	/**
 	 * Create the frame.
+	 * 
+	 * @param b
+	 * @param main
 	 */
-	public Hamburger() {
-		Hamburguesa(controladorRutas, false);
+	public Hamburger(Main main, boolean b) {
+		super(main);
+		setModal(b);
+		Hamburguesa();
+
 	}
 
-	public Hamburger(Controlador controladorRutas, boolean oscuro) {
-		Hamburguesa(controladorRutas, oscuro);
-	}
-
-	public void Hamburguesa(Controlador controladorRutas ,boolean oscuro) {
+	public void Hamburguesa() {
 
 		setBounds(100, 100, 700, 709);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		getContentPane().add(contentPane, BorderLayout.CENTER);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
@@ -55,111 +56,95 @@ public class Hamburger extends JDialog {
 		panel2.setBackground(Color.BLACK);
 		contentPane.add(panel2);
 
-		btnIndex = createButton("Inicio");
-		btnIndex.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				inicio(oscuro);
-			}
-		});
+		btnIndex = new JButton("Inicio");
+		btnIndex.addActionListener(this);
 		btnIndex.setBounds(254, 183, 176, 42);
 		contentPane.add(btnIndex);
 
-		btnSettings = createButton("Ajustes");
-		btnSettings.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ajustes(oscuro);
-			}
-		});
+		btnSettings = new JButton("Ajustes");
+		btnSettings.addActionListener(this);
 		btnSettings.setBounds(254, 247, 176, 42);
 		contentPane.add(btnSettings);
 
-		btnContact = createButton("Contacto");
-		btnContact.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				contacto();
-			}
-		});
+		btnContact = new JButton("Contacto");
+		btnContact.addActionListener(this);
 		btnContact.setBounds(254, 309, 176, 42);
 		contentPane.add(btnContact);
 
-		btnAdministration = createButton("Administración");
-		btnAdministration.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				administracion(controladorRutas, oscuro);
-			}
-		});
+		btnAdministration = new JButton("Administración");
+		btnAdministration.addActionListener(this);
 		btnAdministration.setBounds(240, 373, 202, 42);
 		contentPane.add(btnAdministration);
 
-		btnLogout = createButton("Cerrar sesión");
-		btnLogout.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				logout(oscuro);
-			}
-		});
+		btnLogout = new JButton("Cerrar sesión");
+		btnLogout.addActionListener(this);
 		btnLogout.setBounds(254, 437, 176, 42);
 		contentPane.add(btnLogout);
-		if (oscuro) {
-			cambioFondo();
+//		if (oscuro) {
+//			cambioFondo();
+//		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btnIndex)) {
+			inicio();
 		}
-
+		if (e.getSource().equals(btnSettings)) {
+			ajustes();
+		}
+		if (e.getSource().equals(btnContact)) {
+			contacto();
+		}
+		if (e.getSource().equals(btnAdministration)) {
+			administracion();
+		}
+		if (e.getSource().equals(btnLogout)) {
+			logout();
+		}
 	}
 
-	private JButton createButton(String text) {
-		JButton btn = new JButton(text);
-		btn.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btn.setContentAreaFilled(false); // Establece el área de contenido del botón como no relleno
-		btn.setOpaque(false); // Hace que el botón sea transparente
-		btn.setBorderPainted(false); // Oculta el borde del botón
-		btn.setForeground(Color.BLACK); // Establece el color del texto del botón
-		return btn;
-	}
-
-	protected void logout(boolean oscuro) {
-		Login log = new Login(controladorRutas, persona, oscuro);
+	public void logout() {
+		Login log = new Login(persona);
 		log.setVisible(true);
-		setVisible(false);
+		this.dispose();
 	}
 
-	protected void administracion(Controlador controladorRutas, boolean oscuro) {
-		Administracion admin = new Administracion(controladorRutas, oscuro);
+	public void administracion() {
+		Administracion admin = new Administracion(true, this);
 		admin.setVisible(true);
-		setVisible(false);
+		this.dispose();
 
 	}
 
-	protected void contacto() {
-		Contacto contact = new Contacto();
+	public void contacto() {
+		Contacto contact = new Contacto(this, true);
 		contact.setVisible(true);
-		setVisible(false);
+		this.dispose();
 	}
 
-	protected void ajustes(boolean oscuro) {
-		Ajustes settings = new Ajustes(controladorRutas ,oscuro);
+	public void ajustes() {
+		Ajustes settings = new Ajustes(this, true);
 		settings.setVisible(true);
-		setVisible(false);
+		this.dispose();
 	}
 
-	protected void inicio(boolean oscuro) {
-		Main index = new Main(login, oscuro, controladorRutas);
+	public void inicio() {
+		Main index = new Main(login, true);
 		index.setVisible(true);
-		setVisible(false);
+		this.dispose();
 	}
 
-	private void cambioFondo() {
-		panel.setBackground(Color.WHITE);
-		panel2.setBackground(Color.WHITE);
-		btnIndex.setForeground(Color.WHITE);
-		btnAdministration.setForeground(Color.WHITE);
-		btnContact.setForeground(Color.WHITE);
-		btnLogout.setForeground(Color.WHITE);
-		btnSettings.setForeground(Color.WHITE);
-		contentPane.setBackground(Color.DARK_GRAY);
+//	public void cambioFondo() {
+//		panel.setBackground(Color.WHITE);
+//		panel2.setBackground(Color.WHITE);
+//		btnIndex.setForeground(Color.WHITE);
+//		btnAdministration.setForeground(Color.WHITE);
+//		btnContact.setForeground(Color.WHITE);
+//		btnLogout.setForeground(Color.WHITE);
+//		btnSettings.setForeground(Color.WHITE);
+//		contentPane.setBackground(Color.DARK_GRAY);
+//
+//	}
 
-	}
 }

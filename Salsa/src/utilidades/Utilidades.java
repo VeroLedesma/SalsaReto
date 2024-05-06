@@ -1,7 +1,5 @@
 package utilidades;
 
-
-
 public class Utilidades {
 
 	// Método para verificar un email

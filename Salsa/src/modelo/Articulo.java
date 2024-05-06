@@ -2,7 +2,7 @@ package modelo;
 
 public class Articulo {
 	private Integer codArticulo;
-	private float porcentajeDecuento, precio;
+	private Float porcentajeDecuento, precio;
 	private String color, modelo;
 	private Temporada temporada;
 
@@ -19,7 +19,7 @@ public class Articulo {
 		return porcentajeDecuento;
 	}
 
-	public void setPorcentajeDecuento(float porcentajeDecuento) {
+	public void setPorcentajeDecuento(Float porcentajeDecuento) {
 		this.porcentajeDecuento = porcentajeDecuento;
 	}
 
@@ -27,7 +27,7 @@ public class Articulo {
 		return precio;
 	}
 
-	public void setPrecio(float precio) {
+	public void setPrecio(Float precio) {
 		this.precio = precio;
 	}
 
