@@ -35,25 +35,24 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 
 	private JTextField textNombre, textEmail, textDni, textApellido, textDireccion, textNumeroSS;
-	private JLabel Seleccione, lblPregunta, lblEmail, lblContrasena, lblDni, lblSexo,lblPrimerApellido, lblConfirmeLaContrasea,
-	lblDireccion, lblNewLabel, lblDireccion_1, lblSexo_1, lblFechaDeRegistro, lblNmeroSeguridadSocial, lblInicioSesion,
-	lblCamposObligatorios, lblFecNa, lblNombre;	
+	private JLabel Seleccione, lblPregunta, lblEmail, lblContrasena, lblDni, lblSexo, lblPrimerApellido,
+			lblConfirmeLaContrasea, lblDireccion, lblNewLabel, lblDireccion_1, lblSexo_1, lblFechaDeRegistro,
+			lblNmeroSeguridadSocial, lblInicioSesion, lblCamposObligatorios, lblNombre;
 	private JButton btnRegistro;
 	private JDateChooser dateFRegistro, dateFechaNacimiento;
 	private JPasswordField passConfirmar, passContrasena;
 	private JComboBox<Sexo> comboBoxGenero;
 	private JCheckBox checkBoxUsuario, checkBoxTrabajador;
-	
+
 	// Lógica para la conexión
-	private Controlador controladorRutas;
-	private Persona persona;
-	private boolean oscuro;
-	
-	public Register(Login padre, Controlador controladorRutas, boolean modal, boolean oscuro) {
+	// private Controlador controladorRutas;
+	private Persona persona = new Persona();
+
+	public Register(Login padre, boolean modal, Persona persona2) {
 		super(padre);
-		this.controladorRutas = controladorRutas;
-		this.persona = persona;
-		
+		// this.controladorRutas = controladorRutas;
+		this.persona = persona2;
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
@@ -81,7 +80,7 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		textEmail.setColumns(10);
 		textEmail.setBounds(64, 191, 237, 29);
 		getContentPane().add(textEmail);
-		
+
 		lblEmail = new JLabel("Email *");
 		lblEmail.setFont(new Font("Dialog", Font.BOLD, 12));
 		lblEmail.setBounds(64, 166, 49, 14);
@@ -154,19 +153,15 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		getContentPane().add(btnRegistro);
 
 		dateFechaNacimiento = new JDateChooser();
-		dateFechaNacimiento.getCalendarButton().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		dateFechaNacimiento.getCalendarButton().addActionListener(this);
 		dateFechaNacimiento.setBounds(456, 197, 165, 23);
 		getContentPane().add(dateFechaNacimiento);
 
-		JLabel lblCamposObligatorios = new JLabel("Campos obligatorios *");
+		lblCamposObligatorios = new JLabel("Campos obligatorios *");
 		lblCamposObligatorios.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblCamposObligatorios.setBounds(122, 550, 286, 14);
 		getContentPane().add(lblCamposObligatorios);
-		
+
 		checkBoxUsuario = new JCheckBox("Usuario", false);
 		checkBoxUsuario.setBackground(new Color(255, 255, 255));
 		getContentPane().add(checkBoxUsuario);
@@ -226,57 +221,54 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		// Mostrar el label y el campo de fecha de registro
 		lblFechaDeRegistro.setVisible(false);
 		dateFRegistro.setVisible(false);
-		
+
 		lblPregunta = new JLabel("¿Ya tienes cuenta?");
 		lblPregunta.setBounds(265, 626, 114, 13);
 		getContentPane().add(lblPregunta);
-		
+
 		lblInicioSesion = new JLabel("Inicia Sesion");
 		lblInicioSesion.setBounds(370, 624, 78, 13);
 		lblInicioSesion.addMouseListener(this);
 		lblInicioSesion.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblInicioSesion.setForeground(new Color(0, 51, 255));
 		getContentPane().add(lblInicioSesion);
-		
-		if (oscuro) {
-			cambioFondo();
-		}
-		
+
 		// Botones de eventos
 		checkBoxUsuario.addActionListener(this);
 		checkBoxTrabajador.addActionListener(this);
 	}
 
-	protected void inicioSesion(Controlador controladorRutas, boolean oscuro) {
-		Login log = new Login(controladorRutas, persona, oscuro);
+	protected void inicioSesion() {
+		Login log = new Login(persona);
 		log.setVisible(true);
 		setVisible(false);
-		
+
 	}
-	
-	private void cambioFondo() {
-		//contentPane.setBackground(Color.DARK_GRAY); Acá creo que debo ver si viene del padre
-		lblFechaDeRegistro.setForeground(Color.WHITE);
-		lblConfirmeLaContrasea.setForeground(Color.WHITE);
-		lblContrasena.setForeground(Color.WHITE);
-		lblDireccion.setForeground(Color.WHITE);
-		lblDni.setForeground(Color.WHITE);
-		lblEmail.setForeground(Color.WHITE);
-		lblNombre.setForeground(Color.WHITE);
-		lblPrimerApellido.setForeground(Color.WHITE);
-		lblFecNa.setForeground(Color.WHITE);
-		lblCamposObligatorios.setForeground(Color.WHITE);
-		Seleccione.setForeground(Color.WHITE);
-		lblNmeroSeguridadSocial.setForeground(Color.WHITE);
-		lblPregunta.setForeground(Color.WHITE);
-		lblSexo_1.setForeground(Color.WHITE);
-	}
-	
+
+//	private void cambioFondo() {
+//		// contentPane.setBackground(Color.DARK_GRAY); Acá creo que debo ver si viene
+//		// del padre
+//		lblFechaDeRegistro.setForeground(Color.WHITE);
+//		lblConfirmeLaContrasea.setForeground(Color.WHITE);
+//		lblContrasena.setForeground(Color.WHITE);
+//		lblDireccion.setForeground(Color.WHITE);
+//		lblDni.setForeground(Color.WHITE);
+//		lblEmail.setForeground(Color.WHITE);
+//		lblNombre.setForeground(Color.WHITE);
+//		lblPrimerApellido.setForeground(Color.WHITE);
+//		lblFecNa.setForeground(Color.WHITE);
+//		lblCamposObligatorios.setForeground(Color.WHITE);
+//		Seleccione.setForeground(Color.WHITE);
+//		lblNmeroSeguridadSocial.setForeground(Color.WHITE);
+//		lblPregunta.setForeground(Color.WHITE);
+//		lblSexo_1.setForeground(Color.WHITE);
+//	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		inicioSesion(controladorRutas, oscuro);
+		inicioSesion();
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnRegistro)) {
@@ -308,7 +300,6 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 
 		String dni = textDni.getText();
 		String email = textEmail.getText();
-		
 
 		// Validar DNI y email con el utilidades2
 		boolean dniValido = Utilidades.validarDNI(dni);
@@ -354,9 +345,7 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 
 		return correcto;
 	}
-	
-	
-	
+
 	private void seleccionarUsuario() {
 		if (checkBoxUsuario.isSelected()) {
 			// Deshabilitar el campo de número de seguridad social
@@ -369,7 +358,6 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		}
 	}
 
-	
 	private void seleccionarTrabajador() {
 		if (checkBoxTrabajador.isSelected()) {
 			// Deshabilitar el campo de número de seguridad social
@@ -389,7 +377,8 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 			persona = new Usuario();
 			cargarDatosComunes(persona);
 
-			((Usuario) persona).setFechaRegistro(dateFRegistro.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+			((Usuario) persona)
+					.setFechaRegistro(dateFRegistro.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
 		} else if (checkBoxTrabajador.isSelected()) {
 			persona = new Trabajador();
@@ -407,20 +396,34 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		persona.setNombre(textNombre.getText());
 		persona.setDni(textDni.getText());
 		persona.setEmail(textEmail.getText());
-		persona.setFechaNacimiento(dateFechaNacimiento.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+		persona.setFechaNacimiento(
+				dateFechaNacimiento.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		persona.setDireccion(textDireccion.getText());
 		persona.setContrasena(new String(passContrasena.getPassword()));
 		persona.setGenero((Sexo) comboBoxGenero.getSelectedItem());
 
 	}
-	
-	// Implementación de los métodos MouseListener (no son necesarios, pero necesito implemenetarlos en la clase si quiero hacer lo de los eventos)
-    @Override
-    public void mousePressed(MouseEvent e) {}
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-    @Override
-    public void mouseExited(MouseEvent e) {}
-    }
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+
+	}
+
+	// Implementación de los métodos MouseListener (no son necesarios, pero necesito
+	// implemenetarlos en la clase si quiero hacer lo de los eventos)
+
+}

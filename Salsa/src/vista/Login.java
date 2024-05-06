@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,19 +29,18 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel BodyLayout, panelLeft, panelRight;
-	private JLabel logo, labelEmail, labelPassword, labelNoRegister, linkRegister;
+	private JLabel lblLogo, labelEmail, labelPassword, labelNoRegister, linkRegister;
 	private JTextField inputEmail;
 	private JPasswordField inputPassword;
 	private JButton toggleButton, btnLogin;
-
+	private List<Persona> personas = new ArrayList<>();
 	// Lógica para la conexión
-	private Controlador controladorRutas;
-	private Persona persona;
-	private boolean oscuro;
+	// private Controlador controladorRutas;
+	private Persona persona = new Persona();
 
 	// Página de Inicio
-	public Login(Controlador controladorRutas, Persona persona, boolean oscuro) {
-		this.controladorRutas = controladorRutas;
+	public Login(Persona persona) {
+		// this.controladorRutas = controladorRutas;
 		this.persona = persona;
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,18 +76,19 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 		panelRight.add(toggleButton);
 
 		// Logo centrado
-		logo = new JLabel("");
-		logo.setBounds(132, 66, 245, 51);
-		panelRight.add(logo);
+		lblLogo = new JLabel("");
+		lblLogo.setBounds(132, 66, 245, 51);
+		panelRight.add(lblLogo);
 		ImageIcon img = new ImageIcon(
-				icon.getImage().getScaledInstance(logo.getWidth(), logo.getHeight(), Image.SCALE_SMOOTH));
-		logo.setIcon(img);
+				icon.getImage().getScaledInstance(lblLogo.getWidth(), lblLogo.getHeight(), Image.SCALE_SMOOTH));
+		lblLogo.setIcon(img);
 
 		labelEmail = new JLabel("Correo electrónico");
 		labelEmail.setBounds(74, 171, 123, 14);
 		panelRight.add(labelEmail);
 
 		inputEmail = new JTextField();
+		inputEmail.setToolTipText("");
 		inputEmail.setBounds(74, 196, 378, 51);
 		inputEmail.setColumns(10);
 		panelRight.add(inputEmail);
@@ -138,7 +140,7 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(linkRegister)) {
-			Register registro = new Register(this, controladorRutas, true, oscuro);
+			Register registro = new Register(this, true, persona);
 			registro.setVisible(true);
 			setVisible(false);
 		}
@@ -159,30 +161,47 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 		// entrada
 		String email = inputEmail.getText().trim();
 		String password = new String(inputPassword.getPassword());
-		boolean correcto = false;
-		// Establezco los datos introducidos en los campos de email y contraseña al
-		// objeto persona
-		persona.setEmail(email);
-		persona.setContrasena(password);
+		boolean correcto = false, existe = false;
+		personas = Controlador.iniciarSesion();
 
 		// Comprobamos a traves de la interfaz si la cuenta existe
-		controladorRutas = new Controlador();
-		persona = controladorRutas.iniciarSesion(persona);
+
+		existe = comprovarExisteUsuario(personas, existe, email, password);
 
 		// Si la persona no tiene ningún dato le mandamos error
 		correcto = camposVacios(correcto);
-		if (correcto == true) {
+		if (correcto == false) {
+			if (existe == true && persona != null) {
+				Main ven = new Main(this, true);
+				super.dispose();
+				ven.setVisible(true);
+			} else {
+				this.setVisible(true);
+			}
+		} else {
 			borrar();
 			JOptionPane.showMessageDialog(this, "Por favor, introduzca todos los campos obligatorios.",
 					"Campos obligatorios incompletos", JOptionPane.ERROR_MESSAGE); // Muestra un mensaje de error
-		} else {
 
-			if (persona != null) {
-				Main ven = new Main(this, true, controladorRutas);
-				super.dispose();
-				ven.setVisible(true);
+		}
+
+	}
+
+	private boolean comprovarExisteUsuario(List<Persona> personas, boolean existe, String email, String password) {
+		for (int i = 0; i < personas.size(); i++) {
+			if (personas.get(i).getContrasena().equalsIgnoreCase(password)
+					&& personas.get(i).getEmail().equalsIgnoreCase(email)) {
+				JOptionPane.showMessageDialog(null, "Bienvenido/a al sistema");
+				existe = true;
 			}
 		}
+		if (existe == false) {
+
+			JOptionPane.showMessageDialog(this, "el email o la contraseña son incorrectos.",
+					"porfavor introduzca valores validos", JOptionPane.ERROR_MESSAGE);
+		}
+
+		return existe;
 
 	}
 

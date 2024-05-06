@@ -7,7 +7,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -31,9 +30,13 @@ public class MoDatosArticulo extends JDialog {
 
 	/**
 	 * Create the frame.
+	 * 
+	 * @param modal
+	 * @param administracion
 	 */
-	public MoDatosArticulo(boolean oscuro) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public MoDatosArticulo(Administracion administracion, boolean modal) {
+		super(administracion);
+		setModal(modal);
 		setBounds(100, 100, 715, 573);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -42,7 +45,7 @@ public class MoDatosArticulo extends JDialog {
 		contentPane.setLayout(null);
 
 		JLabel logo = new JLabel("");
-		logo.setIcon(new ImageIcon("C:\\PGR\\3eva\\SALSA--dev\\src\\assets\\logo.png"));
+		logo.setIcon(new ImageIcon("/assets/logo.png"));
 		logo.setBounds(222, 32, 245, 51);
 		contentPane.add(logo);
 

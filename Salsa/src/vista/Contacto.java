@@ -11,11 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import controlador.Dao;
-
-public class Contacto extends JDialog {
+public class Contacto extends JDialog implements ActionListener {
 
 	/**
 	 * 
@@ -23,14 +22,20 @@ public class Contacto extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JLabel lblIconoTelefono;
-	private JLabel lbllogo;
-	JLabel lblIconoTelefono_1;
+	private JLabel lblLogo;
+	private JLabel lblIconoTelefono_1;
+	private JButton btnVolver;
 
 	/**
 	 * Create the dialog.
+	 * 
+	 * @param oscuro
 	 */
-	public Contacto(Dao dao, boolean oscuro) {
-		setBounds(100, 100, 815, 993);
+	public Contacto(Hamburger hamburger, boolean modal) {
+		super(hamburger);
+		setModal(true);
+		setAlwaysOnTop(true);
+		setBounds(100, 100, 847, 949);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(255, 255, 255));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -99,33 +104,35 @@ public class Contacto extends JDialog {
 		}
 		{
 			JLabel lblFoto = new JLabel("");
-			lblFoto.setIcon(new ImageIcon(Contacto.class.getResource("/assets/leftimage.png")));
-			lblFoto.setBounds(0, 354, 801, 592);
+			lblFoto.setHorizontalAlignment(SwingConstants.CENTER);
+			lblFoto.setBackground(new Color(240, 240, 240));
+			lblFoto.setIcon(new ImageIcon(Contacto.class.getResource("/assets/leftimage.jpg")));
+			lblFoto.setBounds(90, 360, 600, 800);
 			contentPanel.add(lblFoto);
 		}
-
-		JButton btnVolver = new JButton("Volver");
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				volver(dao);
-			}
-
-		});
+		btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(this);
 		btnVolver.setBounds(31, 22, 89, 23);
 		contentPanel.add(btnVolver);
 
-		JLabel lbllogo = new JLabel("");
-		lbllogo.setIcon(new ImageIcon(getClass().getResource("/assets/logo.png")));
-		lbllogo.setBounds(262, 51, 298, 54);
-		contentPanel.add(lbllogo);
+		lblLogo = new JLabel("");
+		lblLogo.setIcon(new ImageIcon(getClass().getResource("/assets/logo.png")));
+		lblLogo.setBounds(262, 51, 298, 54);
+		contentPanel.add(lblLogo);
 
 	}
 
-	private void volver(Dao dao) {
-		Hamburger ham = new Hamburger();
-		ham.setVisible(true);
-		setVisible(false);// TODO Auto-generated method stub
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btnVolver)) {
+			volver();
+		}
+	}
 
+	private void volver() {
+		Hamburger ham = new Hamburger(null, false);
+		ham.setVisible(true);
+		this.dispose();
 	}
 
 }

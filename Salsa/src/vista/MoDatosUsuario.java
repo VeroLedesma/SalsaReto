@@ -11,9 +11,13 @@ public class MoDatosUsuario extends JDialog {
 	/**
 	 * Create the frame.
 	 * 
+	 * @param administracion
+	 * 
 	 * @param oscuro
 	 */
-	public MoDatosUsuario(boolean oscuro) {
+	public MoDatosUsuario(Administracion administracion, boolean modal) {
+		super(administracion);
+		setModal(modal);
 		setBounds(100, 100, 711, 689);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
