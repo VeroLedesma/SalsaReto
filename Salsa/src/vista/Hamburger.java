@@ -23,7 +23,7 @@ public class Hamburger extends JDialog implements ActionListener {
 	// private Controlador controladorRutas;
 	private Login login;
 	private Persona persona;
-
+	private boolean modal;
 	/**
 	 * Create the frame.
 	 * 
@@ -127,7 +127,7 @@ public class Hamburger extends JDialog implements ActionListener {
 	}
 
 	public void inicio() {
-		Main index = new Main(login, true);
+		Main index = new Main(login, modal);
 		index.setVisible(true);
 		this.dispose();
 	}
