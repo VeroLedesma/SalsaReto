@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 	// Lógica para la conexión
 	// private Controlador controladorRutas;
 	private Persona persona = new Persona();
+	private JLabel lblImagenLogin;
 
 	// Página de Inicio
 	public Login(Persona persona) {
@@ -54,11 +56,18 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 
 		// Division Login
 		panelLeft = new JPanel();
-		panelLeft.setBackground(new Color(0, 128, 255));
+		panelLeft.setBackground(new Color(255, 255, 255));
 		panelLeft.setBounds(0, 0, 416, 539);
 		BodyLayout.add(panelLeft);
+		ImageIcon imagen = new ImageIcon(getClass().getResource("/assets/imagenLogin.jpeg"));
 		panelLeft.setLayout(null);
 
+		lblImagenLogin = new JLabel("");
+		lblImagenLogin.setBounds(0, 0, 416, 539);
+		panelLeft.add(lblImagenLogin);
+		ImageIcon imagen1 = new ImageIcon(imagen.getImage().getScaledInstance(lblImagenLogin.getWidth(),
+				lblImagenLogin.getHeight(), Image.SCALE_SMOOTH));
+		lblImagenLogin.setIcon(imagen1);
 		panelRight = new JPanel();
 		panelRight.setBackground(new Color(255, 255, 255));
 		panelRight.setBounds(414, 0, 501, 539);
@@ -84,7 +93,8 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 		lblLogo.setIcon(img);
 
 		labelEmail = new JLabel("Correo electrónico");
-		labelEmail.setBounds(74, 171, 123, 14);
+		labelEmail.setFont(new Font("Tahoma", Font.BOLD, 14));
+		labelEmail.setBounds(74, 171, 157, 14);
 		panelRight.add(labelEmail);
 
 		inputEmail = new JTextField();
@@ -94,6 +104,7 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 		panelRight.add(inputEmail);
 
 		labelPassword = new JLabel("Contraseña");
+		labelPassword.setFont(new Font("Tahoma", Font.BOLD, 14));
 		labelPassword.setBounds(74, 270, 123, 14);
 		panelRight.add(labelPassword);
 
@@ -102,17 +113,19 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 		panelRight.add(inputPassword);
 
 		btnLogin = new JButton("Iniciar sesión");
+		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnLogin.setBounds(74, 381, 378, 45);
 		panelRight.add(btnLogin);
 
 		labelNoRegister = new JLabel("¿No tienes cuenta? Click aquí para");
+		labelNoRegister.setFont(new Font("Tahoma", Font.BOLD, 13));
 		labelNoRegister.setBounds(74, 454, 227, 14);
 		labelNoRegister.setHorizontalAlignment(SwingConstants.LEFT);
 		panelRight.add(labelNoRegister);
 
 		linkRegister = new JLabel("registrarme");
-		linkRegister.setBounds(274, 454, 75, 14);
-		linkRegister.setFont(new Font("Tahoma", Font.BOLD, 11));
+		linkRegister.setBounds(311, 455, 130, 14);
+		linkRegister.setFont(new Font("Tahoma", Font.BOLD, 14));
 		linkRegister.setForeground(new Color(0, 128, 255));
 		linkRegister.setHorizontalAlignment(SwingConstants.LEFT);
 		panelRight.add(linkRegister);
@@ -162,11 +175,22 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 		String email = inputEmail.getText().trim();
 		String password = new String(inputPassword.getPassword());
 		boolean correcto = false, existe = false;
-		personas = Controlador.iniciarSesion();
+		try {
 
-		// Comprobamos a traves de la interfaz si la cuenta existe
+			// Comprobamos a traves de la interfaz si la cuenta existe
+			existe = Controlador.iniciarSesion(email, password);
 
-		existe = comprovarExisteUsuario(personas, existe, email, password);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (existe == true) {
+			// le enviamos un mensaje de bienvenida
+			JOptionPane.showMessageDialog(null, "Bienvenido/a al sistema");
+		} else if (existe == false) {
+//si el inicio de sesion es incorrecto le enviaremos un mensaje de error 
+			JOptionPane.showMessageDialog(this, "el email o la contraseña son incorrectos.",
+					"porfavor introduzca valores validos", JOptionPane.ERROR_MESSAGE);
+		}
 
 		// Si la persona no tiene ningún dato le mandamos error
 		correcto = camposVacios(correcto);
@@ -179,29 +203,13 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 				this.setVisible(true);
 			}
 		} else {
+//arreglarlo porque no funciona
+
 			borrar();
 			JOptionPane.showMessageDialog(this, "Por favor, introduzca todos los campos obligatorios.",
 					"Campos obligatorios incompletos", JOptionPane.ERROR_MESSAGE); // Muestra un mensaje de error
 
 		}
-
-	}
-
-	private boolean comprovarExisteUsuario(List<Persona> personas, boolean existe, String email, String password) {
-		for (int i = 0; i < personas.size(); i++) {
-			if (personas.get(i).getContrasena().equalsIgnoreCase(password)
-					&& personas.get(i).getEmail().equalsIgnoreCase(email)) {
-				JOptionPane.showMessageDialog(null, "Bienvenido/a al sistema");
-				existe = true;
-			}
-		}
-		if (existe == false) {
-
-			JOptionPane.showMessageDialog(this, "el email o la contraseña son incorrectos.",
-					"porfavor introduzca valores validos", JOptionPane.ERROR_MESSAGE);
-		}
-
-		return existe;
 
 	}
 

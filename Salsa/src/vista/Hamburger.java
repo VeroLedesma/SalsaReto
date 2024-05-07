@@ -34,16 +34,13 @@ public class Hamburger extends JDialog implements ActionListener {
 		super(main);
 		setModal(b);
 		Hamburguesa();
-
 	}
 
 	public void Hamburguesa() {
-
 		setBounds(100, 100, 700, 709);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPane, BorderLayout.CENTER);
-		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		panel = new JPanel();
@@ -111,7 +108,7 @@ public class Hamburger extends JDialog implements ActionListener {
 	}
 
 	public void administracion() {
-		Administracion admin = new Administracion(true, this);
+		Administracion admin = new Administracion(this, true);
 		admin.setVisible(true);
 		this.dispose();
 
