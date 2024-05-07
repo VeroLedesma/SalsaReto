@@ -20,7 +20,6 @@ public class Main extends JDialog implements ActionListener {
 	private JPanel BodyLayout, emptyRow, itemsPanel;
 	private JLabel logo;
 	private JButton btnCamisetas, btnSudaderas, btnPantalones, btnMenu;
-
 	// Interfaz
 
 	public Main(Login login, boolean modal) {
@@ -87,13 +86,14 @@ public class Main extends JDialog implements ActionListener {
 
 		if (e.getSource().equals(btnMenu)) {
 			irAlMenu();
+		
 		}
 	}
 
 	private void irAlMenu() {
-		Hamburger ven = new Hamburger(this, true);
-		ven.setVisible(true);
 		this.dispose();
+		Hamburger ven = new Hamburger(this, true);
+		ven.setVisible(true);		
 	}
 
 }

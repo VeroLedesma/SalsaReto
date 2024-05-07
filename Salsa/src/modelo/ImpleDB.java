@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,27 +18,32 @@ public class ImpleDB implements Dao {
 	private ResultSet resultSet;
 
 	// Consultas a la Base de Datos
-	private final String CONSULTA_COMPROBAR_USUARIO = "SELECT email, contrasena FROM persona";
+	private final String CONSULTA_USUARIO = "SELECT dni, nombre, apellido,fechaNac, direccion, email, genero FROM persona ";
 	private final String ALTA_PERSONA = "INSERT INTO persona (dni, nombre, apellido, fechaNac, contrasena, direccion, email, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	private final String ALTA_TRABAJADOR = "INSERT INTO trabajador (dni, nss) VALUES (?, ?)";
 	private final String ALTA_USUARIO = "INSERT INTO usuario (dni, fechaReg) VALUES (?, ?)";
 	private final String ALTA_ARTICULO = "INSERT INTO articulo (cod_articulo, color, modelo, temporada, precio, descuento) VALUES (?, ?, ?, ?, ?, ?)";
+	private final String CONSULTA_COMPROBAR_USUARIO = "SELECT dni, nombre, apellido,fechaNac, direccion, email, genero FROM persona WHERE email=? AND contrasena=?";
 
 	@Override
-	public List<Persona> iniciarSesion() {
+	public List<Persona> listarUsuarios() {
 //arreglar este metodo que lo que hara sera verificar la existencia del usuario que inicie sesion en la aplicacion
 
-		List<Persona> personas = new ArrayList<Persona>();
+		List<Persona> personas = new ArrayList<>();
 		conn = ConnectionMysql.openConnection();
+
 		try {
-
-			stmt = conn.prepareStatement(CONSULTA_COMPROBAR_USUARIO);
-
+			stmt = conn.prepareStatement(CONSULTA_USUARIO);
 			resultSet = stmt.executeQuery();
 			while (resultSet.next()) {
 				Persona per = new Persona();
+				per.setDni(resultSet.getString("dni"));
+				per.setNombre(resultSet.getString("nombre"));
+				per.setApellido(resultSet.getString("apellido"));
+				per.setFechaNacimiento(LocalDate.parse(resultSet.getString("fechaNac")));
+				per.setDireccion(resultSet.getString("direccion"));
+				per.setGenero(Sexo.valueOf(resultSet.getString("genero").toUpperCase()));
 				per.setEmail(resultSet.getString("email"));
-				per.setContrasena(resultSet.getString("contrasena"));
 				personas.add(per);
 			}
 
@@ -45,16 +51,15 @@ public class ImpleDB implements Dao {
 			e.printStackTrace();
 			System.out.println("Error al intentar comprobar el usuario.");
 		} finally {
-			try {
-				if (resultSet != null) {
-					resultSet.close();
-				}
-				if (stmt != null) {
+
+			if (stmt != null) {
+				try {
 					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
+
 			ConnectionMysql.closeConnection();
 		}
 		return personas;
@@ -139,6 +144,44 @@ public class ImpleDB implements Dao {
 				ConnectionMysql.closeConnection();
 			}
 		}
+	}
+
+	@Override
+	public boolean iniciarSesion(String email, String contrasena) {
+		boolean existe = false;
+		int rows = 0;
+		conn = ConnectionMysql.openConnection();
+
+		try {
+			stmt = conn.prepareStatement(CONSULTA_COMPROBAR_USUARIO);
+			stmt.setString(1, email);
+			stmt.setString(2, contrasena);
+
+			resultSet = stmt.executeQuery();
+
+			while (resultSet.next()) {
+				rows++;
+			}
+			if (rows != 0) {
+				existe = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Error al intentar comprobar el usuario.");
+		} finally {
+
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			ConnectionMysql.closeConnection();
+		}
+		return existe;
 	}
 
 }
