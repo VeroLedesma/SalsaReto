@@ -43,7 +43,6 @@ public class Hamburger extends JDialog implements ActionListener {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPane, BorderLayout.CENTER);
-		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		panel = new JPanel();
