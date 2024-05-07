@@ -108,7 +108,7 @@ public class Hamburger extends JDialog implements ActionListener {
 	}
 
 	public void administracion() {
-		Administracion admin = new Administracion(this, true);
+		Administracion admin = new Administracion(true, this);
 		admin.setVisible(true);
 		this.dispose();
 

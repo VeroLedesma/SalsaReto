@@ -129,7 +129,7 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 	}
 
 	private void volver() {
-		Administracion admin = new Administracion(null, true);
+		Administracion admin = new Administracion(true, null);
 		admin.setVisible(true);
 		this.dispose();
 	}
