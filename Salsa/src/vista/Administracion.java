@@ -21,7 +21,8 @@ public class Administracion extends JDialog implements ActionListener {
 	// Lógica para la conexión
 //	private Controlador controladorRutas = new Controlador();
 	private JButton btnVolver, btnModificarDatosArtculo, btnInsertarNuevoArtculo, btnMoDatosU;
-
+	private Main main;
+	
 	public Administracion(boolean modal, Hamburger hamburger) {
 		super(hamburger);
 		setModal(modal);
@@ -82,6 +83,11 @@ public class Administracion extends JDialog implements ActionListener {
 		contentPane.add(btnInsertarNuevoArtculo);
 
 		btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				volver();
+			}
+		});
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		btnVolver.setBounds(10, 10, 85, 21);
@@ -94,9 +100,6 @@ public class Administracion extends JDialog implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btnVolver)) {
-			volver();
-		}
 		if (e.getSource().equals(btnModificarDatosArtculo)) {
 			moDatosArticulo();
 		}
@@ -132,7 +135,8 @@ public class Administracion extends JDialog implements ActionListener {
 	}
 
 	protected void volver() {
-		Hamburger ham = new Hamburger(null, true);
+		this.dispose();
+		Hamburger ham = new Hamburger(main, false);
 		ham.setVisible(true);
 		this.setVisible(false);
 	}

@@ -30,6 +30,7 @@ public class Ajustes extends JDialog implements ActionListener {
 	private JSeparator separator_2;
 	private JTextField textField, textField_1;
 	private JButton btnVolver;
+	private Main main;
 	// Comprobar si anda en modo diurno o nocturno
 	// private boolean oscuro;
 
@@ -151,7 +152,7 @@ public class Ajustes extends JDialog implements ActionListener {
 	}
 
 	protected void volver() {
-		Hamburger ham = new Hamburger(null, true);
+		Hamburger ham = new Hamburger(main, false);
 		ham.setVisible(true);
 		this.dispose();
 	}
