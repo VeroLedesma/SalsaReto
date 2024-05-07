@@ -28,7 +28,6 @@ import modelo.Persona;
 import modelo.Sexo;
 import modelo.Trabajador;
 import modelo.Usuario;
-import utilidades.Utilidades;
 
 public class Register extends JDialog implements ActionListener, MouseListener {
 
@@ -300,10 +299,10 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 
 		String dni = textDni.getText();
 		String email = textEmail.getText();
-
-		// Validar DNI y email con el utilidades2
-		boolean dniValido = Utilidades.validarDNI(dni);
-		boolean emailValido = Utilidades.validarEmail(email);
+		Persona per = new Persona();
+		// Validar DNI y ema
+		boolean dniValido = per.validarDNI(dni);
+		boolean emailValido = per.validarEmail(email);
 
 		// Verificar que todos los campos obligatorios estén completos
 		if (!textNombre.getText().isEmpty() && contrasena.length >= 5 && contrasena.length <= 8 && dniValido
@@ -316,31 +315,28 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 			if (textNombre.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(this, "Por favor, ingrese su nombre.", "Campo obligatorio vacío",
 						JOptionPane.ERROR_MESSAGE);
-			}
-			if (contrasena.length < 5 || contrasena.length > 8) {
+			} else if (contrasena.length < 5 || contrasena.length > 8) {
 				JOptionPane.showMessageDialog(this, "La contraseña debe tener entre 5 y 8 caracteres.",
 						"Error en la contraseña", JOptionPane.ERROR_MESSAGE);
 			}
 			if (!dniValido) {
+
 				JOptionPane.showMessageDialog(this, "El DNI ingresado no es válido.", "Error en el DNI",
 						JOptionPane.ERROR_MESSAGE);
-			}
-			if (!emailValido || email.isEmpty()) {
+			} else if (!emailValido || email.isEmpty()) {
 				JOptionPane.showMessageDialog(this, "El email ingresado no es válido.", "Error en el email",
 						JOptionPane.ERROR_MESSAGE);
-			}
-			if (confirmarContrasena.length == 0) {
+			} else if (confirmarContrasena.length == 0) {
 				JOptionPane.showMessageDialog(this, "Por favor, confirme su contraseña.", "Campo obligatorio vacío",
 						JOptionPane.ERROR_MESSAGE);
-			}
-			if (!(checkBoxUsuario.isSelected() || checkBoxTrabajador.isSelected())) {
+			} else if (!(checkBoxUsuario.isSelected() || checkBoxTrabajador.isSelected())) {
 				JOptionPane.showMessageDialog(this, "Por favor, seleccione si es Usuario o Trabajador.",
 						"Campo obligatorio no seleccionado", JOptionPane.ERROR_MESSAGE);
-			}
-			if (dateFechaNacimiento.getDate() == null) {
+			} else if (dateFechaNacimiento.getDate() == null) {
 				JOptionPane.showMessageDialog(this, "Por favor, seleccione su fecha de nacimiento.",
 						"Campo obligatorio no seleccionado", JOptionPane.ERROR_MESSAGE);
 			}
+			correcto = false;
 		}
 
 		return correcto;

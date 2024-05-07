@@ -21,11 +21,12 @@ public class Administracion extends JDialog implements ActionListener {
 	// Lógica para la conexión
 //	private Controlador controladorRutas = new Controlador();
 	private JButton btnVolver, btnModificarDatosArtculo, btnInsertarNuevoArtculo, btnMoDatosU;
-
+	private Main main;
 	public Administracion(boolean modal, Hamburger hamburger) {
+
 		super(hamburger);
 		setModal(modal);
-		// this.controladorRutas = controladorRutas;
+
 		setBounds(100, 100, 669, 692);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -63,11 +64,11 @@ public class Administracion extends JDialog implements ActionListener {
 		lblLogo.setBounds(194, 52, 245, 51);
 		contentPane.add(lblLogo);
 
-		btnMoDatosU = new JButton("Modificar Datos Usuario");
-		btnMoDatosU.addActionListener(this);
-		btnMoDatosU.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnMoDatosU.setBounds(194, 287, 234, 60);
-		contentPane.add(btnMoDatosU);
+		btnListarUsuarios = new JButton("Listar Usuarios");
+		btnListarUsuarios.addActionListener(this);
+		btnListarUsuarios.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnListarUsuarios.setBounds(194, 287, 234, 60);
+		contentPane.add(btnListarUsuarios);
 
 		btnModificarDatosArtculo = new JButton("Modificar Datos Artículo");
 		btnModificarDatosArtculo.addActionListener(this);
@@ -82,8 +83,13 @@ public class Administracion extends JDialog implements ActionListener {
 		contentPane.add(btnInsertarNuevoArtculo);
 
 		btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				volver();
+			}
+		});
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 15));
-
+		btnVolver.addActionListener(this);
 		btnVolver.setBounds(10, 10, 85, 21);
 		contentPane.add(btnVolver);
 
@@ -94,14 +100,14 @@ public class Administracion extends JDialog implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btnVolver)) {
-			volver();
-		}
 		if (e.getSource().equals(btnModificarDatosArtculo)) {
 			moDatosArticulo();
 		}
 		if (e.getSource().equals(btnInsertarNuevoArtculo)) {
 			insertDat();
+		}
+		if (e.getSource().equals(btnListarUsuarios)) {
+			listarUsuarios();
 		}
 	}
 
@@ -125,16 +131,17 @@ public class Administracion extends JDialog implements ActionListener {
 		setVisible(false);
 	}
 
-	protected void moDatosUsuario() {
-		MoDatosUsuario mod = new MoDatosUsuario(this, true);
+	protected void listarUsuarios() {
+		ListarUsuarios mod = new ListarUsuarios(this, true);
 		mod.setVisible(true);
 		setVisible(false);
 	}
 
 	protected void volver() {
-		Hamburger ham = new Hamburger(null, true);
+		this.dispose();
+		Hamburger ham = new Hamburger(main, false);
 		ham.setVisible(true);
-		this.setVisible(false);
+		this.dispose();
 	}
 
 }

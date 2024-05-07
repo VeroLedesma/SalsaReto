@@ -1,5 +1,6 @@
 package controlador;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import modelo.Articulo;
@@ -8,9 +9,14 @@ import modelo.Persona;
 
 public class Controlador {
 
-	public static List<Persona> iniciarSesion() {
+	public static List<Persona> listarUsuarios() throws SQLException {
 		Dao dao = new ImpleDB();
-		return dao.iniciarSesion();
+		return dao.listarUsuarios();
+	}
+
+	public static boolean iniciarSesion(String email, String contrasena) throws SQLException {
+		Dao dao = new ImpleDB();
+		return dao.iniciarSesion(email, contrasena);
 	}
 
 	public static boolean registrarUsuario(Persona per) {

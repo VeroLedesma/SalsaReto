@@ -23,7 +23,7 @@ public class Hamburger extends JDialog implements ActionListener {
 	// private Controlador controladorRutas;
 	private Login login;
 	private Persona persona;
-
+	private boolean modal;
 	/**
 	 * Create the frame.
 	 * 
@@ -34,11 +34,9 @@ public class Hamburger extends JDialog implements ActionListener {
 		super(main);
 		setModal(b);
 		Hamburguesa();
-
 	}
 
 	public void Hamburguesa() {
-
 		setBounds(100, 100, 700, 709);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -110,7 +108,7 @@ public class Hamburger extends JDialog implements ActionListener {
 	}
 
 	public void administracion() {
-		Administracion admin = new Administracion(true, this);
+		Administracion admin = new Administracion(this, true);
 		admin.setVisible(true);
 		this.dispose();
 
@@ -129,7 +127,7 @@ public class Hamburger extends JDialog implements ActionListener {
 	}
 
 	public void inicio() {
-		Main index = new Main(login, true);
+		Main index = new Main(login, modal);
 		index.setVisible(true);
 		this.dispose();
 	}
