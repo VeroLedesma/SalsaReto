@@ -22,11 +22,11 @@ public class Administracion extends JDialog implements ActionListener {
 //	private Controlador controladorRutas = new Controlador();
 	private JButton btnVolver, btnModificarDatosArtculo, btnInsertarNuevoArtculo, btnMoDatosU;
 	private Main main;
-	
 	public Administracion(boolean modal, Hamburger hamburger) {
+
 		super(hamburger);
 		setModal(modal);
-		// this.controladorRutas = controladorRutas;
+
 		setBounds(100, 100, 669, 692);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -64,11 +64,11 @@ public class Administracion extends JDialog implements ActionListener {
 		lblLogo.setBounds(194, 52, 245, 51);
 		contentPane.add(lblLogo);
 
-		btnMoDatosU = new JButton("Modificar Datos Usuario");
-		btnMoDatosU.addActionListener(this);
-		btnMoDatosU.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnMoDatosU.setBounds(194, 287, 234, 60);
-		contentPane.add(btnMoDatosU);
+		btnListarUsuarios = new JButton("Listar Usuarios");
+		btnListarUsuarios.addActionListener(this);
+		btnListarUsuarios.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnListarUsuarios.setBounds(194, 287, 234, 60);
+		contentPane.add(btnListarUsuarios);
 
 		btnModificarDatosArtculo = new JButton("Modificar Datos Artículo");
 		btnModificarDatosArtculo.addActionListener(this);
@@ -89,7 +89,7 @@ public class Administracion extends JDialog implements ActionListener {
 			}
 		});
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 15));
-
+		btnVolver.addActionListener(this);
 		btnVolver.setBounds(10, 10, 85, 21);
 		contentPane.add(btnVolver);
 
@@ -105,6 +105,9 @@ public class Administracion extends JDialog implements ActionListener {
 		}
 		if (e.getSource().equals(btnInsertarNuevoArtculo)) {
 			insertDat();
+		}
+		if (e.getSource().equals(btnListarUsuarios)) {
+			listarUsuarios();
 		}
 	}
 
@@ -128,8 +131,8 @@ public class Administracion extends JDialog implements ActionListener {
 		setVisible(false);
 	}
 
-	protected void moDatosUsuario() {
-		MoDatosUsuario mod = new MoDatosUsuario(this, true);
+	protected void listarUsuarios() {
+		ListarUsuarios mod = new ListarUsuarios(this, true);
 		mod.setVisible(true);
 		setVisible(false);
 	}
@@ -138,7 +141,7 @@ public class Administracion extends JDialog implements ActionListener {
 		this.dispose();
 		Hamburger ham = new Hamburger(main, false);
 		ham.setVisible(true);
-		this.setVisible(false);
+		this.dispose();
 	}
 
 }
