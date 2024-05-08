@@ -24,6 +24,7 @@ public class Hamburger extends JDialog implements ActionListener {
 	private Login login;
 	private Persona persona;
 	private boolean modal;
+
 	/**
 	 * Create the frame.
 	 * 
@@ -36,7 +37,6 @@ public class Hamburger extends JDialog implements ActionListener {
 		Hamburguesa();
 		btnLogout.addActionListener(this);
 	}
-	
 
 	public void Hamburguesa() {
 		setBounds(100, 100, 700, 709);
@@ -103,14 +103,14 @@ public class Hamburger extends JDialog implements ActionListener {
 	}
 
 	public void logout() {
-	//	Logout logout = new Logout(persona);
+
+		this.dispose();
 		Login log = new Login(persona);
 		log.setVisible(true);
-		this.dispose();
 	}
 
 	public void administracion() {
-		Administracion admin = new Administracion(true, this);
+		Administracion admin = new Administracion(this, true);
 		admin.setVisible(true);
 		this.dispose();
 
