@@ -82,7 +82,6 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 			tableDatosUsuario = new JTable(informacion, titulos);
 			scrollPane.setViewportView(tableDatosUsuario);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
