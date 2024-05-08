@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 
 import controlador.Controlador;
 import modelo.Persona;
@@ -24,7 +23,6 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPane = new JPanel();
 	private JTable tableDatosUsuario;
-	private DefaultTableModel model;
 	private JScrollPane scrollPane;
 	private JButton btnEliminar, btnVolver, btnModificar;
 
@@ -102,20 +100,6 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 		}
 
 		return matrizInfo;
-	}
-
-	public void llenarTabla(Persona per) {
-
-		Object[] fila = new Object[7];
-		fila[0] = per.getDni();
-		fila[1] = per.getNombre();
-		fila[2] = per.getApellido();
-		fila[3] = per.getFechaNacimiento();
-		fila[4] = per.getDireccion();
-		fila[5] = per.getEmail();
-		fila[6] = per.getGenero();
-		model.addRow(fila);
-
 	}
 
 	@Override
