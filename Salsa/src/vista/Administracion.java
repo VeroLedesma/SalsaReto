@@ -22,7 +22,9 @@ public class Administracion extends JDialog implements ActionListener {
 	private JLabel lblAdvise1, lblAdvise2, lblAdvise3, lblLogo;
 	// Lógica para la conexión
 //	private Controlador controladorRutas = new Controlador();
+
 	private JButton btnVolver, btnModificarDatosArtculo, btnInsertarNuevoArtculo, btnListarUsuarios;
+
 	private Main main;
 
 	public Administracion(Hamburger hamburger, boolean modal) {
