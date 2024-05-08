@@ -34,6 +34,7 @@ public class Hamburger extends JDialog implements ActionListener {
 		super(main);
 		setModal(b);
 		Hamburguesa();
+		btnLogout.addActionListener(this);
 	}
 	
 
@@ -75,7 +76,6 @@ public class Hamburger extends JDialog implements ActionListener {
 		contentPane.add(btnAdministration);
 
 		btnLogout = new JButton("Cerrar sesión");
-		btnLogout.addActionListener(this);
 		btnLogout.setBounds(254, 437, 176, 42);
 		contentPane.add(btnLogout);
 //		if (oscuro) {
@@ -103,13 +103,14 @@ public class Hamburger extends JDialog implements ActionListener {
 	}
 
 	public void logout() {
+	//	Logout logout = new Logout(persona);
 		Login log = new Login(persona);
 		log.setVisible(true);
 		this.dispose();
 	}
 
 	public void administracion() {
-		Administracion admin = new Administracion(true,this);
+		Administracion admin = new Administracion(true, this);
 		admin.setVisible(true);
 		this.dispose();
 

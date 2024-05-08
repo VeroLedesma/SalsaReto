@@ -20,7 +20,9 @@ public class Administracion extends JDialog implements ActionListener {
 	private JLabel lblAdvise1, lblAdvise2, lblAdvise3, lblLogo;
 	// Lógica para la conexión
 //	private Controlador controladorRutas = new Controlador();
+
 	private JButton btnVolver, btnModificarDatosArtculo, btnInsertarNuevoArtculo,btnListarUsuarios ;
+
 	private Main main;
 	public Administracion(boolean modal, Hamburger hamburger) {
 
@@ -69,7 +71,7 @@ public class Administracion extends JDialog implements ActionListener {
 		btnListarUsuarios.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnListarUsuarios.setBounds(194, 287, 234, 60);
 		contentPane.add(btnListarUsuarios);
-
+		
 		btnModificarDatosArtculo = new JButton("Modificar Datos Artículo");
 		btnModificarDatosArtculo.addActionListener(this);
 		btnModificarDatosArtculo.setFont(new Font("Tahoma", Font.BOLD, 16));
