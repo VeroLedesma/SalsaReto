@@ -103,10 +103,9 @@ public class Hamburger extends JDialog implements ActionListener {
 	}
 
 	public void logout() {
-	//	Logout logout = new Logout(persona);
-		Login log = new Login(persona);
-		log.setVisible(true);
 		this.dispose();
+		Login log = new Login(null);
+		log.setVisible(true);
 	}
 
 	public void administracion() {
