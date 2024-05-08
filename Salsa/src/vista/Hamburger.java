@@ -35,6 +35,7 @@ public class Hamburger extends JDialog implements ActionListener {
 		setModal(b);
 		Hamburguesa();
 	}
+	
 
 	public void Hamburguesa() {
 		setBounds(100, 100, 700, 709);
@@ -108,7 +109,7 @@ public class Hamburger extends JDialog implements ActionListener {
 	}
 
 	public void administracion() {
-		Administracion admin = new Administracion(this, true);
+		Administracion admin = new Administracion(true,this);
 		admin.setVisible(true);
 		this.dispose();
 
