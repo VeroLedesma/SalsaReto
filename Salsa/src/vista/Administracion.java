@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,17 +15,21 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import modelo.Persona;
+
 public class Administracion extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, panelAdvise;
 	private JLabel lblAdvise1, lblAdvise2, lblAdvise3, lblLogo;
+	private List<Persona> personas = new ArrayList<>();
 	// Lógica para la conexión
 //	private Controlador controladorRutas = new Controlador();
 	private JButton btnVolver, btnModificarDatosArtculo, btnInsertarNuevoArtculo, btnMoDatosU;
 	private Main main;
-	public Administracion(boolean modal, Hamburger hamburger) {
+	private JButton btnListarUsuarios;
 
+	public Administracion(Hamburger hamburger, boolean modal) {
 		super(hamburger);
 		setModal(modal);
 
@@ -64,12 +70,6 @@ public class Administracion extends JDialog implements ActionListener {
 		lblLogo.setBounds(194, 52, 245, 51);
 		contentPane.add(lblLogo);
 
-		btnListarUsuarios = new JButton("Listar Usuarios");
-		btnListarUsuarios.addActionListener(this);
-		btnListarUsuarios.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnListarUsuarios.setBounds(194, 287, 234, 60);
-		contentPane.add(btnListarUsuarios);
-
 		btnModificarDatosArtculo = new JButton("Modificar Datos Artículo");
 		btnModificarDatosArtculo.addActionListener(this);
 		btnModificarDatosArtculo.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -83,15 +83,16 @@ public class Administracion extends JDialog implements ActionListener {
 		contentPane.add(btnInsertarNuevoArtculo);
 
 		btnVolver = new JButton("Volver");
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				volver();
-			}
-		});
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnVolver.addActionListener(this);
 		btnVolver.setBounds(10, 10, 85, 21);
 		contentPane.add(btnVolver);
+
+		btnListarUsuarios = new JButton("Listar Usuarios");
+		btnListarUsuarios.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnListarUsuarios.setBounds(194, 298, 234, 60);
+		btnListarUsuarios.addActionListener(this);
+		contentPane.add(btnListarUsuarios);
 
 //		if (oscuro) {
 //			cambioFondo();
@@ -108,6 +109,9 @@ public class Administracion extends JDialog implements ActionListener {
 		}
 		if (e.getSource().equals(btnListarUsuarios)) {
 			listarUsuarios();
+		}
+		if (e.getSource().equals(btnVolver)) {
+			volver();
 		}
 	}
 
@@ -132,9 +136,11 @@ public class Administracion extends JDialog implements ActionListener {
 	}
 
 	protected void listarUsuarios() {
-		ListarUsuarios mod = new ListarUsuarios(this, true);
+		Persona per = new Persona();
+		ListarUsuarios mod = new ListarUsuarios(this, true, per);
 		mod.setVisible(true);
 		setVisible(false);
+
 	}
 
 	protected void volver() {

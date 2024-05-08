@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -175,40 +174,29 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 		String email = inputEmail.getText().trim();
 		String password = new String(inputPassword.getPassword());
 		boolean correcto = false, existe = false;
-		try {
-
-			// Comprobamos a traves de la interfaz si la cuenta existe
-			existe = Controlador.iniciarSesion(email, password);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		if (existe == true) {
-			// le enviamos un mensaje de bienvenida
-			JOptionPane.showMessageDialog(null, "Bienvenido/a al sistema");
-		} else if (existe == false) {
-//si el inicio de sesion es incorrecto le enviaremos un mensaje de error 
-			JOptionPane.showMessageDialog(this, "el email o la contraseña son incorrectos.",
-					"porfavor introduzca valores validos", JOptionPane.ERROR_MESSAGE);
-		}
 
 		// Si la persona no tiene ningún dato le mandamos error
 		correcto = camposVacios(correcto);
 		if (correcto == false) {
-			if (existe == true && persona != null) {
-				Main ven = new Main(this, true);
-				super.dispose();
-				ven.setVisible(true);
-			} else {
-				this.setVisible(true);
-			}
-		} else {
-//arreglarlo porque no funciona
-
-			borrar();
 			JOptionPane.showMessageDialog(this, "Por favor, introduzca todos los campos obligatorios.",
 					"Campos obligatorios incompletos", JOptionPane.ERROR_MESSAGE); // Muestra un mensaje de error
+			borrar();
+		} else {
+			existe = Controlador.iniciarSesion(email, password);
 
+			if (existe == true) {
+				// le enviamos un mensaje de bienvenida
+				JOptionPane.showMessageDialog(null, "Bienvenido/a al sistema");
+				this.setVisible(false);
+				Main vent = new Main(this, true);
+				vent.setVisible(true);
+
+				this.dispose();
+			} else if (existe == false) {
+				// si el inicio de sesion es incorrecto le enviaremos un mensaje de error
+				JOptionPane.showMessageDialog(this, "el email o la contraseña son incorrectos.",
+						"porfavor introduzca valores validos", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 
 	}
@@ -216,9 +204,9 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 	// Metodo para recoger los campos vacios de los input
 	private boolean camposVacios(boolean correcto) {
 		if (inputEmail.getText().trim().isEmpty() || new String(inputPassword.getPassword()).trim().isEmpty()) {
-			correcto = true;
-		} else {
 			correcto = false;
+		} else {
+			correcto = true;
 		}
 		return correcto;
 
@@ -227,8 +215,9 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 	// Limpiamos los datos tecleados del formulario
 	private void borrar() {
 		inputEmail.setText("");
-		inputEmail.requestFocus();
+
 		inputPassword.setText("");
+		inputEmail.requestFocus();
 	}
 
 	// Implementación de los métodos MouseListener (no son necesarios, pero necesito

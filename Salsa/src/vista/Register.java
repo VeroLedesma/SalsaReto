@@ -293,7 +293,7 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 
 	private boolean camposObligatoriosCompletos() {
 
-		boolean correcto = false;
+		boolean correcto = false, dniValido = false, emailValido = false;
 		char[] contrasena = passContrasena.getPassword();
 		char[] confirmarContrasena = passConfirmar.getPassword();
 
@@ -301,8 +301,8 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		String email = textEmail.getText();
 		Persona per = new Persona();
 		// Validar DNI y ema
-		boolean dniValido = per.validarDNI(dni);
-		boolean emailValido = per.validarEmail(email);
+		dniValido = per.validarDNI(dni);
+		emailValido = per.validarEmail(email);
 
 		// Verificar que todos los campos obligatorios estén completos
 		if (!textNombre.getText().isEmpty() && contrasena.length >= 5 && contrasena.length <= 8 && dniValido

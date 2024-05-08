@@ -42,8 +42,8 @@ public class ImpleDB implements Dao {
 				per.setApellido(resultSet.getString("apellido"));
 				per.setFechaNacimiento(LocalDate.parse(resultSet.getString("fechaNac")));
 				per.setDireccion(resultSet.getString("direccion"));
-				per.setGenero(Sexo.valueOf(resultSet.getString("genero").toUpperCase()));
 				per.setEmail(resultSet.getString("email"));
+				per.setGenero(Sexo.valueOf(resultSet.getString("genero").toUpperCase()));
 				personas.add(per);
 			}
 

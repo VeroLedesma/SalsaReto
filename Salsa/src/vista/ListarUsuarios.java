@@ -5,14 +5,11 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,22 +25,20 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 	private final JPanel contentPane = new JPanel();
 	private JTable tableDatosUsuario;
 	private DefaultTableModel model;
-	private JComboBox<String> cbUsuarios;
-	private List<Persona> personas = new ArrayList<>();
-	private JButton btnBuscar, btnEliminar, btnVolver, btnModificar;
-	private Persona per = new Persona();
+	private JScrollPane scrollPane;
+	private JButton btnEliminar, btnVolver, btnModificar;
 
 	/**
 	 * Create the frame.
 	 * 
 	 * @param administracion
+	 * @param per2
 	 * 
-	 * @param oscuro
 	 */
-	public ListarUsuarios(Administracion administracion, boolean modal) {
+	public ListarUsuarios(Administracion administracion, boolean modal, Persona per2) {
 		super(administracion);
 		setModal(modal);
-		setBounds(100, 100, 711, 689);
+		setBounds(100, 100, 754, 642);
 		getContentPane().setLayout(new BorderLayout());
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPane, BorderLayout.CENTER);
@@ -51,60 +46,67 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 
 		JLabel lblDatosUsuario = new JLabel("Lista de todos los usuarios");
 		lblDatosUsuario.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblDatosUsuario.setBounds(207, 247, 242, 56);
+		lblDatosUsuario.setBounds(235, 36, 242, 56);
 		contentPane.add(lblDatosUsuario);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 297, 677, 246);
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(34, 131, 677, 252);
 		contentPane.add(scrollPane);
-		tableDatosUsuario = new JTable();
-		model = new DefaultTableModel();
-		tableDatosUsuario.setModel(model);
-		model.addColumn("DNI");
-		model.addColumn("NOMBRE");
-		model.addColumn("APELLIDO");
-		model.addColumn("FECHA DE NACIMIENTO");
-		model.addColumn("DIRECCION");
-		model.addColumn("EMAIL");
-		model.addColumn("GENERO");
-		scrollPane.setViewportView(tableDatosUsuario);
 
-		cbUsuarios = new JComboBox<String>();
-		cbUsuarios.setBounds(208, 50, 319, 41);
-		contentPane.add(cbUsuarios);
-		cargarUsuarios();
-		JLabel lblSeleccionar = new JLabel("Seleciona un usuario");
-		lblSeleccionar.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblSeleccionar.setBounds(28, 50, 170, 41);
-		contentPane.add(lblSeleccionar);
-
-		btnBuscar = new JButton("Buscar");
-		btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnBuscar.setBounds(270, 137, 132, 34);
-		btnBuscar.addActionListener(this);
-		contentPane.add(btnBuscar);
-
+		construirTabla();
 		btnVolver = new JButton("Volver");
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnVolver.setBounds(45, 588, 85, 34);
+		btnVolver.setBounds(37, 539, 97, 34);
 		btnVolver.addActionListener(this);
 		contentPane.add(btnVolver);
 
 		btnModificar = new JButton("Modificar");
 		btnModificar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnModificar.setBounds(516, 588, 114, 34);
+		btnModificar.setBounds(597, 526, 114, 34);
 		btnModificar.addActionListener(this);
 		contentPane.add(btnModificar);
 
 		btnEliminar = new JButton("Eliminar Usuario");
 		btnEliminar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnEliminar.setBounds(270, 588, 170, 34);
+		btnEliminar.setBounds(295, 539, 170, 34);
 		btnEliminar.addActionListener(this);
 		contentPane.add(btnEliminar);
 
 	}
 
+	private void construirTabla() {
+		String titulos[] = { "DNI", "NOMBRE", "APELLIDO", "FECHA NACIMIENTO", "DIRECCION", "EMAIL", "GENERO" };
+		String informacion[][];
+		try {
+			informacion = obtenerMatriz();
+			tableDatosUsuario = new JTable(informacion, titulos);
+			scrollPane.setViewportView(tableDatosUsuario);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private String[][] obtenerMatriz() throws SQLException {
+
+		List<Persona> personas = Controlador.listarUsuarios();
+		String matrizInfo[][] = new String[personas.size()][7];
+		for (int i = 0; i < personas.size(); i++) {
+			matrizInfo[i][0] = personas.get(i).getDni() + "";
+			matrizInfo[i][1] = personas.get(i).getNombre() + "";
+			matrizInfo[i][2] = personas.get(i).getApellido() + "";
+			matrizInfo[i][3] = personas.get(i).getFechaNacimiento() + "";
+			matrizInfo[i][4] = personas.get(i).getDireccion() + "";
+			matrizInfo[i][5] = personas.get(i).getEmail() + "";
+			matrizInfo[i][6] = personas.get(i).getGenero() + "";
+		}
+
+		return matrizInfo;
+	}
+
 	public void llenarTabla(Persona per) {
+
 		Object[] fila = new Object[7];
 		fila[0] = per.getDni();
 		fila[1] = per.getNombre();
@@ -120,9 +122,6 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource().equals(btnBuscar)) {
-			buscarUsuarioSeleccionado();
-		}
 		if (e.getSource().equals(btnVolver)) {
 			volver();
 		}
@@ -132,41 +131,6 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 		Administracion admin = new Administracion(null, true);
 		admin.setVisible(true);
 		this.dispose();
-	}
-
-	private void buscarUsuarioSeleccionado() {
-		if (cbUsuarios.getSelectedIndex() == -1) {
-			JOptionPane.showMessageDialog(this, "Tienes que seleccionar un usuario");
-		}
-		Persona per = new Persona();
-		String cadena = (String) cbUsuarios.getSelectedItem();
-		int pos = cadena.indexOf(" ");
-		String dni = cadena.substring(0, pos);
-		for (Persona persona : personas) {
-			if (persona.getDni().equalsIgnoreCase(dni)) {
-				per = persona;
-			}
-		}
-		try {
-			personas = Controlador.listarUsuarios();
-			llenarTabla(per);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void cargarUsuarios() {
-
-		try {
-			personas = Controlador.listarUsuarios();
-			for (Persona per : personas) {
-				cbUsuarios.addItem(per.getDni() + " " + per.getNombre());
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		cbUsuarios.setSelectedIndex(-1);
 	}
 
 }

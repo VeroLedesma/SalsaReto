@@ -14,7 +14,7 @@ public class Controlador {
 		return dao.listarUsuarios();
 	}
 
-	public static boolean iniciarSesion(String email, String contrasena) throws SQLException {
+	public static boolean iniciarSesion(String email, String contrasena) {
 		Dao dao = new ImpleDB();
 		return dao.iniciarSesion(email, contrasena);
 	}
