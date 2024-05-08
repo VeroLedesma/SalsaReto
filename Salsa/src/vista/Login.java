@@ -39,6 +39,8 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 	// private Controlador controladorRutas;
 	private Persona persona = new Persona();
 	private JLabel lblImagenLogin;
+	
+	//Constructor vacio para el cierre de sesión
 
 	// Página de Inicio
 	public Login(Persona persona) {
@@ -136,6 +138,8 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 		toggleButton.addActionListener(this);
 
 	}
+
+
 
 	// Visualizar/Desvisualizar la contraseña
 	private void togglePasswordVisibility() {
