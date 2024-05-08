@@ -130,9 +130,9 @@ public class Contacto extends JDialog implements ActionListener {
 	}
 
 	private void volver() {
+		this.dispose();
 		Hamburger ham = new Hamburger(null, false);
 		ham.setVisible(true);
-		this.dispose();
 	}
 
 }

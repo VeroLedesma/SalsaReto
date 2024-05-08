@@ -111,28 +111,27 @@ public class Hamburger extends JDialog implements ActionListener {
 	}
 
 	public void administracion() {
+		this.dispose();
 		Administracion admin = new Administracion(this, true);
 		admin.setVisible(true);
-		this.dispose();
-
 	}
 
 	public void contacto() {
+		this.dispose();
 		Contacto contact = new Contacto(this, true);
 		contact.setVisible(true);
-		this.dispose();
 	}
 
 	public void ajustes() {
+		this.dispose();
 		Ajustes settings = new Ajustes(this, true);
 		settings.setVisible(true);
-		this.dispose();
 	}
 
 	public void inicio() {
+		this.dispose();
 		Main index = new Main(login, modal);
 		index.setVisible(true);
-		this.dispose();
 	}
 
 //	public void cambioFondo() {

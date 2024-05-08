@@ -122,30 +122,28 @@ public class Administracion extends JDialog implements ActionListener {
 //	}
 
 	protected void insertDat() {
+		this.dispose();
 		InsertDatosArticulo insert = new InsertDatosArticulo(this, true);
 		insert.setVisible(true);
-		setVisible(false);
 	}
 
 	protected void moDatosArticulo() {
+		this.dispose();
 		MoDatosArticulo modArt = new MoDatosArticulo(this, true);
 		modArt.setVisible(true);
-		setVisible(false);
 	}
 
 	protected void listarUsuarios() {
+		this.dispose();
 		Persona per = new Persona();
 		ListarUsuarios mod = new ListarUsuarios(this, true, per);
 		mod.setVisible(true);
-		setVisible(false);
-
 	}
 
 	protected void volver() {
 		this.dispose();
 		Hamburger ham = new Hamburger(main, false);
 		ham.setVisible(true);
-		this.dispose();
 	}
 
 }
