@@ -39,13 +39,13 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 	// private Controlador controladorRutas;
 	private Persona persona = new Persona();
 	private JLabel lblImagenLogin;
+	
+	//Constructor vacio para el cierre de sesión
 
 	// Página de Inicio
 	public Login(Persona persona) {
 		// this.controladorRutas = controladorRutas;
 		this.persona = persona;
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 931, 574);
 		BodyLayout = new JPanel();
 		BodyLayout.setBackground(new Color(255, 255, 255));
@@ -137,6 +137,8 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 
 	}
 
+
+
 	// Visualizar/Desvisualizar la contraseña
 	private void togglePasswordVisibility() {
 		// Si el echoChar es '•', cambiar a mostrar texto, de lo contrario, ocultar
@@ -224,6 +226,8 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 
 	}
 
+
+	
 	// Limpiamos los datos tecleados del formulario
 	private void borrar() {
 		inputEmail.setText("");
