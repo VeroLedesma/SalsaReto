@@ -94,12 +94,12 @@ public class Persona {
 			e.printStackTrace();
 			return false;
 		}
-	
+
 	}
 
 	// Método para verificar un DNI
 	public boolean validarDNI(String dni) throws IllegalArgumentException {
-	
+
 		try {
 			if (dni.length() == 9) {
 				if (dni.substring(0, 8).matches("\\d+")) {
@@ -118,7 +118,7 @@ public class Persona {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 	}
 
 }
