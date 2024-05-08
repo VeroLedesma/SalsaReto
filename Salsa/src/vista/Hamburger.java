@@ -36,6 +36,7 @@ public class Hamburger extends JDialog implements ActionListener {
 		Hamburguesa();
 		btnLogout.addActionListener(this);
 	}
+	
 
 	public void Hamburguesa() {
 		setBounds(100, 100, 700, 709);

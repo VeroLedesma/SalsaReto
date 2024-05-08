@@ -46,8 +46,6 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 	public Login(Persona persona) {
 		// this.controladorRutas = controladorRutas;
 		this.persona = persona;
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 931, 574);
 		BodyLayout = new JPanel();
 		BodyLayout.setBackground(new Color(255, 255, 255));
@@ -228,6 +226,8 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 
 	}
 
+
+	
 	// Limpiamos los datos tecleados del formulario
 	private void borrar() {
 		inputEmail.setText("");
