@@ -174,7 +174,6 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 		String email = inputEmail.getText().trim();
 		String password = new String(inputPassword.getPassword());
 		boolean correcto = false, existe = false;
-
 		// Si la persona no tiene ningún dato le mandamos error
 		correcto = camposVacios(correcto);
 		if (correcto == false) {

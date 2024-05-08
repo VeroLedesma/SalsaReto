@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,12 +20,10 @@ public class Administracion extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, panelAdvise;
 	private JLabel lblAdvise1, lblAdvise2, lblAdvise3, lblLogo;
-	private List<Persona> personas = new ArrayList<>();
 	// Lógica para la conexión
 //	private Controlador controladorRutas = new Controlador();
-	private JButton btnVolver, btnModificarDatosArtculo, btnInsertarNuevoArtculo, btnMoDatosU;
+	private JButton btnVolver, btnModificarDatosArtculo, btnInsertarNuevoArtculo, btnListarUsuarios;
 	private Main main;
-	private JButton btnListarUsuarios;
 
 	public Administracion(Hamburger hamburger, boolean modal) {
 		super(hamburger);

@@ -98,7 +98,6 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 			matrizInfo[i][5] = personas.get(i).getEmail() + "";
 			matrizInfo[i][6] = personas.get(i).getGenero() + "";
 		}
-
 		return matrizInfo;
 	}
 
