@@ -14,6 +14,11 @@ public class Controlador {
 		return dao.listarUsuarios();
 	}
 
+	public static boolean modificarUsuario(Persona per) {
+		Dao dao = new ImpleDB();
+		return dao.modificarUsuario(per);
+	}
+
 	public static boolean iniciarSesion(String email, String contrasena) {
 		Dao dao = new ImpleDB();
 		return dao.iniciarSesion(email, contrasena);

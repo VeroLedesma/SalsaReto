@@ -13,7 +13,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class MoDatosArticulo extends JDialog {
+public class VMoDatosArticulo extends JDialog {
 
 	/**
 	 * 
@@ -34,7 +34,7 @@ public class MoDatosArticulo extends JDialog {
 	 * @param modal
 	 * @param administracion
 	 */
-	public MoDatosArticulo(Administracion administracion, boolean modal) {
+	public VMoDatosArticulo(VAdministracion administracion, boolean modal) {
 		super(administracion);
 		setModal(modal);
 		setBounds(100, 100, 715, 573);

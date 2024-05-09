@@ -14,11 +14,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import controlador.Controlador;
 import modelo.Persona;
 
-public class ListarUsuarios extends JDialog implements ActionListener {
+public class VListarUsuarios extends JDialog implements ActionListener, ListSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPane = new JPanel();
@@ -33,7 +35,7 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 	 * @param per2
 	 * 
 	 */
-	public ListarUsuarios(Administracion administracion, boolean modal, Persona per2) {
+	public VListarUsuarios(VAdministracion administracion, boolean modal, Persona per2) {
 		super(administracion);
 		setModal(modal);
 		setBounds(100, 100, 754, 642);
@@ -107,12 +109,44 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 		if (e.getSource().equals(btnVolver)) {
 			volver();
 		}
+		if (e.getSource().equals(btnModificar)) {
+			modificarUsuario();
+		}
+		if (e.getSource().equals(btnEliminar)) {
+			eliminarUsuario();
+		}
+	}
+
+	private void eliminarUsuario() {
+//intentar hacer una funcion en mysql para borrar un usuario, queda pemndiente el hecho de ligar los usuarios 
+		// creados en mysql con el inicio de sesion
+	}
+
+	private void modificarUsuario() {
+
+		int selectedRow = tableDatosUsuario.getSelectedRow();
+		if (selectedRow != -1) {
+			// Haz algo con la fila seleccionada, por ejemplo, obtener el valor de la
+			// primera columna
+			Persona personaSeleccionada = (Persona) tableDatosUsuario.getValueAt(selectedRow, 0);
+			VRegister ven = new VRegister(null, true, personaSeleccionada);
+			ven.setVisible(true);
+			this.dispose();
+		}
+
 	}
 
 	private void volver() {
-		Administracion admin = new Administracion(null, true);
+		VAdministracion admin = new VAdministracion(null, true);
 		admin.setVisible(true);
 		this.dispose();
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		if (e.getValueIsAdjusting()) {
+			modificarUsuario();
+		}
 	}
 
 }

@@ -8,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,7 +23,7 @@ import javax.swing.border.EmptyBorder;
 import controlador.Controlador;
 import modelo.Persona;
 
-public class Login extends JFrame implements ActionListener, MouseListener {
+public class VLogin extends JFrame implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel BodyLayout, panelLeft, panelRight;
@@ -33,17 +31,14 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 	private JTextField inputEmail;
 	private JPasswordField inputPassword;
 	private JButton toggleButton, btnLogin;
-	private List<Persona> personas = new ArrayList<>();
 	// Lógica para la conexión
-	// private Controlador controladorRutas;
 	private Persona persona = new Persona();
 	private JLabel lblImagenLogin;
-	
-	//Constructor vacio para el cierre de sesión
+
+	// Constructor vacio para el cierre de sesión
 
 	// Página de Inicio
-	public Login(Persona persona) {
-		// this.controladorRutas = controladorRutas;
+	public VLogin(Persona persona) {
 		this.persona = persona;
 		setBounds(100, 100, 931, 574);
 		BodyLayout = new JPanel();
@@ -136,8 +131,6 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 
 	}
 
-
-
 	// Visualizar/Desvisualizar la contraseña
 	private void togglePasswordVisibility() {
 		// Si el echoChar es '•', cambiar a mostrar texto, de lo contrario, ocultar
@@ -154,7 +147,7 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(linkRegister)) {
-			Register registro = new Register(this, true, persona);
+			VRegister registro = new VRegister(this, true, persona);
 			registro.setVisible(true);
 			setVisible(false);
 		}
@@ -189,7 +182,7 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 				// le enviamos un mensaje de bienvenida
 				JOptionPane.showMessageDialog(null, "Bienvenido/a al sistema");
 				this.setVisible(false);
-				Main vent = new Main(this, true);
+				VMain vent = new VMain(this, true);
 				vent.setVisible(true);
 
 				this.dispose();
@@ -213,8 +206,6 @@ public class Login extends JFrame implements ActionListener, MouseListener {
 
 	}
 
-
-	
 	// Limpiamos los datos tecleados del formulario
 	private void borrar() {
 		inputEmail.setText("");

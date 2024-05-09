@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-public class Contacto extends JDialog implements ActionListener {
+public class VContacto extends JDialog implements ActionListener {
 
 	/**
 	 * 
@@ -31,7 +31,7 @@ public class Contacto extends JDialog implements ActionListener {
 	 * 
 	 * @param oscuro
 	 */
-	public Contacto(Hamburger hamburger, boolean modal) {
+	public VContacto(VHamburger hamburger, boolean modal) {
 		super(hamburger);
 		setModal(true);
 		setAlwaysOnTop(true);
@@ -106,7 +106,7 @@ public class Contacto extends JDialog implements ActionListener {
 			JLabel lblFoto = new JLabel("");
 			lblFoto.setHorizontalAlignment(SwingConstants.CENTER);
 			lblFoto.setBackground(new Color(240, 240, 240));
-			lblFoto.setIcon(new ImageIcon(Contacto.class.getResource("/assets/leftimage.jpg")));
+			lblFoto.setIcon(new ImageIcon(VContacto.class.getResource("/assets/leftimage.jpg")));
 			lblFoto.setBounds(90, 360, 600, 800);
 			contentPanel.add(lblFoto);
 		}
@@ -130,7 +130,7 @@ public class Contacto extends JDialog implements ActionListener {
 	}
 
 	private void volver() {
-		Hamburger ham = new Hamburger(null, false);
+		VHamburger ham = new VHamburger(null, false);
 		ham.setVisible(true);
 		this.dispose();
 	}

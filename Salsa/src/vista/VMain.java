@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class Main extends JDialog implements ActionListener {
+public class VMain extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel BodyLayout, emptyRow, itemsPanel;
@@ -22,7 +22,7 @@ public class Main extends JDialog implements ActionListener {
 	private JButton btnCamisetas, btnSudaderas, btnPantalones, btnMenu;
 	// Interfaz
 
-	public Main(Login login, boolean modal) {
+	public VMain(VLogin login, boolean modal) {
 		super(login);
 		setModal(modal);
 		setBounds(100, 100, 1082, 836);
@@ -92,7 +92,7 @@ public class Main extends JDialog implements ActionListener {
 
 	private void irAlMenu() {
 		this.dispose();
-		Hamburger ven = new Hamburger(this, true);
+		VHamburger ven = new VHamburger(this, true);
 		ven.setVisible(true);		
 	}
 

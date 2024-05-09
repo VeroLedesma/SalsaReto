@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 
 import modelo.Persona;
 
-public class Hamburger extends JDialog implements ActionListener {
+public class VHamburger extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -21,7 +21,7 @@ public class Hamburger extends JDialog implements ActionListener {
 
 	// Controlador
 	// private Controlador controladorRutas;
-	private Login login;
+	private VLogin login;
 	private Persona persona;
 	private boolean modal;
 
@@ -31,7 +31,7 @@ public class Hamburger extends JDialog implements ActionListener {
 	 * @param b
 	 * @param main
 	 */
-	public Hamburger(Main main, boolean b) {
+	public VHamburger(VMain main, boolean b) {
 		super(main);
 		setModal(b);
 		Hamburguesa();
@@ -105,31 +105,31 @@ public class Hamburger extends JDialog implements ActionListener {
 	public void logout() {
 
 		this.dispose();
-		Login log = new Login(persona);
+		VLogin log = new VLogin(persona);
 		log.setVisible(true);
 	}
 
 	public void administracion() {
-		Administracion admin = new Administracion(this, true);
+		VAdministracion admin = new VAdministracion(this, true);
 		admin.setVisible(true);
 		this.dispose();
 
 	}
 
 	public void contacto() {
-		Contacto contact = new Contacto(this, true);
+		VContacto contact = new VContacto(this, true);
 		contact.setVisible(true);
 		this.dispose();
 	}
 
 	public void ajustes() {
-		Ajustes settings = new Ajustes(this, true);
+		VAjustes settings = new VAjustes(this, true);
 		settings.setVisible(true);
 		this.dispose();
 	}
 
 	public void inicio() {
-		Main index = new Main(login, modal);
+		VMain index = new VMain(login, modal);
 		index.setVisible(true);
 		this.dispose();
 	}

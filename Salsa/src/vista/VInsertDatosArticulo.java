@@ -20,13 +20,13 @@ import excepciones.CreateException;
 import modelo.Articulo;
 import modelo.Temporada;
 
-public class InsertDatosArticulo extends JDialog implements ActionListener {
+public class VInsertDatosArticulo extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField tfModelo, tfNombre, tfPrecio, tfStock, tfColor, tfCodArticulo, tfPorcentaje;
 	private JComboBox<Temporada> comboBoxTemporada;
-	private JButton btnSubirDatos;
+	private JButton btnSubirDatos, btnVolver, btnmodificar;
 
 	// Lógica para la conexión
 	// private static Controlador cont = new Controlador();
@@ -36,11 +36,12 @@ public class InsertDatosArticulo extends JDialog implements ActionListener {
 	 * 
 	 * @param modal
 	 * @param administracion
+	 * @param selectedId
 	 */
-	public InsertDatosArticulo(Administracion administracion, boolean modal) {
-		// InsertDatosArticulo.cont = controladorRutas;
+	public VInsertDatosArticulo(VAdministracion administracion, boolean modal) {
 		super(administracion);
 		setModal(modal);
+
 		setBounds(100, 100, 859, 704);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -92,10 +93,10 @@ public class InsertDatosArticulo extends JDialog implements ActionListener {
 		tfNombre.setColumns(10);
 		contentPanel.add(tfNombre);
 
-		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(537, 316, 84, 35);
-		lblNombre.setFont(new Font("Dialog", Font.BOLD, 14));
-		contentPanel.add(lblNombre);
+		JLabel lblNombreTipo = new JLabel("Nombre del tipo de prenda");
+		lblNombreTipo.setBounds(537, 316, 225, 35);
+		lblNombreTipo.setFont(new Font("Dialog", Font.BOLD, 14));
+		contentPanel.add(lblNombreTipo);
 
 		JLabel lblPrecio = new JLabel("Precio");
 		lblPrecio.setBounds(107, 316, 56, 35);
@@ -119,7 +120,7 @@ public class InsertDatosArticulo extends JDialog implements ActionListener {
 
 		btnSubirDatos = new JButton("Subir Datos");
 		btnSubirDatos.addActionListener(this);
-		btnSubirDatos.setBounds(55, 562, 203, 60);
+		btnSubirDatos.setBounds(103, 562, 203, 60);
 		btnSubirDatos.setFont(new Font("Dialog", Font.BOLD, 18));
 		contentPanel.add(btnSubirDatos);
 
@@ -142,12 +143,13 @@ public class InsertDatosArticulo extends JDialog implements ActionListener {
 		comboBoxTemporada.setBounds(103, 256, 196, 28);
 		contentPanel.add(comboBoxTemporada);
 
-		JButton btnNewButton = new JButton("Modificar");
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnNewButton.setBounds(344, 563, 155, 60);
-		contentPanel.add(btnNewButton);
+		btnmodificar = new JButton("Modificar");
+		btnmodificar.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnmodificar.setBounds(607, 563, 155, 60);
+		contentPanel.add(btnmodificar);
 
-		JButton btnVolver = new JButton("volver");
+		btnVolver = new JButton("volver");
+		btnVolver.addActionListener(this);
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnVolver.setBounds(722, 10, 113, 35);
 		contentPanel.add(btnVolver);
@@ -158,6 +160,23 @@ public class InsertDatosArticulo extends JDialog implements ActionListener {
 		if (e.getSource().equals(btnSubirDatos)) {
 			subirDatos();
 		}
+		if (e.getSource().equals(btnVolver)) {
+			volver();
+
+		}
+		if (e.getSource().equals(btnmodificar)) {
+			modificarDatos();
+		}
+	}
+
+	private void modificarDatos() {
+
+	}
+
+	private void volver() {
+		VAdministracion ven = new VAdministracion(null, true);
+		ven.setVisible(true);
+		this.dispose();
 	}
 
 	private void subirDatos() {
