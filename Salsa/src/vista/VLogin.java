@@ -34,6 +34,7 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	private JPasswordField inputPassword;
 	private JButton toggleButton, btnLogin;
 
+	private List<Persona> personas = new ArrayList<>();
 	// Lógica para la conexión
 	private Persona persona = new Persona();
 	private JLabel lblImagenLogin;
@@ -42,16 +43,12 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 
 	// Página de Inicio
 	public VLogin(Persona persona) {
-	private List<Persona> personas = new ArrayList<>();
 	// Lógica para la conexión
 	// private Controlador controladorRutas;
-	private Persona persona = new Persona();
-	private JLabel lblImagenLogin;
 	
 	//Constructor vacio para el cierre de sesión
 
 	// Página de Inicio
-	public VLogin(Persona persona) {
 		// this.controladorRutas = controladorRutas;
 
 		this.persona = persona;
