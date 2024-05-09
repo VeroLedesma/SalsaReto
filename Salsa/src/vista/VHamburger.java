@@ -110,28 +110,38 @@ public class VHamburger extends JDialog implements ActionListener {
 	}
 
 	public void administracion() {
+
 		VAdministracion admin = new VAdministracion(this, true);
-		admin.setVisible(true);
+
 		this.dispose();
 
+		admin.setVisible(true);
 	}
 
 	public void contacto() {
+
 		VContacto contact = new VContacto(this, true);
-		contact.setVisible(true);
+
 		this.dispose();
+
+		contact.setVisible(true);
 	}
 
 	public void ajustes() {
+
 		VAjustes settings = new VAjustes(this, true);
-		settings.setVisible(true);
+
 		this.dispose();
+		settings.setVisible(true);
 	}
 
 	public void inicio() {
+
 		VMain index = new VMain(login, modal);
-		index.setVisible(true);
+
 		this.dispose();
+	
+		index.setVisible(true);
 	}
 
 //	public void cambioFondo() {

@@ -60,7 +60,7 @@ public class VListarUsuarios extends JDialog implements ActionListener {
 
 		btnModificar = new JButton("Modificar");
 		btnModificar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnModificar.setBounds(597, 526, 114, 34);
+		btnModificar.setBounds(596, 539, 114, 34);
 		btnModificar.addActionListener(this);
 		contentPane.add(btnModificar);
 
@@ -110,9 +110,11 @@ public class VListarUsuarios extends JDialog implements ActionListener {
 	}
 
 	private void volver() {
+
 		VAdministracion admin = new VAdministracion(null, true);
-		admin.setVisible(true);
+
 		this.dispose();
+		admin.setVisible(true);
 	}
 
 }

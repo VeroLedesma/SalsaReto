@@ -152,9 +152,13 @@ public class VAjustes extends JDialog implements ActionListener {
 	}
 
 	protected void volver() {
+
 		VHamburger ham = new VHamburger(main, false);
-		ham.setVisible(true);
+
 		this.dispose();
+		
+
+		ham.setVisible(true);
 	}
 
 	// Método para cambiar el tema de la aplicación según el valor del slider

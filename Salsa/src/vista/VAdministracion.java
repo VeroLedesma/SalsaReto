@@ -122,30 +122,33 @@ public class VAdministracion extends JDialog implements ActionListener {
 //	}
 
 	protected void insertDat() {
+
 		VInsertDatosArticulo insert = new VInsertDatosArticulo(this, true);
+
+		this.dispose();
+		
 		insert.setVisible(true);
-		setVisible(false);
 	}
 
 	protected void moDatosArticulo() {
+
 		VMoDatosArticulo modArt = new VMoDatosArticulo(this, true);
+
+		this.dispose();
 		modArt.setVisible(true);
-		setVisible(false);
 	}
 
 	protected void listarUsuarios() {
+		this.dispose();
 		Persona per = new Persona();
 		VListarUsuarios mod = new VListarUsuarios(this, true, per);
 		mod.setVisible(true);
-		setVisible(false);
-
 	}
 
 	protected void volver() {
 		this.dispose();
 		VHamburger ham = new VHamburger(main, false);
 		ham.setVisible(true);
-		this.dispose();
 	}
 
 }
