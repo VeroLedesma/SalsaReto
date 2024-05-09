@@ -24,6 +24,9 @@ public class ImpleDB implements Dao {
 	private final String ALTA_USUARIO = "INSERT INTO usuario (dni, fechaReg) VALUES (?, ?)";
 	private final String ALTA_ARTICULO = "INSERT INTO articulo (cod_articulo, color, modelo, temporada, precio, descuento) VALUES (?, ?, ?, ?, ?, ?)";
 	private final String CONSULTA_COMPROBAR_USUARIO = "SELECT dni, nombre, apellido,fechaNac, direccion, email, genero FROM persona WHERE email=? AND contrasena=?";
+
+	private final String MODIFICACION_USUARIO = "UPDATE persona SET nombre = ?, apellido = ?,fechaNac=?,  direccion = ?, email = ?, genero=? WHERE dni = ?";
+  
     private final String CONSULTA_ARTICULO= "SELECT cod_articulo,color,modelo,temporada, precio,descuento,cod_tipo FROM articulos";
 	
     
@@ -47,6 +50,7 @@ public class ImpleDB implements Dao {
 				art.setPorcentajeDecuento(resultSet.getFloat("descuento"));
 				articulo.add(art);
 			}
+
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -228,6 +232,43 @@ public class ImpleDB implements Dao {
 			ConnectionMysql.closeConnection();
 		}
 		return existe;
+	}
+
+	@Override
+	public boolean modificarUsuario(Persona per) {
+		// revisarlo y verificar que la query haga lo que debe hacer porque lo hizo
+		// santi
+
+		conn = ConnectionMysql.openConnection();
+		boolean modificado = false;
+
+		try {
+			PreparedStatement stmt = conn.prepareStatement(MODIFICACION_USUARIO);
+			stmt.setString(1, per.getNombre());
+			stmt.setString(2, per.getApellido());
+			stmt.setString(3, per.getFechaNacimiento().toString());
+			stmt.setString(4, per.getEmail());
+			stmt.setString(5, per.getDireccion());
+			stmt.setString(6, per.getEmail());
+			stmt.setString(6, per.getGenero().toString());
+			int rowsAffected = stmt.executeUpdate();
+
+			if (rowsAffected > 0) {
+				modificado = true;
+			}
+		} catch (SQLException e) {
+			System.out.println("Error al intentar modificar el usuario.");
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				System.out.println("Error en el cierre de la conexión.");
+				e.printStackTrace();
+			}
+		}
+
+		return modificado;
 	}
 
 }
