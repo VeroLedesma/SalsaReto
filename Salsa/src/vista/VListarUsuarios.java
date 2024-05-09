@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import controlador.Controlador;
 import modelo.Persona;
 
-public class ListarUsuarios extends JDialog implements ActionListener {
+public class VListarUsuarios extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPane = new JPanel();
@@ -33,7 +33,7 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 	 * @param per2
 	 * 
 	 */
-	public ListarUsuarios(Administracion administracion, boolean modal, Persona per2) {
+	public VListarUsuarios(VAdministracion administracion, boolean modal, Persona per2) {
 		super(administracion);
 		setModal(modal);
 		setBounds(100, 100, 754, 642);
@@ -110,7 +110,7 @@ public class ListarUsuarios extends JDialog implements ActionListener {
 	}
 
 	private void volver() {
-		Administracion admin = new Administracion(null, true);
+		VAdministracion admin = new VAdministracion(null, true);
 		admin.setVisible(true);
 		this.dispose();
 	}

@@ -24,8 +24,54 @@ public class ImpleDB implements Dao {
 	private final String ALTA_USUARIO = "INSERT INTO usuario (dni, fechaReg) VALUES (?, ?)";
 	private final String ALTA_ARTICULO = "INSERT INTO articulo (cod_articulo, color, modelo, temporada, precio, descuento) VALUES (?, ?, ?, ?, ?, ?)";
 	private final String CONSULTA_COMPROBAR_USUARIO = "SELECT dni, nombre, apellido,fechaNac, direccion, email, genero FROM persona WHERE email=? AND contrasena=?";
+    private final String CONSULTA_ARTICULO= "SELECT cod_articulo,color,modelo,temporada, precio,descuento,cod_tipo FROM articulos";
+	
+    
+    public List<Articulo> listarArticulos() {
 
-	@Override
+		List<Articulo> articulo = new ArrayList<>();
+    	conn= ConnectionMysql.openConnection();
+    	
+    
+		try {
+			stmt = conn.prepareStatement(CONSULTA_ARTICULO);
+			resultSet = stmt.executeQuery();
+			while (resultSet.next()) {
+				Articulo art = new Articulo();
+				
+				art.setCodArticulo(resultSet.getInt("cod_articulo"));
+				art.setColor(resultSet.getString("color"));
+				art.setModelo(resultSet.getString("modelo"));
+				art.setTemporada(Temporada.valueOf(resultSet.getString("temporada").toUpperCase()));
+				art.setPrecio(resultSet.getFloat("precio"));
+				art.setPorcentajeDecuento(resultSet.getFloat("descuento"));
+				articulo.add(art);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Error al intentar comprobar el articulo.");
+		} finally {
+
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			ConnectionMysql.closeConnection();
+		}
+    	
+    	
+		return articulo;
+    
+    }
+    
+    
+    
+    @Override
 	public List<Persona> listarUsuarios() {
 //arreglar este metodo que lo que hara sera verificar la existencia del usuario que inicie sesion en la aplicacion
 

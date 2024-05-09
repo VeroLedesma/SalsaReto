@@ -20,7 +20,7 @@ import excepciones.CreateException;
 import modelo.Articulo;
 import modelo.Temporada;
 
-public class InsertDatosArticulo extends JDialog implements ActionListener {
+public class VInsertDatosArticulo extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
@@ -37,7 +37,7 @@ public class InsertDatosArticulo extends JDialog implements ActionListener {
 	 * @param modal
 	 * @param administracion
 	 */
-	public InsertDatosArticulo(Administracion administracion, boolean modal) {
+	public VInsertDatosArticulo(VAdministracion administracion, boolean modal) {
 		// InsertDatosArticulo.cont = controladorRutas;
 		super(administracion);
 		setModal(modal);

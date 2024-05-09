@@ -29,7 +29,7 @@ import modelo.Sexo;
 import modelo.Trabajador;
 import modelo.Usuario;
 
-public class Register extends JDialog implements ActionListener, MouseListener {
+public class VRegister extends JDialog implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +47,7 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 	// private Controlador controladorRutas;
 	private Persona persona = new Persona();
 
-	public Register(Login padre, boolean modal, Persona persona2) {
+	public VRegister(VLogin padre, boolean modal, Persona persona2) {
 		super(padre);
 		// this.controladorRutas = controladorRutas;
 		this.persona = persona2;
@@ -238,7 +238,7 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 	}
 
 	protected void inicioSesion() {
-		Login log = new Login(persona);
+		VLogin log = new VLogin(persona);
 		log.setVisible(true);
 		setVisible(false);
 
