@@ -14,9 +14,12 @@ public interface Dao {
 	public boolean registrarUsuario(Persona per);
 
 	public List<Persona> listarUsuarios();
+	
+	public List<Articulo> listarArticulos();
+
 
 	public boolean iniciarSesion(String email, String contrasena);
 
-	// void comprobarUsuario(Persona per);
+	public boolean modificarUsuario(Persona per);
 
 }

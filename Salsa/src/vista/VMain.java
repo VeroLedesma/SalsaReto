@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class Main extends JDialog implements ActionListener {
+public class VMain extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel BodyLayout, emptyRow, itemsPanel;
@@ -22,7 +22,7 @@ public class Main extends JDialog implements ActionListener {
 	private JButton btnCamisetas, btnSudaderas, btnPantalones, btnMenu;
 	// Interfaz
 
-	public Main(Login login, boolean modal) {
+	public VMain(VLogin login, boolean modal) {
 		super(login);
 		setModal(modal);
 		setBounds(100, 100, 1082, 836);
@@ -43,28 +43,28 @@ public class Main extends JDialog implements ActionListener {
 
 		// Añadir fila vacía debajo del logo
 		emptyRow = new JPanel();
-		emptyRow.setBounds(0, 150, 1066, 171); // Ajusta los valores según tu diseño
+		emptyRow.setBounds(0, 150, 1066, 46); // Ajusta los valores según tu diseño
 		BodyLayout.add(emptyRow);
 
 		// Contenedor para la rejilla de articulos
 		itemsPanel = new JPanel();
-		itemsPanel.setBounds(45, 435, 982, 318);
+		itemsPanel.setBounds(44, 316, 982, 318);
 		BodyLayout.add(itemsPanel);
 		itemsPanel.setLayout(new GridLayout(0, 4, 8, 10));
 
 		btnCamisetas = new JButton("Camisetas");
 		btnCamisetas.addActionListener(this);
-		btnCamisetas.setBounds(226, 363, 165, 46);
+		btnCamisetas.setBounds(203, 226, 165, 46);
 		BodyLayout.add(btnCamisetas);
 
 		btnSudaderas = new JButton("Sudaderas");
 
-		btnSudaderas.setBounds(656, 363, 165, 46);
+		btnSudaderas.setBounds(663, 226, 165, 46);
 		BodyLayout.add(btnSudaderas);
 
 		btnPantalones = new JButton("Pantalones");
 
-		btnPantalones.setBounds(449, 363, 165, 46);
+		btnPantalones.setBounds(426, 226, 165, 46);
 		BodyLayout.add(btnPantalones);
 
 		btnMenu = new JButton("Menu");
@@ -92,7 +92,7 @@ public class Main extends JDialog implements ActionListener {
 
 	private void irAlMenu() {
 		this.dispose();
-		Hamburger ven = new Hamburger(this, true);
+		VHamburger ven = new VHamburger(this, true);
 		ven.setVisible(true);		
 	}
 

@@ -29,7 +29,7 @@ import modelo.Sexo;
 import modelo.Trabajador;
 import modelo.Usuario;
 
-public class Register extends JDialog implements ActionListener, MouseListener {
+public class VRegister extends JDialog implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +47,12 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 	// private Controlador controladorRutas;
 	private Persona persona = new Persona();
 
-	public Register(Login padre, boolean modal, Persona persona2) {
+	private JButton btnModificar;
+	private JButton btnEliminar;
+	private JButton btnVolver;
+
+
+	public VRegister(VLogin padre, boolean modal, Persona persona2) {
 		super(padre);
 		// this.controladorRutas = controladorRutas;
 		this.persona = persona2;
@@ -145,7 +150,11 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		getContentPane().add(lblSexo_1);
 
 		btnRegistro = new JButton("Enviar los datos");
+		btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnRegistro.setForeground(new Color(0, 0, 0));
+
 		btnRegistro.setForeground(Color.WHITE);
+
 		btnRegistro.addActionListener(this);
 		btnRegistro.setBackground(new Color(0, 0, 255));
 		btnRegistro.setBounds(227, 575, 286, 38);
@@ -157,17 +166,29 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		getContentPane().add(dateFechaNacimiento);
 
 		lblCamposObligatorios = new JLabel("Campos obligatorios *");
+
+		lblCamposObligatorios.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCamposObligatorios.setBounds(122, 542, 147, 23);
+		getContentPane().add(lblCamposObligatorios);
+
+		checkBoxUsuario = new JCheckBox("Usuario", false);
+		checkBoxUsuario.setFont(new Font("Tahoma", Font.BOLD, 12));
+
 		lblCamposObligatorios.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblCamposObligatorios.setBounds(122, 550, 286, 14);
 		getContentPane().add(lblCamposObligatorios);
 
 		checkBoxUsuario = new JCheckBox("Usuario", false);
+
 		checkBoxUsuario.setBackground(new Color(255, 255, 255));
 		getContentPane().add(checkBoxUsuario);
 		checkBoxUsuario.setBounds(64, 507, 99, 23);
 		getContentPane().add(checkBoxUsuario);
 
 		checkBoxTrabajador = new JCheckBox("Trabajador", false);
+
+		checkBoxTrabajador.setFont(new Font("Tahoma", Font.BOLD, 12));
+
 		checkBoxTrabajador.setBackground(new Color(255, 255, 255));
 		getContentPane().add(checkBoxTrabajador);
 		checkBoxTrabajador.setBounds(162, 507, 99, 23);
@@ -222,6 +243,34 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		dateFRegistro.setVisible(false);
 
 		lblPregunta = new JLabel("¿Ya tienes cuenta?");
+		lblPregunta.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblPregunta.setBounds(214, 623, 123, 16);
+		getContentPane().add(lblPregunta);
+
+		lblInicioSesion = new JLabel("Inicia Sesion");
+		lblInicioSesion.setBounds(370, 623, 98, 14);
+		lblInicioSesion.addMouseListener(this);
+		lblInicioSesion.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblInicioSesion.setForeground(new Color(0, 51, 255));
+		getContentPane().add(lblInicioSesion);
+
+		btnModificar = new JButton("Modificar");
+		btnModificar.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnModificar.setBounds(36, 577, 245, 34);
+		getContentPane().add(btnModificar);
+
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnEliminar.setBounds(425, 575, 245, 34);
+		getContentPane().add(btnEliminar);
+
+		btnVolver = new JButton("Volver");
+		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnVolver.setBounds(561, 10, 144, 29);
+		btnVolver.addActionListener(this);
+		getContentPane().add(btnVolver);
+
+
 		lblPregunta.setBounds(265, 626, 114, 13);
 		getContentPane().add(lblPregunta);
 
@@ -232,13 +281,14 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 		lblInicioSesion.setForeground(new Color(0, 51, 255));
 		getContentPane().add(lblInicioSesion);
 
+
 		// Botones de eventos
 		checkBoxUsuario.addActionListener(this);
 		checkBoxTrabajador.addActionListener(this);
 	}
 
 	protected void inicioSesion() {
-		Login log = new Login(persona);
+		VLogin log = new VLogin(persona);
 		log.setVisible(true);
 		setVisible(false);
 
@@ -289,6 +339,17 @@ public class Register extends JDialog implements ActionListener, MouseListener {
 				this.dispose();
 			}
 		}
+
+		if (e.getSource().equals(btnVolver)) {
+			volver();
+		}
+	}
+
+	private void volver() {
+		VListarUsuarios ven = new VListarUsuarios(null, true, persona);
+		ven.setVisible(true);
+		this.dispose();
+
 	}
 
 	private boolean camposObligatoriosCompletos() {

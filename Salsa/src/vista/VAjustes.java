@@ -20,7 +20,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Ajustes extends JDialog implements ActionListener {
+public class VAjustes extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -30,11 +30,11 @@ public class Ajustes extends JDialog implements ActionListener {
 	private JSeparator separator_2;
 	private JTextField textField, textField_1;
 	private JButton btnVolver;
-	private Main main;
+	private VMain main;
 	// Comprobar si anda en modo diurno o nocturno
 	// private boolean oscuro;
 
-	public Ajustes(Hamburger hamburger, boolean b) {
+	public VAjustes(VHamburger hamburger, boolean b) {
 		super(hamburger);
 		setModal(b);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -143,7 +143,7 @@ public class Ajustes extends JDialog implements ActionListener {
 
 	private void cargarPreferenciaTema() {
 		// Obtener las preferencias compartidas para la clase Ajustes
-		Preferences prefs = Preferences.userNodeForPackage(Ajustes.class);
+		Preferences prefs = Preferences.userNodeForPackage(VAjustes.class);
 		// Obtener la preferencia del tema guardada, con un valor predeterminado de
 		// falso (tema claro)
 		// oscuro = prefs.getBoolean("temaOscuro", true);
@@ -152,8 +152,12 @@ public class Ajustes extends JDialog implements ActionListener {
 	}
 
 	protected void volver() {
+
+		VHamburger ham = new VHamburger(main, false);
+
 		this.dispose();
-		Hamburger ham = new Hamburger(main, false);
+		
+
 		ham.setVisible(true);
 	}
 

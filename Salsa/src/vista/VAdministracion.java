@@ -15,7 +15,7 @@ import javax.swing.border.LineBorder;
 
 import modelo.Persona;
 
-public class Administracion extends JDialog implements ActionListener {
+public class VAdministracion extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, panelAdvise;
@@ -25,9 +25,9 @@ public class Administracion extends JDialog implements ActionListener {
 
 	private JButton btnVolver, btnModificarDatosArtculo, btnInsertarNuevoArtculo, btnListarUsuarios;
 
-	private Main main;
+	private VMain main;
 
-	public Administracion(Hamburger hamburger, boolean modal) {
+	public VAdministracion(VHamburger hamburger, boolean modal) {
 		super(hamburger);
 		setModal(modal);
 
@@ -68,7 +68,7 @@ public class Administracion extends JDialog implements ActionListener {
 		lblLogo.setBounds(194, 52, 245, 51);
 		contentPane.add(lblLogo);
 
-		btnModificarDatosArtculo = new JButton("Modificar Datos Artículo");
+		btnModificarDatosArtculo = new JButton("Mostrar Datos Artículo");
 		btnModificarDatosArtculo.addActionListener(this);
 		btnModificarDatosArtculo.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnModificarDatosArtculo.setBounds(194, 388, 234, 60);
@@ -122,27 +122,32 @@ public class Administracion extends JDialog implements ActionListener {
 //	}
 
 	protected void insertDat() {
+
+		VInsertDatosArticulo insert = new VInsertDatosArticulo(this, true);
+
 		this.dispose();
-		InsertDatosArticulo insert = new InsertDatosArticulo(this, true);
+		
 		insert.setVisible(true);
 	}
 
 	protected void moDatosArticulo() {
+
+		VMoDatosArticulo modArt = new VMoDatosArticulo(this, true);
+
 		this.dispose();
-		MoDatosArticulo modArt = new MoDatosArticulo(this, true);
 		modArt.setVisible(true);
 	}
 
 	protected void listarUsuarios() {
 		this.dispose();
 		Persona per = new Persona();
-		ListarUsuarios mod = new ListarUsuarios(this, true, per);
+		VListarUsuarios mod = new VListarUsuarios(this, true, per);
 		mod.setVisible(true);
 	}
 
 	protected void volver() {
 		this.dispose();
-		Hamburger ham = new Hamburger(main, false);
+		VHamburger ham = new VHamburger(main, false);
 		ham.setVisible(true);
 	}
 

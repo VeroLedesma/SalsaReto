@@ -1,7 +1,7 @@
 package controlador;
 
 import modelo.Persona;
-import vista.Login;
+import vista.VLogin;
 
 public class Principal {
 
@@ -10,7 +10,7 @@ public class Principal {
 		Persona persona = new Persona();
 
 		// Le pasamos la ventana principal que en nuestro caso es el Login
-		Login login = new Login(persona);
+		VLogin login = new VLogin(persona);
 		login.setVisible(true);
 
 	}

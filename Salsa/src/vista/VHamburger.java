@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 
 import modelo.Persona;
 
-public class Hamburger extends JDialog implements ActionListener {
+public class VHamburger extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -21,7 +21,7 @@ public class Hamburger extends JDialog implements ActionListener {
 
 	// Controlador
 	// private Controlador controladorRutas;
-	private Login login;
+	private VLogin login;
 	private Persona persona;
 	private boolean modal;
 
@@ -31,7 +31,7 @@ public class Hamburger extends JDialog implements ActionListener {
 	 * @param b
 	 * @param main
 	 */
-	public Hamburger(Main main, boolean b) {
+	public VHamburger(VMain main, boolean b) {
 		super(main);
 		setModal(b);
 		Hamburguesa();
@@ -104,33 +104,43 @@ public class Hamburger extends JDialog implements ActionListener {
 
 	public void logout() {
 
-
 		this.dispose();
-		Login log = new Login(persona);
+		VLogin log = new VLogin(persona);
 		log.setVisible(true);
 	}
 
 	public void administracion() {
+
+		VAdministracion admin = new VAdministracion(this, true);
+
 		this.dispose();
-		Administracion admin = new Administracion(this, true);
+
 		admin.setVisible(true);
 	}
 
 	public void contacto() {
+
+		VContacto contact = new VContacto(this, true);
+
 		this.dispose();
-		Contacto contact = new Contacto(this, true);
+
 		contact.setVisible(true);
 	}
 
 	public void ajustes() {
+
+		VAjustes settings = new VAjustes(this, true);
+
 		this.dispose();
-		Ajustes settings = new Ajustes(this, true);
 		settings.setVisible(true);
 	}
 
 	public void inicio() {
+
+		VMain index = new VMain(login, modal);
+
 		this.dispose();
-		Main index = new Main(login, modal);
+	
 		index.setVisible(true);
 	}
 
