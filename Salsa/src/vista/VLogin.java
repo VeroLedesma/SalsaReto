@@ -33,6 +33,15 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	private JTextField inputEmail;
 	private JPasswordField inputPassword;
 	private JButton toggleButton, btnLogin;
+
+	// Lógica para la conexión
+	private Persona persona = new Persona();
+	private JLabel lblImagenLogin;
+
+	// Constructor vacio para el cierre de sesión
+
+	// Página de Inicio
+	public VLogin(Persona persona) {
 	private List<Persona> personas = new ArrayList<>();
 	// Lógica para la conexión
 	// private Controlador controladorRutas;
@@ -44,6 +53,7 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	// Página de Inicio
 	public VLogin(Persona persona) {
 		// this.controladorRutas = controladorRutas;
+
 		this.persona = persona;
 		setBounds(100, 100, 931, 574);
 		BodyLayout = new JPanel();
@@ -136,8 +146,6 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 
 	}
 
-
-
 	// Visualizar/Desvisualizar la contraseña
 	private void togglePasswordVisibility() {
 		// Si el echoChar es '•', cambiar a mostrar texto, de lo contrario, ocultar
@@ -212,9 +220,6 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 		return correcto;
 
 	}
-
-
-	
 	// Limpiamos los datos tecleados del formulario
 	private void borrar() {
 		inputEmail.setText("");
