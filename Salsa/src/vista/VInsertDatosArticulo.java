@@ -26,6 +26,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField tfModelo, tfNombre, tfPrecio, tfStock, tfColor, tfCodArticulo, tfPorcentaje;
 	private JComboBox<Temporada> comboBoxTemporada;
+
 	private JButton btnSubirDatos, btnVolver, btnmodificar;
 
 	// Lógica para la conexión
@@ -36,12 +37,12 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 	 * 
 	 * @param modal
 	 * @param administracion
+
 	 * @param selectedId
 	 */
 	public VInsertDatosArticulo(VAdministracion administracion, boolean modal) {
 		super(administracion);
 		setModal(modal);
-
 		setBounds(100, 100, 859, 704);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -97,6 +98,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		lblNombreTipo.setBounds(537, 316, 225, 35);
 		lblNombreTipo.setFont(new Font("Dialog", Font.BOLD, 14));
 		contentPanel.add(lblNombreTipo);
+	
 
 		JLabel lblPrecio = new JLabel("Precio");
 		lblPrecio.setBounds(107, 316, 56, 35);
@@ -120,6 +122,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 
 		btnSubirDatos = new JButton("Subir Datos");
 		btnSubirDatos.addActionListener(this);
+
 		btnSubirDatos.setBounds(103, 562, 203, 60);
 		btnSubirDatos.setFont(new Font("Dialog", Font.BOLD, 18));
 		contentPanel.add(btnSubirDatos);
@@ -143,6 +146,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		comboBoxTemporada.setBounds(103, 256, 196, 28);
 		contentPanel.add(comboBoxTemporada);
 
+
 		btnmodificar = new JButton("Modificar");
 		btnmodificar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnmodificar.setBounds(607, 563, 155, 60);
@@ -160,6 +164,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		if (e.getSource().equals(btnSubirDatos)) {
 			subirDatos();
 		}
+
 		if (e.getSource().equals(btnVolver)) {
 			volver();
 
@@ -177,6 +182,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		VAdministracion ven = new VAdministracion(null, true);
 		ven.setVisible(true);
 		this.dispose();
+
 	}
 
 	private void subirDatos() {

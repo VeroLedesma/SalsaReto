@@ -46,9 +46,11 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 	// Lógica para la conexión
 	// private Controlador controladorRutas;
 	private Persona persona = new Persona();
+
 	private JButton btnModificar;
 	private JButton btnEliminar;
 	private JButton btnVolver;
+
 
 	public VRegister(VLogin padre, boolean modal, Persona persona2) {
 		super(padre);
@@ -150,6 +152,9 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		btnRegistro = new JButton("Enviar los datos");
 		btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnRegistro.setForeground(new Color(0, 0, 0));
+
+		btnRegistro.setForeground(Color.WHITE);
+
 		btnRegistro.addActionListener(this);
 		btnRegistro.setBackground(new Color(0, 0, 255));
 		btnRegistro.setBounds(227, 575, 286, 38);
@@ -161,19 +166,29 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		getContentPane().add(dateFechaNacimiento);
 
 		lblCamposObligatorios = new JLabel("Campos obligatorios *");
+
 		lblCamposObligatorios.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblCamposObligatorios.setBounds(122, 542, 147, 23);
 		getContentPane().add(lblCamposObligatorios);
 
 		checkBoxUsuario = new JCheckBox("Usuario", false);
 		checkBoxUsuario.setFont(new Font("Tahoma", Font.BOLD, 12));
+
+		lblCamposObligatorios.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblCamposObligatorios.setBounds(122, 550, 286, 14);
+		getContentPane().add(lblCamposObligatorios);
+
+		checkBoxUsuario = new JCheckBox("Usuario", false);
+
 		checkBoxUsuario.setBackground(new Color(255, 255, 255));
 		getContentPane().add(checkBoxUsuario);
 		checkBoxUsuario.setBounds(64, 507, 99, 23);
 		getContentPane().add(checkBoxUsuario);
 
 		checkBoxTrabajador = new JCheckBox("Trabajador", false);
+
 		checkBoxTrabajador.setFont(new Font("Tahoma", Font.BOLD, 12));
+
 		checkBoxTrabajador.setBackground(new Color(255, 255, 255));
 		getContentPane().add(checkBoxTrabajador);
 		checkBoxTrabajador.setBounds(162, 507, 99, 23);
@@ -255,6 +270,18 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		btnVolver.addActionListener(this);
 		getContentPane().add(btnVolver);
 
+
+		lblPregunta.setBounds(265, 626, 114, 13);
+		getContentPane().add(lblPregunta);
+
+		lblInicioSesion = new JLabel("Inicia Sesion");
+		lblInicioSesion.setBounds(370, 624, 78, 13);
+		lblInicioSesion.addMouseListener(this);
+		lblInicioSesion.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblInicioSesion.setForeground(new Color(0, 51, 255));
+		getContentPane().add(lblInicioSesion);
+
+
 		// Botones de eventos
 		checkBoxUsuario.addActionListener(this);
 		checkBoxTrabajador.addActionListener(this);
@@ -312,6 +339,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 				this.dispose();
 			}
 		}
+
 		if (e.getSource().equals(btnVolver)) {
 			volver();
 		}
@@ -321,6 +349,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		VListarUsuarios ven = new VListarUsuarios(null, true, persona);
 		ven.setVisible(true);
 		this.dispose();
+
 	}
 
 	private boolean camposObligatoriosCompletos() {

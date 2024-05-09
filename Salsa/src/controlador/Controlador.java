@@ -13,6 +13,17 @@ public class Controlador {
 		Dao dao = new ImpleDB();
 		return dao.listarUsuarios();
 	}
+	
+	
+	
+	public static List<Articulo> listarArticulos() throws SQLException {
+		Dao dao = new ImpleDB();
+		return dao.listarArticulos();
+	}
+	
+	
+	
+	
 
 	public static boolean modificarUsuario(Persona per) {
 		Dao dao = new ImpleDB();

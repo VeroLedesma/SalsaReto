@@ -14,11 +14,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+
 import controlador.Controlador;
 import modelo.Persona;
+
 
 public class VListarUsuarios extends JDialog implements ActionListener, ListSelectionListener {
 
@@ -141,6 +144,7 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 		admin.setVisible(true);
 		this.dispose();
 	}
+
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
