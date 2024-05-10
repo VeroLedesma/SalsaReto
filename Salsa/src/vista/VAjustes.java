@@ -34,6 +34,12 @@ public class VAjustes extends JDialog implements ActionListener {
 	// Comprobar si anda en modo diurno o nocturno
 	// private boolean oscuro;
 
+	
+	/**
+	 * 
+	 * @param hamburger
+	 * @param b
+	 */
 	public VAjustes(VHamburger hamburger, boolean b) {
 		super(hamburger);
 		setModal(b);

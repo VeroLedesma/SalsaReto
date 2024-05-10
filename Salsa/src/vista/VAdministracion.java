@@ -27,6 +27,12 @@ public class VAdministracion extends JDialog implements ActionListener {
 
 	private VMain main;
 
+	/**.
+	 * Se crea la ventana
+	 * 
+	 * @param modal
+	 * @param hamburger
+	 */
 	public VAdministracion(VHamburger hamburger, boolean modal) {
 		super(hamburger);
 		setModal(modal);

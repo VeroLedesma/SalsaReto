@@ -42,6 +42,12 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	// Constructor vacio para el cierre de sesión
 
 	// Página de Inicio
+	
+	/**
+	 * Se crea la ventana
+	 * 
+	 * @param persona
+	 */
 	public VLogin(Persona persona) {
 	// Lógica para la conexión
 	// private Controlador controladorRutas;
@@ -143,6 +149,7 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 
 	}
 
+
 	// Visualizar/Desvisualizar la contraseña
 	private void togglePasswordVisibility() {
 		// Si el echoChar es '•', cambiar a mostrar texto, de lo contrario, ocultar
@@ -156,6 +163,8 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	}
 
 	// Métodos para ahorrar los action listener
+	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(linkRegister)) {
@@ -175,6 +184,9 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void logicaLogin() {
 		// Obtener los valores de correo electrónico y contraseña de los campos de
 		// entrada
@@ -196,7 +208,6 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 				this.setVisible(false);
 				VMain vent = new VMain(this, true);
 				vent.setVisible(true);
-
 				this.dispose();
 			} else if (existe == false) {
 				// si el inicio de sesion es incorrecto le enviaremos un mensaje de error
