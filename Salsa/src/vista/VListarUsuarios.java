@@ -140,10 +140,8 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 	}
 
 	private void volver() {
-
-		VAdministracion admin = new VAdministracion(null, true);
-
 		this.dispose();
+		VAdministracion admin = new VAdministracion(null, true);
 		admin.setVisible(true);
 	}
 

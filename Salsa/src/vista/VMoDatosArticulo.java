@@ -132,10 +132,9 @@ public class VMoDatosArticulo extends JDialog implements ActionListener {
 	}
 
 	private void volver() {
+		this.dispose();
 		VAdministracion admin = new VAdministracion(null, true);
 		admin.setVisible(true);
-		this.dispose();
-
 	}
 
 }

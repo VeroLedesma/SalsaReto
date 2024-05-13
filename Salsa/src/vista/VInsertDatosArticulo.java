@@ -152,7 +152,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		btnmodificar.setBounds(607, 563, 155, 60);
 		contentPanel.add(btnmodificar);
 
-		btnVolver = new JButton("volver");
+		btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(this);
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnVolver.setBounds(722, 10, 113, 35);
@@ -179,10 +179,9 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 	}
 
 	private void volver() {
+		this.dispose();
 		VAdministracion ven = new VAdministracion(null, true);
 		ven.setVisible(true);
-		this.dispose();
-
 	}
 
 	private void subirDatos() {
