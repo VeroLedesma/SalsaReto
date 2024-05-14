@@ -129,7 +129,7 @@ public class VHamburger extends JDialog implements ActionListener {
 
 	public void ajustes() {
 
-		VAjustes settings = new VAjustes(this, true);
+		VMiLista settings = new VMiLista(this, true);
 
 		this.dispose();
 		settings.setVisible(true);

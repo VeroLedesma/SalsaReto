@@ -1,8 +1,6 @@
 package vista;
 
-
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,31 +13,30 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import controlador.Controlador;
 import modelo.Articulo;
 
-public class VMoDatosArticulo extends JDialog implements ActionListener {
+public class VMoDatosArticulo extends JDialog implements ActionListener, ListSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private final JPanel contentPane=new JPanel();
+	private final JPanel contentPane = new JPanel();
 	private JTable tableDatosArticulo;
 	private JScrollPane scrollPane;
 	private JButton btnEliminar, btnVolver, btnModificar;
 
-
 	/**
 	 * Create the frame.
-
+	 * 
 	 * @param modal
 	 * @param administracion
-
+	 * 
 	 */
 	public VMoDatosArticulo(VAdministracion administracion, boolean modal) {
 		super(administracion);
@@ -91,37 +88,38 @@ public class VMoDatosArticulo extends JDialog implements ActionListener {
 
 	}
 
-
-
 	private void construirTabla() {
-		String titulos[] = { "COD", "COLOR", "MODELO","TEMPORADA", "PRECIO", "DESCUENTO" };
+		String titulos[] = { "COD", "COLOR", "MODELO", "TEMPORADA", "PRECIO", "DESCUENTO" };
 		String informacion[][];
 		try {
 			informacion = obtenerMatriz();
 			tableDatosArticulo = new JTable(informacion, titulos);
+			tableDatosArticulo.setDefaultEditor(Object.class, null);
 			scrollPane.setViewportView(tableDatosArticulo);
+			tableDatosArticulo.getSelectionModel().addListSelectionListener(this);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 	}
+
 	private String[][] obtenerMatriz() throws SQLException {
 
-	    List<Articulo> articulos = Controlador.listarArticulos(); // Asumiendo que Controlador tiene un método para obtener la lista de Articulos
+		List<Articulo> articulos = Controlador.listarArticulos(); // Asumiendo que Controlador tiene un método para
+																	// obtener la lista de Articulos
 
-	    String matrizInfo[][] = new String[articulos.size()][6];
-	    for (int i = 0; i < articulos.size(); i++) {
-	        matrizInfo[i][0] = articulos.get(i).getCodArticulo()+"";
-	        matrizInfo[i][1] = articulos.get(i).getColor()+"";
-	        matrizInfo[i][2] = articulos.get(i).toString()+"";
-	        matrizInfo[i][3] = articulos.get(i).getTemporada()+"";
-	        matrizInfo[i][4] = articulos.get(i).getPrecio()+"";
-	        matrizInfo[i][5] = articulos.get(i).getPorcentajeDecuento()+"";
+		String matrizInfo[][] = new String[articulos.size()][6];
+		for (int i = 0; i < articulos.size(); i++) {
+			matrizInfo[i][0] = articulos.get(i).getCodArticulo() + "";
+			matrizInfo[i][1] = articulos.get(i).getColor() + "";
+			matrizInfo[i][2] = articulos.get(i).toString() + "";
+			matrizInfo[i][3] = articulos.get(i).getTemporada() + "";
+			matrizInfo[i][4] = articulos.get(i).getPrecio() + "";
+			matrizInfo[i][5] = articulos.get(i).getPorcentajeDecuento() + "";
 
-	    }
-	    return matrizInfo;
+		}
+		return matrizInfo;
 	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -133,8 +131,14 @@ public class VMoDatosArticulo extends JDialog implements ActionListener {
 
 	private void volver() {
 		VAdministracion admin = new VAdministracion(null, true);
-		admin.setVisible(true);
 		this.dispose();
+		admin.setVisible(true);
+
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+//aqui añadiremos  la accion que se hara para eliminar o modificar el usuario
 
 	}
 
