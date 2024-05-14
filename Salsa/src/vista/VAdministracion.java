@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -23,16 +24,10 @@ public class VAdministracion extends JDialog implements ActionListener {
 	// Lógica para la conexión
 //	private Controlador controladorRutas = new Controlador();
 
-	private JButton btnVolver, btnModificarDatosArtculo, btnInsertarNuevoArtculo, btnListarUsuarios;
+	private JButton btnVolver, btnModificarDatosArtculo, btnInsertarNuevoArtculo, btnListarUsuarios, btnInsertarTipo;
 
 	private VMain main;
 
-	/**.
-	 * Se crea la ventana
-	 * 
-	 * @param modal
-	 * @param hamburger
-	 */
 	public VAdministracion(VHamburger hamburger, boolean modal) {
 		super(hamburger);
 		setModal(modal);
@@ -63,10 +58,11 @@ public class VAdministracion extends JDialog implements ActionListener {
 		lblAdvise2.setBounds(67, 30, getWidth() - 40, 20);
 		panelAdvise.add(lblAdvise2);
 
-		lblAdvise3 = new JLabel("consultarlo previamente con el resto de desarrolladores.");
+		lblAdvise3 = new JLabel("consultarlo previamente.\r\n");
+		lblAdvise3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAdvise3.setForeground(Color.BLACK);
 		lblAdvise3.setFont(new Font("MS UI Gothic", Font.BOLD, 18));
-		lblAdvise3.setBounds(67, 50, getWidth() - 40, 20);
+		lblAdvise3.setBounds(67, 50, 427, 20);
 		panelAdvise.add(lblAdvise3);
 
 		lblLogo = new JLabel("");
@@ -77,13 +73,13 @@ public class VAdministracion extends JDialog implements ActionListener {
 		btnModificarDatosArtculo = new JButton("Mostrar Datos Artículo");
 		btnModificarDatosArtculo.addActionListener(this);
 		btnModificarDatosArtculo.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnModificarDatosArtculo.setBounds(194, 388, 234, 60);
+		btnModificarDatosArtculo.setBounds(194, 400, 234, 60);
 		contentPane.add(btnModificarDatosArtculo);
 		btnInsertarNuevoArtculo = new JButton("Insertar Nuevo Artículo");
 		btnInsertarNuevoArtculo.addActionListener(this);
 
 		btnInsertarNuevoArtculo.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnInsertarNuevoArtculo.setBounds(194, 492, 234, 60);
+		btnInsertarNuevoArtculo.setBounds(194, 330, 234, 60);
 		contentPane.add(btnInsertarNuevoArtculo);
 
 		btnVolver = new JButton("Volver");
@@ -94,9 +90,15 @@ public class VAdministracion extends JDialog implements ActionListener {
 
 		btnListarUsuarios = new JButton("Listar Usuarios");
 		btnListarUsuarios.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnListarUsuarios.setBounds(194, 298, 234, 60);
+		btnListarUsuarios.setBounds(194, 466, 234, 60);
 		btnListarUsuarios.addActionListener(this);
 		contentPane.add(btnListarUsuarios);
+
+		btnInsertarTipo = new JButton("Insertar Tipo de Articulo");
+		btnInsertarTipo.addActionListener(this);
+		btnInsertarTipo.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnInsertarTipo.setBounds(194, 260, 234, 60);
+		contentPane.add(btnInsertarTipo);
 
 //		if (oscuro) {
 //			cambioFondo();
@@ -117,6 +119,9 @@ public class VAdministracion extends JDialog implements ActionListener {
 		if (e.getSource().equals(btnVolver)) {
 			volver();
 		}
+		if (e.getSource().equals(btnInsertarTipo)) {
+			insertarTipo();
+		}
 	}
 
 //	private void cambioFondo() {
@@ -127,12 +132,18 @@ public class VAdministracion extends JDialog implements ActionListener {
 //		lblAdvise3.setForeground(Color.WHITE);
 //	}
 
+	private void insertarTipo() {
+		VInsertarTipoArticulo tipo = new VInsertarTipoArticulo(this, true);
+		this.dispose();
+		tipo.setVisible(true);
+	}
+
 	protected void insertDat() {
 
 		VInsertDatosArticulo insert = new VInsertDatosArticulo(this, true);
 
 		this.dispose();
-		
+
 		insert.setVisible(true);
 	}
 
@@ -147,7 +158,7 @@ public class VAdministracion extends JDialog implements ActionListener {
 	protected void listarUsuarios() {
 		this.dispose();
 		Persona per = new Persona();
-		VListarUsuarios mod = new VListarUsuarios(this, true, per);
+		VListarUsuarios mod = new VListarUsuarios(this, true);
 		mod.setVisible(true);
 	}
 
@@ -156,5 +167,4 @@ public class VAdministracion extends JDialog implements ActionListener {
 		VHamburger ham = new VHamburger(main, false);
 		ham.setVisible(true);
 	}
-
 }

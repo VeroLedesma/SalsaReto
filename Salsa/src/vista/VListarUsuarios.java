@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -14,14 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
+import javax.swing.table.DefaultTableModel;
 
 import controlador.Controlador;
 import modelo.Persona;
-
+import modelo.Sexo;
 
 public class VListarUsuarios extends JDialog implements ActionListener, ListSelectionListener {
 
@@ -29,7 +29,8 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 	private final JPanel contentPane = new JPanel();
 	private JTable tableDatosUsuario;
 	private JScrollPane scrollPane;
-	private JButton btnEliminar, btnVolver, btnModificar;
+	private JButton btnEliminar, btnVolver;
+	private DefaultTableModel modelo;
 
 	/**
 	 * Create the frame.
@@ -38,7 +39,7 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 	 * @param per2
 	 * 
 	 */
-	public VListarUsuarios(VAdministracion administracion, boolean modal, Persona per2) {
+	public VListarUsuarios(VAdministracion administracion, boolean modal) {
 		super(administracion);
 		setModal(modal);
 		setBounds(100, 100, 754, 642);
@@ -55,68 +56,72 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(34, 131, 677, 252);
 		contentPane.add(scrollPane);
-
 		construirTabla();
+
 		btnVolver = new JButton("Volver");
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnVolver.setBounds(37, 539, 97, 34);
+		btnVolver.setBounds(94, 539, 97, 34);
 		btnVolver.addActionListener(this);
 		contentPane.add(btnVolver);
 
-		btnModificar = new JButton("Modificar");
-		btnModificar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnModificar.setBounds(596, 539, 114, 34);
-		btnModificar.addActionListener(this);
-		contentPane.add(btnModificar);
-
 		btnEliminar = new JButton("Eliminar Usuario");
 		btnEliminar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnEliminar.setBounds(295, 539, 170, 34);
+		btnEliminar.setBounds(469, 539, 170, 34);
 		btnEliminar.addActionListener(this);
 		contentPane.add(btnEliminar);
 
 	}
 
 	private void construirTabla() {
-		String titulos[] = { "DNI", "NOMBRE", "APELLIDO", "FECHA NACIMIENTO", "DIRECCION", "EMAIL", "GENERO" };
+		String titulos[] = { "DNI", "NOMBRE", "APELLIDO", "FECHA NACIMIENTO", "CONTRASEÑA", "DIRECCION", "EMAIL",
+				"GENERO" };
 		String informacion[][];
 		try {
-			informacion = obtenerMatriz();
-			tableDatosUsuario = new JTable(informacion, titulos);
+			informacion = obtenerMatriz();// obtenenmos la matriz de informacion de los usuarios
+			modelo = new DefaultTableModel(informacion, titulos);// establecemos el modelo por defecto de la tabla
+			tableDatosUsuario = new JTable(modelo);// agregamos el modelo a la tabla
+			tableDatosUsuario.setDefaultEditor(Object.class, null);// esto hace que la tabla deje de ser editable
 			scrollPane.setViewportView(tableDatosUsuario);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			tableDatosUsuario.getSelectionModel().addListSelectionListener(this);
+		} catch (SQLException excepsion) {
 
+			excepsion.printStackTrace();
+		}
 	}
 
 	private String[][] obtenerMatriz() throws SQLException {
 
 		List<Persona> personas = Controlador.listarUsuarios();
-		String matrizInfo[][] = new String[personas.size()][7];
-		for (int i = 0; i < personas.size(); i++) {
-			matrizInfo[i][0] = personas.get(i).getDni() + "";
-			matrizInfo[i][1] = personas.get(i).getNombre() + "";
-			matrizInfo[i][2] = personas.get(i).getApellido() + "";
-			matrizInfo[i][3] = personas.get(i).getFechaNacimiento() + "";
-			matrizInfo[i][4] = personas.get(i).getDireccion() + "";
-			matrizInfo[i][5] = personas.get(i).getEmail() + "";
-			matrizInfo[i][6] = personas.get(i).getGenero() + "";
+		String matrizInfo[][] = new String[personas.size()][8];
+		for (int indice = 0; indice < personas.size(); indice++) {
+			matrizInfo[indice][0] = personas.get(indice).getDni() + "";
+			matrizInfo[indice][1] = personas.get(indice).getNombre() + "";
+			matrizInfo[indice][2] = personas.get(indice).getApellido() + "";
+			matrizInfo[indice][3] = personas.get(indice).getFechaNacimiento() + "";
+			matrizInfo[indice][4] = personas.get(indice).getContrasena() + "";
+			matrizInfo[indice][5] = personas.get(indice).getDireccion() + "";
+			matrizInfo[indice][6] = personas.get(indice).getEmail() + "";
+			matrizInfo[indice][7] = personas.get(indice).getGenero() + "";
 		}
 		return matrizInfo;
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent evento) {
 
-		if (e.getSource().equals(btnVolver)) {
+		if (evento.getSource().equals(btnVolver)) {
 			volver();
 		}
-		if (e.getSource().equals(btnModificar)) {
-			modificarUsuario();
-		}
-		if (e.getSource().equals(btnEliminar)) {
+
+		if (evento.getSource().equals(btnEliminar)) {
 			eliminarUsuario();
+		}
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent evento) {
+		if (!evento.getValueIsAdjusting()) {
+			modificarActualizarUsuario();
 		}
 	}
 
@@ -125,32 +130,32 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 		// creados en mysql con el inicio de sesion
 	}
 
-	private void modificarUsuario() {
+	private void modificarActualizarUsuario() {
+		int fila = tableDatosUsuario.getSelectedRow();// se obtiene el numero de la fila seleccionada
+		if (fila != -1) {// si la fila seleccionada es diferente de -1 se obtendra la informacion de la
+							// fila que se ha seleccionado
+			Persona per = new Persona();
+			per.setDni(tableDatosUsuario.getValueAt(fila, 0).toString());
+			per.setNombre(tableDatosUsuario.getValueAt(fila, 1).toString());
+			per.setApellido(tableDatosUsuario.getValueAt(fila, 2).toString());
+			per.setFechaNacimiento(LocalDate.parse(tableDatosUsuario.getValueAt(fila, 3).toString()));
+			per.setContrasena(tableDatosUsuario.getValueAt(fila, 4).toString());
+			per.setDireccion(tableDatosUsuario.getValueAt(fila, 5).toString());
+			per.setEmail(tableDatosUsuario.getValueAt(fila, 6).toString());
+			per.setGenero(Sexo.valueOf(tableDatosUsuario.getValueAt(fila, 7).toString()));
 
-		int selectedRow = tableDatosUsuario.getSelectedRow();
-		if (selectedRow != -1) {
-			// Haz algo con la fila seleccionada, por ejemplo, obtener el valor de la
-			// primera columna
-			Persona personaSeleccionada = (Persona) tableDatosUsuario.getValueAt(selectedRow, 0);
-			VRegister ven = new VRegister(null, true, personaSeleccionada);
-			ven.setVisible(true);
+			VRegister modificacion = new VRegister(null, true, per, fila, "modificar");
 			this.dispose();
-		}
+			modificacion.setVisible(true);
 
+		}
 	}
 
 	private void volver() {
-		this.dispose();
+
 		VAdministracion admin = new VAdministracion(null, true);
+		this.dispose();
 		admin.setVisible(true);
-	}
-
-
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		if (e.getValueIsAdjusting()) {
-			modificarUsuario();
-		}
 	}
 
 }
