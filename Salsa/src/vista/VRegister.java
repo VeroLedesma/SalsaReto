@@ -285,29 +285,11 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 	protected void inicioSesion() {
 		VLogin log = new VLogin(per);
+		log.setLocationRelativeTo(this);
 		setVisible(false);
 		log.setVisible(true);
 
 	}
-
-//	private void cambioFondo() {
-//		// contentPane.setBackground(Color.DARK_GRAY); Acá creo que debo ver si viene
-//		// del padre
-//		lblFechaDeRegistro.setForeground(Color.WHITE);
-//		lblConfirmeLaContrasea.setForeground(Color.WHITE);
-//		lblContrasena.setForeground(Color.WHITE);
-//		lblDireccion.setForeground(Color.WHITE);
-//		lblDni.setForeground(Color.WHITE);
-//		lblEmail.setForeground(Color.WHITE);
-//		lblNombre.setForeground(Color.WHITE);
-//		lblPrimerApellido.setForeground(Color.WHITE);
-//		lblFecNa.setForeground(Color.WHITE);
-//		lblCamposObligatorios.setForeground(Color.WHITE);
-//		Seleccione.setForeground(Color.WHITE);
-//		lblNmeroSeguridadSocial.setForeground(Color.WHITE);
-//		lblPregunta.setForeground(Color.WHITE);
-//		lblSexo_1.setForeground(Color.WHITE);
-//	}
 
 	@Override
 	public void actionPerformed(ActionEvent evento) {
@@ -361,6 +343,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 		VListarUsuarios ven = new VListarUsuarios(null, true);
 		this.dispose();
+		ven.setLocationRelativeTo(this);
 		ven.setVisible(true);
 
 	}
@@ -455,6 +438,14 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 			cargarDatosComunes(persona);
 			((Trabajador) persona).setNnss(textNumeroSS.getText());
+			int respuesta = 0;
+			JOptionPane.showConfirmDialog(null, "¿Eres un encargado?", "Confirmación", JOptionPane.YES_NO_OPTION);
+			if (respuesta == JOptionPane.YES_OPTION) {
+				((Trabajador) persona).setEncargado(true);
+			} else if (respuesta == JOptionPane.NO_OPTION) {
+				((Trabajador) persona).setEncargado(false);
+			}
+
 		}
 
 		// Comprobamos a traves de la interfaz si la cuenta existe

@@ -14,8 +14,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import modelo.Persona;
-
 public class VAdministracion extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -135,15 +133,15 @@ public class VAdministracion extends JDialog implements ActionListener {
 	private void insertarTipo() {
 		VInsertarTipoArticulo tipo = new VInsertarTipoArticulo(this, true);
 		this.dispose();
+		tipo.setLocationRelativeTo(this);
 		tipo.setVisible(true);
 	}
 
 	protected void insertDat() {
 
 		VInsertDatosArticulo insert = new VInsertDatosArticulo(this, true);
-
 		this.dispose();
-
+		insert.setLocationRelativeTo(this);
 		insert.setVisible(true);
 	}
 
@@ -152,19 +150,21 @@ public class VAdministracion extends JDialog implements ActionListener {
 		VMoDatosArticulo modArt = new VMoDatosArticulo(this, true);
 
 		this.dispose();
+		modArt.setLocationRelativeTo(this);
 		modArt.setVisible(true);
 	}
 
 	protected void listarUsuarios() {
-		this.dispose();
-		Persona per = new Persona();
 		VListarUsuarios mod = new VListarUsuarios(this, true);
+		this.dispose();
+		mod.setLocationRelativeTo(this);
 		mod.setVisible(true);
 	}
 
 	protected void volver() {
-		this.dispose();
 		VHamburger ham = new VHamburger(main, false);
+		this.dispose();
+		ham.setLocationRelativeTo(this);
 		ham.setVisible(true);
 	}
 }
