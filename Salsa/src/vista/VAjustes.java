@@ -156,8 +156,7 @@ public class VAjustes extends JDialog implements ActionListener {
 		VHamburger ham = new VHamburger(main, false);
 
 		this.dispose();
-		
-
+		ham.setLocationRelativeTo(this);
 		ham.setVisible(true);
 	}
 

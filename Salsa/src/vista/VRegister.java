@@ -347,6 +347,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 	private void volver() {
 		VListarUsuarios ven = new VListarUsuarios(null, true, persona);
+		ven.setLocationRelativeTo(this);
 		ven.setVisible(true);
 		this.dispose();
 

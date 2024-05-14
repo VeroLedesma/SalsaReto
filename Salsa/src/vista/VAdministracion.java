@@ -126,7 +126,7 @@ public class VAdministracion extends JDialog implements ActionListener {
 		VInsertDatosArticulo insert = new VInsertDatosArticulo(this, true);
 
 		this.dispose();
-		
+		insert.setLocationRelativeTo(this);
 		insert.setVisible(true);
 	}
 
@@ -135,6 +135,7 @@ public class VAdministracion extends JDialog implements ActionListener {
 		VMoDatosArticulo modArt = new VMoDatosArticulo(this, true);
 
 		this.dispose();
+		modArt.setLocationRelativeTo(this);
 		modArt.setVisible(true);
 	}
 
@@ -142,12 +143,14 @@ public class VAdministracion extends JDialog implements ActionListener {
 		this.dispose();
 		Persona per = new Persona();
 		VListarUsuarios mod = new VListarUsuarios(this, true, per);
+		mod.setLocationRelativeTo(this);
 		mod.setVisible(true);
 	}
 
 	protected void volver() {
 		this.dispose();
 		VHamburger ham = new VHamburger(main, false);
+		ham.setLocationRelativeTo(this);
 		ham.setVisible(true);
 	}
 

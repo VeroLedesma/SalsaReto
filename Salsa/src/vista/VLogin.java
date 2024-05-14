@@ -57,6 +57,7 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 		BodyLayout.setBackground(new Color(255, 255, 255));
 		BodyLayout.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(BodyLayout);
+		this.setLocationRelativeTo(null);
 		BodyLayout.setLayout(null);
 		ImageIcon icon = new ImageIcon(getClass().getResource("/assets/logo.png"));
 
@@ -195,6 +196,7 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 				JOptionPane.showMessageDialog(null, "Bienvenido/a al sistema");
 				this.setVisible(false);
 				VMain vent = new VMain(this, true);
+				vent.setLocationRelativeTo(this);
 				vent.setVisible(true);
 
 				this.dispose();

@@ -27,6 +27,7 @@ public class VMain extends JDialog implements ActionListener {
 		setModal(modal);
 		setBounds(100, 100, 1082, 836);
 		BodyLayout = new JPanel();
+		
 		BodyLayout.setBackground(new Color(255, 255, 255));
 		BodyLayout.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(BodyLayout);
@@ -93,6 +94,7 @@ public class VMain extends JDialog implements ActionListener {
 	private void irAlMenu() {
 		this.dispose();
 		VHamburger ven = new VHamburger(this, true);
+		ven.setLocationRelativeTo(this);
 		ven.setVisible(true);		
 	}
 

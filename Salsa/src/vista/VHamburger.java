@@ -106,6 +106,7 @@ public class VHamburger extends JDialog implements ActionListener {
 
 		this.dispose();
 		VLogin log = new VLogin(persona);
+		log.setLocationRelativeTo(this);
 		log.setVisible(true);
 	}
 
@@ -114,6 +115,7 @@ public class VHamburger extends JDialog implements ActionListener {
 		VAdministracion admin = new VAdministracion(this, true);
 
 		this.dispose();
+		admin.setLocationRelativeTo(this);
 
 		admin.setVisible(true);
 	}
@@ -121,8 +123,10 @@ public class VHamburger extends JDialog implements ActionListener {
 	public void contacto() {
 
 		VContacto contact = new VContacto(this, true);
+	
 
 		this.dispose();
+		contact.setLocationRelativeTo(this);
 
 		contact.setVisible(true);
 	}
@@ -130,17 +134,18 @@ public class VHamburger extends JDialog implements ActionListener {
 	public void ajustes() {
 
 		VAjustes settings = new VAjustes(this, true);
-
+	
 		this.dispose();
+		settings.setLocationRelativeTo(this);
 		settings.setVisible(true);
 	}
 
 	public void inicio() {
 
 		VMain index = new VMain(login, modal);
-
-		this.dispose();
 	
+		this.dispose();
+		index.setLocationRelativeTo(this);
 		index.setVisible(true);
 	}
 
