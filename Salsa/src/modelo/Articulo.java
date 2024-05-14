@@ -3,7 +3,7 @@ package modelo;
 public class Articulo {
 	private Integer codArticulo;
 	private Float porcentajeDecuento, precio;
-	private String color, modelo, nombreTipo;
+	private String color, nombreTipo;
 	private Temporada temporada;
 
 	// Getters y Setters
@@ -45,14 +45,6 @@ public class Articulo {
 
 	public void setTemporada(Temporada temporada) {
 		this.temporada = temporada;
-	}
-
-	public String getModelo() {
-		return modelo;
-	}
-
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
 	}
 
 	public String getNombreTipo() {

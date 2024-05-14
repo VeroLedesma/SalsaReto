@@ -26,10 +26,10 @@ public class ImpleDB implements Dao {
 	private final String ALTA_PERSONA = "INSERT INTO persona (dni, nombre, apellido, fechaNac, contrasena, direccion, email, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	private final String ASIGNACION = "{CALL setPersonaInvitado(?,?,?)}";
 	private final String ASIGNACIONTRABAJADOR = "{CALL setTrabajador(?,?,?)}";
-	private final String ALTA_ARTICULO = "INSERT INTO articulo ( color, modelo, temporada, precio, descuento) VALUES ( ?, ?, ?, ?, ?)";
+	private final String ALTA_ARTICULO = "INSERT INTO articulo ( color, temporada, precio, descuento) VALUES (  ?, ?, ?, ?)";
 	private final String CONSULTA_COMPROBAR_USUARIO = "SELECT dni, nombre, apellido,fechaNac, direccion, email, genero FROM persona WHERE email=? AND contrasena=?";
 	private final String MODIFICACION_USUARIO = "UPDATE persona SET dni=?, nombre = ?, apellido = ?, fechaNac= ?, contrasena=?, direccion = ?, email = ?, genero= ? WHERE dni = ?";
-	private final String CONSULTA_ARTICULO = "SELECT cod_articulo,color,modelo,temporada, precio,descuento,cod_tipo FROM articulo";
+	private final String CONSULTA_ARTICULO = "SELECT cod_articulo,color,temporada, precio,descuento,cod_tipo FROM articulo";
 	private final String CONSULTA_TIPO = "SELECT cod_tipo, nombre, stock FROM tipo";
 	private final String ALTA_TIPO = "INSERT INTO tipo (nombre, stock) VALUES (?, ?)";
 	private final String ACTUALIZARSTOCKTIPO = "SELECT calcular_nuevo_stock(?, ?)";
@@ -48,7 +48,6 @@ public class ImpleDB implements Dao {
 
 				art.setCodArticulo(resultSet.getInt("cod_articulo"));
 				art.setColor(resultSet.getString("color"));
-				art.setModelo(resultSet.getString("modelo"));
 				art.setTemporada(Temporada.valueOf(resultSet.getString("temporada").toUpperCase()));
 				art.setPrecio(resultSet.getFloat("precio"));
 				art.setPorcentajeDecuento(resultSet.getFloat("descuento"));
@@ -178,10 +177,9 @@ public class ImpleDB implements Dao {
 			// insercion de la tabla articulo
 			stmt = (conn.prepareStatement(ALTA_ARTICULO, Statement.RETURN_GENERATED_KEYS));
 			stmt.setString(1, art.getColor());
-			stmt.setString(2, art.getModelo());
-			stmt.setString(3, art.getTemporada().toString());
-			stmt.setFloat(4, art.getPrecio());
-			stmt.setFloat(5, art.getPorcentajeDecuento());
+			stmt.setString(2, art.getTemporada().toString());
+			stmt.setFloat(3, art.getPrecio());
+			stmt.setFloat(4, art.getPorcentajeDecuento());
 			stmt.executeUpdate();
 			resultSet = stmt.getGeneratedKeys();
 			if (resultSet.next()) {

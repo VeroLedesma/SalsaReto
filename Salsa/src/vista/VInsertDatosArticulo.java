@@ -29,7 +29,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField tfModelo, tfPrecio, tfColor, tfPorcentaje;
+	private JTextField tfPrecio, tfColor, tfPorcentaje;
 	private JComboBox<Temporada> comboBoxTemporada;
 	private JComboBox<String> cbTipoPrenda;
 	private Map<Integer, Tipo> tipoPrenda = new HashMap<>();
@@ -61,12 +61,12 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		contentPanel.add(logo);
 
 		JLabel lblColor = new JLabel("Color");
-		lblColor.setBounds(537, 118, 51, 35);
+		lblColor.setBounds(526, 118, 51, 35);
 		lblColor.setFont(new Font("Dialog", Font.BOLD, 14));
 		contentPanel.add(lblColor);
 
 		tfColor = new JTextField();
-		tfColor.setBounds(537, 163, 225, 35);
+		tfColor.setBounds(526, 163, 225, 35);
 		tfColor.setColumns(10);
 		contentPanel.add(tfColor);
 
@@ -75,18 +75,8 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		lblTemporada.setFont(new Font("Dialog", Font.BOLD, 14));
 		contentPanel.add(lblTemporada);
 
-		JLabel lblModelo = new JLabel("Modelo");
-		lblModelo.setBounds(536, 208, 84, 35);
-		lblModelo.setFont(new Font("Dialog", Font.BOLD, 14));
-		contentPanel.add(lblModelo);
-
-		tfModelo = new JTextField();
-		tfModelo.setBounds(537, 253, 225, 35);
-		tfModelo.setColumns(10);
-		contentPanel.add(tfModelo);
-
 		JLabel lblNombreTipo = new JLabel("Nombre del tipo de prenda");
-		lblNombreTipo.setBounds(537, 316, 225, 35);
+		lblNombreTipo.setBounds(526, 274, 225, 35);
 		lblNombreTipo.setFont(new Font("Dialog", Font.BOLD, 14));
 		contentPanel.add(lblNombreTipo);
 
@@ -141,7 +131,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		cbTipoPrenda.setModel(new DefaultComboBoxModel<>());
 		cbTipoPrenda.setToolTipText("");
 		cbTipoPrenda.setEditable(true);
-		cbTipoPrenda.setBounds(537, 361, 225, 35);
+		cbTipoPrenda.setBounds(526, 316, 225, 35);
 		contentPanel.add(cbTipoPrenda);
 		cargarTipoPrenda();
 	}
@@ -199,7 +189,6 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 
 	private void limpiar() {
 		tfColor.setText("");
-		tfModelo.setText("");
 		tfPorcentaje.setText("");
 		tfPrecio.setText("");
 		cbTipoPrenda.setSelectedItem("");
@@ -217,7 +206,6 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		String precio = tfPrecio.getText();
 		Float precio2 = Float.parseFloat(precio);
 		articulo.setPrecio(precio2);
-		articulo.setModelo(tfModelo.getText());
 		articulo.setTemporada((Temporada) comboBoxTemporada.getSelectedItem());
 		articulo.setNombreTipo((String) cbTipoPrenda.getSelectedItem());
 		// para la creacion de un a excepcion pero hay que mirarlo, no se si esta bien
