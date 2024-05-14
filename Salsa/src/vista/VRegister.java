@@ -45,24 +45,13 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 	// Lógica para la conexión
 	// private Controlador controladorRutas;
-	private Persona persona = new Persona();
-
-	private JButton btnModificar;
-	private JButton btnEliminar;
+	private Persona per = new Persona();
 	private JButton btnVolver;
 
-
-	public VRegister(VLogin padre, boolean modal, Persona persona2) {
+	public VRegister(VLogin padre, boolean modal, Persona persona2, int fila, String btnNombre) {
 		super(padre);
-		// this.controladorRutas = controladorRutas;
-		this.persona = persona2;
+		this.per = persona2;
 
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				padre.setVisible(true);
-			}
-		});
 		setModal(modal);
 		setSize(729, 700);
 		getContentPane().setFont(new Font("Dialog", Font.BOLD, 12));
@@ -149,14 +138,12 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		lblSexo_1.setBounds(64, 374, 49, 14);
 		getContentPane().add(lblSexo_1);
 
-		btnRegistro = new JButton("Enviar los datos");
+		btnRegistro = new JButton();
 		btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnRegistro.setForeground(new Color(0, 0, 0));
-
-		btnRegistro.setForeground(Color.WHITE);
-
+		btnRegistro.setForeground(new Color(0, 64, 128));
 		btnRegistro.addActionListener(this);
-		btnRegistro.setBackground(new Color(0, 0, 255));
+		btnRegistro.setForeground(Color.BLACK);
+		btnRegistro.setBackground(new Color(255, 255, 255));
 		btnRegistro.setBounds(227, 575, 286, 38);
 		getContentPane().add(btnRegistro);
 
@@ -244,53 +231,62 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 		lblPregunta = new JLabel("¿Ya tienes cuenta?");
 		lblPregunta.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblPregunta.setBounds(214, 623, 123, 16);
+		lblPregunta.setBounds(235, 623, 123, 16);
 		getContentPane().add(lblPregunta);
 
 		lblInicioSesion = new JLabel("Inicia Sesion");
-		lblInicioSesion.setBounds(370, 623, 98, 14);
+		lblInicioSesion.setBounds(415, 623, 98, 14);
 		lblInicioSesion.addMouseListener(this);
 		lblInicioSesion.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblInicioSesion.setForeground(new Color(0, 51, 255));
 		getContentPane().add(lblInicioSesion);
 
-		btnModificar = new JButton("Modificar");
-		btnModificar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnModificar.setBounds(36, 577, 245, 34);
-		getContentPane().add(btnModificar);
-
-		btnEliminar = new JButton("Eliminar");
-		btnEliminar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnEliminar.setBounds(425, 575, 245, 34);
-		getContentPane().add(btnEliminar);
-
 		btnVolver = new JButton("Volver");
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnVolver.setBounds(561, 10, 144, 29);
 		btnVolver.addActionListener(this);
-		getContentPane().add(btnVolver);
-
 
 		lblPregunta.setBounds(265, 626, 114, 13);
 		getContentPane().add(lblPregunta);
 
-		lblInicioSesion = new JLabel("Inicia Sesion");
-		lblInicioSesion.setBounds(370, 624, 78, 13);
-		lblInicioSesion.addMouseListener(this);
-		lblInicioSesion.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblInicioSesion.setForeground(new Color(0, 51, 255));
-		getContentPane().add(lblInicioSesion);
-
-
 		// Botones de eventos
 		checkBoxUsuario.addActionListener(this);
 		checkBoxTrabajador.addActionListener(this);
+
+		// aqui los campos que se rellenen en los textfield, si el boton es modificar
+		if (btnNombre.equalsIgnoreCase("Modificar")) {
+			getContentPane().add(btnVolver);
+			textDni.setText(persona2.getDni());
+			textNombre.setText(persona2.getNombre());
+			textApellido.setText(persona2.getApellido());
+			dateFechaNacimiento.setDate(java.sql.Date.valueOf(persona2.getFechaNacimiento()));
+			passContrasena.setText(persona2.getContrasena());
+			textDireccion.setText(persona2.getDireccion());
+			textEmail.setText(persona2.getEmail());
+			comboBoxGenero.setSelectedItem(persona2.getGenero());
+			btnRegistro.setText("Modificar");
+		} else {// si el boton es registro se abre la ventana del login
+			btnRegistro.setText("Enviar datos");
+			addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosed(WindowEvent evento) {
+					padre.setVisible(true);
+					btnVolver.setVisible(false);// hacemos el boton de volver invisible en la ventana de registro
+				}
+			});
+		}
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		inicioSesion();
 	}
 
 	protected void inicioSesion() {
-		VLogin log = new VLogin(persona);
-		log.setVisible(true);
+		VLogin log = new VLogin(per);
 		setVisible(false);
+		log.setVisible(true);
 
 	}
 
@@ -314,24 +310,26 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 //	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		inicioSesion();
-	}
+	public void actionPerformed(ActionEvent evento) {
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btnRegistro)) {
-			if (camposObligatoriosCompletos() == true) {
-				registrarPersona();
+		if (evento.getSource().equals(btnRegistro)) {
+			System.out.println("entrando en el registro");
+			if (btnRegistro.getText().equalsIgnoreCase("Enviar datos")) {
+				if (camposObligatoriosCompletos() == true) {
+					registrarPersona();
+				}
+			} else if (btnRegistro.getText().equalsIgnoreCase("Modificar")) {
+				System.out.println("antes de modificar");
+				modificar();
 			}
 		}
-		if (e.getSource().equals(checkBoxUsuario)) {
+		if (evento.getSource().equals(checkBoxUsuario)) {
 			seleccionarUsuario();
 		}
-		if (e.getSource().equals(checkBoxTrabajador)) {
+		if (evento.getSource().equals(checkBoxTrabajador)) {
 			seleccionarTrabajador();
 		}
-		if (e.getSource().equals(btnRegistro)) {
+		if (evento.getSource().equals(btnRegistro)) {
 			if (btnRegistro.isShowing() && camposObligatoriosCompletos() == false) {
 				JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos obligatorios.",
 						"Campos obligatorios incompletos", JOptionPane.ERROR_MESSAGE);
@@ -340,15 +338,30 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 			}
 		}
 
-		if (e.getSource().equals(btnVolver)) {
+		if (evento.getSource().equals(btnVolver)) {
 			volver();
 		}
 	}
 
+	private void modificar() {
+		boolean modificado;
+		System.out.println(per.getDni());
+		Persona per = cargarDatosComunes();
+		modificado = Controlador.modificarUsuario(per);
+
+		System.out.println(modificado);
+		if (modificado == true) {
+			JOptionPane.showMessageDialog(null, "se ha modificado correctamente");
+		} else {
+			JOptionPane.showMessageDialog(this, "No se ha modificado nada", null, JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 	private void volver() {
-		VListarUsuarios ven = new VListarUsuarios(null, true, persona);
-		ven.setVisible(true);
+
+		VListarUsuarios ven = new VListarUsuarios(null, true);
 		this.dispose();
+		ven.setVisible(true);
 
 	}
 
@@ -449,6 +462,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 	}
 
 	private void cargarDatosComunes(Persona persona) {
+
 		persona.setApellido(textApellido.getText());
 		persona.setNombre(textNombre.getText());
 		persona.setDni(textDni.getText());
@@ -461,14 +475,28 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 	}
 
+	private Persona cargarDatosComunes() {
+		Persona per = new Persona();
+		per.setApellido(textApellido.getText());
+		per.setNombre(textNombre.getText());
+		per.setDni(textDni.getText());
+		per.setEmail(textEmail.getText());
+		per.setFechaNacimiento(dateFechaNacimiento.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+		per.setDireccion(textDireccion.getText());
+		per.setContrasena(new String(passContrasena.getPassword()));
+		per.setGenero((Sexo) comboBoxGenero.getSelectedItem());
+		return per;
+
+	}
+	// Implementación de los métodos MouseListener (no son necesarios, pero necesito
+	// implemenetarlos en la clase si se quiere hacer el eventos del mouse)
+
 	@Override
 	public void mousePressed(MouseEvent e) {
-
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-
 	}
 
 	@Override
@@ -477,10 +505,6 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-
 	}
-
-	// Implementación de los métodos MouseListener (no son necesarios, pero necesito
-	// implemenetarlos en la clase si quiero hacer lo de los eventos)
 
 }

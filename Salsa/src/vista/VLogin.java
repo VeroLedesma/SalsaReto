@@ -8,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,8 +31,6 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	private JTextField inputEmail;
 	private JPasswordField inputPassword;
 	private JButton toggleButton, btnLogin;
-
-	private List<Persona> personas = new ArrayList<>();
 	// Lógica para la conexión
 	private Persona persona = new Persona();
 	private JLabel lblImagenLogin;
@@ -43,14 +39,7 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 
 	// Página de Inicio
 	public VLogin(Persona persona) {
-	// Lógica para la conexión
-	// private Controlador controladorRutas;
-	
-	//Constructor vacio para el cierre de sesión
-
-	// Página de Inicio
-		// this.controladorRutas = controladorRutas;
-
+		// Página de Inicio
 		this.persona = persona;
 		setBounds(100, 100, 931, 574);
 		BodyLayout = new JPanel();
@@ -159,9 +148,9 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(linkRegister)) {
-			VRegister registro = new VRegister(this, true, persona);
-			registro.setVisible(true);
+			VRegister registro = new VRegister(this, true, persona, 0, "");
 			setVisible(false);
+			registro.setVisible(true);
 		}
 	}
 
@@ -217,6 +206,7 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 		return correcto;
 
 	}
+
 	// Limpiamos los datos tecleados del formulario
 	private void borrar() {
 		inputEmail.setText("");
