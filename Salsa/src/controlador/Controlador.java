@@ -2,10 +2,12 @@ package controlador;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import modelo.Articulo;
 import modelo.ImpleDB;
 import modelo.Persona;
+import modelo.Tipo;
 
 public class Controlador {
 
@@ -13,17 +15,16 @@ public class Controlador {
 		Dao dao = new ImpleDB();
 		return dao.listarUsuarios();
 	}
-	
-	
-	
+
 	public static List<Articulo> listarArticulos() throws SQLException {
 		Dao dao = new ImpleDB();
 		return dao.listarArticulos();
 	}
-	
-	
-	
-	
+
+	public static Map<Integer, Tipo> listarTipoArticulos() throws SQLException {
+		Dao dao = new ImpleDB();
+		return dao.listarTiposArticulos();
+	}
 
 	public static boolean modificarUsuario(Persona per) {
 		Dao dao = new ImpleDB();
@@ -41,7 +42,12 @@ public class Controlador {
 	}
 	// verificar si esto es necesario o no
 
-	public static boolean altaArticulo(Articulo art) {
+	public static int altaTipoArticulo(Tipo tipo) {
+		Dao dao = new ImpleDB();
+		return dao.introducirTipoArticulo(tipo);
+	}
+
+	public static int altaArticulo(Articulo art) {
 		Dao dao = new ImpleDB();
 		return dao.altaArticulo(art);
 	}

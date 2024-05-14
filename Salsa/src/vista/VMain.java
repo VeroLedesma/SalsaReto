@@ -87,7 +87,7 @@ public class VMain extends JDialog implements ActionListener {
 
 		if (e.getSource().equals(btnMenu)) {
 			irAlMenu();
-		
+
 		}
 	}
 
@@ -95,7 +95,11 @@ public class VMain extends JDialog implements ActionListener {
 		this.dispose();
 		VHamburger ven = new VHamburger(this, true);
 		ven.setLocationRelativeTo(this);
+<<<<<<< HEAD
 		ven.setVisible(true);		
+=======
+		ven.setVisible(true);
+>>>>>>> 7d9a151b3e16fadee7a5f1aeea56d805e480ce1c
 	}
 
 }

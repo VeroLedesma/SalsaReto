@@ -132,7 +132,6 @@ public class VContacto extends JDialog implements ActionListener {
 	private void volver() {
 
 		VHamburger ham = new VHamburger(null, false);
-
 		this.dispose();
 		ham.setLocationRelativeTo(this);
 		ham.setVisible(true);
