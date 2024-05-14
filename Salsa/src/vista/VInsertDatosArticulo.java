@@ -170,6 +170,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 	private void volver() { // vuelve a la ventana de administracion
 		VAdministracion ven = new VAdministracion(null, true);
 		this.dispose();
+		ven.setLocationRelativeTo(this);
 		ven.setVisible(true);
 
 	}

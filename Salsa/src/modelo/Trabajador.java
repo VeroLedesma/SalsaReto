@@ -3,7 +3,7 @@ package modelo;
 public class Trabajador extends Persona {
 
 	private String nnss;
-	private Boolean encargado;
+	private Boolean encargado = false;
 
 	public String getNnss() {
 		return nnss;

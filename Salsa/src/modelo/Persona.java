@@ -3,7 +3,7 @@ package modelo;
 import java.time.LocalDate;
 
 public class Persona {
-	private String dni, nombre, apellido, email, direccion, contrasena, rol;
+	private String dni, nombre, apellido, email, direccion, contrasena;
 	private LocalDate fechaNacimiento;
 	private Sexo genero;
 
@@ -72,17 +72,8 @@ public class Persona {
 		this.contrasena = contrasena;
 	}
 
-	public String getRol() {
-		return rol;
-	}
-
-	public void setRol(String rol) {
-		this.rol = rol;
-	}
-
 	// Método para verificar un email
 	public boolean validarEmail(String email) throws IllegalArgumentException {
-		boolean correcto = false;
 		try {
 			String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 			if (email.matches(emailRegex)) {

@@ -25,7 +25,7 @@ public class ImpleDB implements Dao {
 	private final String CONSULTA_USUARIO = "SELECT dni, nombre, apellido,fechaNac,contrasena,  direccion, email, genero FROM persona ";
 	private final String ALTA_PERSONA = "INSERT INTO persona (dni, nombre, apellido, fechaNac, contrasena, direccion, email, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	private final String ASIGNACION = "{CALL setPersonaInvitado(?,?,?)}";
-	private final String ASIGNACIONTRABAJADOR = "{CALL setTrabajador(?,?,?)}";
+	private final String ASIGNACIONTRABAJADOR = "{CALL setTrabajador(?,?,?,?)}";
 	private final String ALTA_ARTICULO = "INSERT INTO articulo ( color, temporada, precio, descuento) VALUES (  ?, ?, ?, ?)";
 	private final String CONSULTA_COMPROBAR_USUARIO = "SELECT dni, nombre, apellido,fechaNac, direccion, email, genero FROM persona WHERE email=? AND contrasena=?";
 	private final String MODIFICACION_USUARIO = "UPDATE persona SET dni=?, nombre = ?, apellido = ?, fechaNac= ?, contrasena=?, direccion = ?, email = ?, genero= ? WHERE dni = ?";
@@ -139,15 +139,16 @@ public class ImpleDB implements Dao {
 				callableStatement.setString(1, per.getDni());
 				callableStatement.setString(2, ((Trabajador) per).getNnss());
 				callableStatement.setString(3, per.getContrasena());
-				callableStatement.execute();
+				callableStatement.setBoolean(4, ((Trabajador) per).isEncargado());
+				callableStatement.executeUpdate();
 			} else if (per instanceof Usuario) {
 				// Inserción en la tabla usuario llamando a un procedimiento creado en la base
-				// de datos que le asignara el rol de invitado cuys permisos estan definidos
+				// de datos que le asignara el rol de invitado cuyos permisos estan definidos
 				callableStatement = conn.prepareCall(ASIGNACION);
 				callableStatement.setString(1, per.getDni());
 				callableStatement.setString(2, ((Usuario) per).getFechaRegistro().toString());
 				callableStatement.setString(3, per.getContrasena());
-				callableStatement.execute();
+				callableStatement.executeUpdate();
 
 			}
 
@@ -158,8 +159,8 @@ public class ImpleDB implements Dao {
 			return false;
 		} finally {
 			try {
-				if (callableStatement != null) {
-					callableStatement.close();
+				if (stmt != null) {
+					stmt.close();
 				}
 			} catch (SQLException e) {
 			}
