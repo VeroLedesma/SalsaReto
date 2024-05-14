@@ -34,17 +34,7 @@ public class VMiLista extends JDialog implements ActionListener {
 	// Comprobar si anda en modo diurno o nocturno
 	// private boolean oscuro;
 
-<<<<<<< HEAD:Salsa/src/vista/VAjustes.java
-	
-	/**
-	 * 
-	 * @param hamburger
-	 * @param b
-	 */
-	public VAjustes(VHamburger hamburger, boolean b) {
-=======
 	public VMiLista(VHamburger hamburger, boolean b) {
->>>>>>> 2767e38688a31ff26d6f7aa591a773631f1df0cf:Salsa/src/vista/VMiLista.java
 		super(hamburger);
 		setModal(b);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
