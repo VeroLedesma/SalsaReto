@@ -1,10 +1,7 @@
 package modelo;
 
-/**
-<<<<<<< HEAD
- * Clase que representa un tipo de artículo.
 
-=======
+/**
  * La clase Tipo representa un tipo de artículo con su código, nombre y stock.
  */
 public class Tipo {

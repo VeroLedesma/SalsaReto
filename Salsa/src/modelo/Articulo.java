@@ -1,22 +1,18 @@
 package modelo;
 
 /**
-
- * Clase que representa un artículo.
-
  * La clase Articulo representa un artículo en el sistema de gestión de stock.
- * Contiene atributos para describir el artículo y métodos para acceder y modificar estos atributos.
+ * Contiene atributos para describir el artículo y métodos para acceder y
+ * modificar estos atributos.
  * 
  * @autor Vero
  * @version 1.0
-
  */
 public class Articulo {
-    private Integer codArticulo;
-    private Float porcentajeDecuento, precio;
-    private String color, nombreTipo;
-    private Temporada temporada;
-
+	private Integer codArticulo;
+	private Float porcentajeDecuento, precio;
+	private String color, nombreTipo;
+	private Temporada temporada;
 
 	// Getters y Setters
 

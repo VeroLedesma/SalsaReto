@@ -7,7 +7,6 @@ import java.time.LocalDate;
  * 
  * @author melany, santi, vero
  * @version 1.0
-
  */
 public class Persona {
 	private String dni, nombre, apellido, email, direccion, contrasena;
@@ -15,7 +14,6 @@ public class Persona {
 	private Sexo genero;
 
 	// Getters y Setters
-
 	/**
 	 * Obtiene el DNI de la persona.
 	 * 
@@ -72,7 +70,7 @@ public class Persona {
 
 	/**
 	 * Obtiene el email de la persona.
-	 * 
+   *
 	 * @return El email de la persona.
 	 */
 	public String getEmail() {
@@ -108,7 +106,7 @@ public class Persona {
 
 	/**
 	 * Obtiene la fecha de nacimiento de la persona.
-	 * 
+	 *
 	 * @return La fecha de nacimiento de la persona.
 	 */
 	public LocalDate getFechaNacimiento() {
@@ -159,8 +157,6 @@ public class Persona {
 	public void setContrasena(String contrasena) {
 		this.contrasena = contrasena;
 	}
-
-
 	// Métodos de validación
 
 	/**
@@ -171,6 +167,7 @@ public class Persona {
 	 * @return true si el email es válido, false si no lo es.
 	 * @throws IllegalArgumentException Si el email proporcionado no es válido.
 */
+
 	public boolean validarEmail(String email) throws IllegalArgumentException {
 		try {
 			String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
@@ -186,7 +183,6 @@ public class Persona {
 	}
 
 	/**
-
 	 * Método para verificar la validez de un DNI.
 	 * 
 	 * @author vero
