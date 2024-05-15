@@ -146,6 +146,7 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 
 			VRegister modificacion = new VRegister(null, true, per, fila, "modificar");
 			this.dispose();
+			modificacion.setLocationRelativeTo(this);
 			modificacion.setVisible(true);
 
 		}
@@ -155,6 +156,7 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 
 		VAdministracion admin = new VAdministracion(null, true);
 		this.dispose();
+		admin.setLocationRelativeTo(this);
 		admin.setVisible(true);
 	}
 

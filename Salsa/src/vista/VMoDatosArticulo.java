@@ -132,6 +132,7 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 	private void volver() {
 		VAdministracion admin = new VAdministracion(null, true);
 		this.dispose();
+		admin.setLocationRelativeTo(this);
 		admin.setVisible(true);
 
 	}

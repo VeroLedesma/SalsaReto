@@ -94,6 +94,7 @@ public class VInsertarTipoArticulo extends JDialog implements ActionListener {
 	private void volver() {
 		VAdministracion admin = new VAdministracion(null, true);
 		this.dispose();
+		admin.setLocationRelativeTo(this);
 		admin.setVisible(true);
 
 	}
@@ -112,7 +113,7 @@ public class VInsertarTipoArticulo extends JDialog implements ActionListener {
 	private void cargarDatosTipo(Tipo tipo) {
 
 		tipo.setNombreTipo(tfNombre.getText());
-		tipo.setStok(Integer.parseInt(tfStock.getText()));
+		tipo.setStock(Integer.parseInt(tfStock.getText()));
 		int codigo = Controlador.altaTipoArticulo(tipo);
 	}
 }

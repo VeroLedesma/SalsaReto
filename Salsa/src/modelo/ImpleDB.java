@@ -24,15 +24,14 @@ public class ImpleDB implements Dao {
 	// Consultas a la Base de Datos
 	private final String CONSULTA_USUARIO = "SELECT dni, nombre, apellido,fechaNac,contrasena,  direccion, email, genero FROM persona ";
 	private final String ALTA_PERSONA = "INSERT INTO persona (dni, nombre, apellido, fechaNac, contrasena, direccion, email, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-	private final String ASIGNACION = "{CALL setPersonaInvitado(?,?,?)}";
-	private final String ASIGNACIONTRABAJADOR = "{CALL setTrabajador(?,?,?)}";
-	private final String ALTA_ARTICULO = "INSERT INTO articulo ( color, modelo, temporada, precio, descuento) VALUES ( ?, ?, ?, ?, ?)";
+	private final String ASIGNACIONUSUARIO = "{CALL setPersonaInvitado(?,?,?)}";
+	private final String ASIGNACIONTRABAJADOR = "{CALL setTrabajador(?,?,?,?)}";
+	private final String ALTA_ARTICULO = "INSERT INTO articulo (color, temporada, precio, descuento, cod_tipo) VALUES (  ?, ?, ?, ?, ?)";
 	private final String CONSULTA_COMPROBAR_USUARIO = "SELECT dni, nombre, apellido,fechaNac, direccion, email, genero FROM persona WHERE email=? AND contrasena=?";
 	private final String MODIFICACION_USUARIO = "UPDATE persona SET dni=?, nombre = ?, apellido = ?, fechaNac= ?, contrasena=?, direccion = ?, email = ?, genero= ? WHERE dni = ?";
-	private final String CONSULTA_ARTICULO = "SELECT cod_articulo,color,modelo,temporada, precio,descuento,cod_tipo FROM articulo";
+	private final String CONSULTA_ARTICULO = "SELECT cod_articulo,color,temporada, precio,descuento,cod_tipo FROM articulo";
 	private final String CONSULTA_TIPO = "SELECT cod_tipo, nombre, stock FROM tipo";
-	private final String ALTA_TIPO = "INSERT INTO tipo (nombre, stock) VALUES (?, ?)";
-	private final String ACTUALIZARSTOCKTIPO = "SELECT calcular_nuevo_stock(?, ?)";
+	private final String ALTA_TIPO = "{CALL actualizar_o_insertar_stock(?,?)}";
 
 	@Override
 	public List<Articulo> listarArticulos() {
@@ -48,7 +47,6 @@ public class ImpleDB implements Dao {
 
 				art.setCodArticulo(resultSet.getInt("cod_articulo"));
 				art.setColor(resultSet.getString("color"));
-				art.setModelo(resultSet.getString("modelo"));
 				art.setTemporada(Temporada.valueOf(resultSet.getString("temporada").toUpperCase()));
 				art.setPrecio(resultSet.getFloat("precio"));
 				art.setPorcentajeDecuento(resultSet.getFloat("descuento"));
@@ -77,8 +75,6 @@ public class ImpleDB implements Dao {
 
 	@Override
 	public List<Persona> listarUsuarios() {
-//arreglar este metodo que lo que hara sera verificar la existencia del usuario que inicie sesion en la aplicacion
-
 		List<Persona> personas = new ArrayList<>();
 		conn = ConnectionMysql.openConnection();
 
@@ -136,20 +132,27 @@ public class ImpleDB implements Dao {
 			// Inserción en la tabla trabajador llamando a un procedimiento creado en la
 			// base de datos que le asiganra el rol de empleado
 			if (per instanceof Trabajador) {
-				callableStatement = conn.prepareCall(ASIGNACIONTRABAJADOR);
+				CallableStatement callableStatement = conn.prepareCall(ASIGNACIONTRABAJADOR);
 				callableStatement.setString(1, per.getDni());
 				callableStatement.setString(2, ((Trabajador) per).getNnss());
 				callableStatement.setString(3, per.getContrasena());
-				callableStatement.execute();
-			} else if (per instanceof Usuario) {
-				// Inserción en la tabla usuario llamando a un procedimiento creado en la base
-				// de datos que le asignara el rol de invitado cuys permisos estan definidos
-				callableStatement = conn.prepareCall(ASIGNACION);
-				callableStatement.setString(1, per.getDni());
-				callableStatement.setString(2, ((Usuario) per).getFechaRegistro().toString());
-				callableStatement.setString(3, per.getContrasena());
+
+				if (((Trabajador) per).isEncargado() == true) { //
+					callableStatement.setInt(4, 1);
+
+				} else if (((Trabajador) per).isEncargado() == false) {
+					callableStatement.setInt(4, 0);
+				}
 				callableStatement.execute();
 
+			} else if (per instanceof Usuario) {
+				// Inserción en la tabla usuario llamando a un procedimiento creado en la base
+				// de datos que le asignara el rol de invitado cuyos permisos estan definidos
+				CallableStatement callableStatement1 = conn.prepareCall(ASIGNACIONUSUARIO);
+				callableStatement1.setString(1, per.getDni());
+				callableStatement1.setString(2, ((Usuario) per).getFechaRegistro().toString());
+				callableStatement1.setString(3, per.getContrasena());
+				callableStatement1.execute();
 			}
 
 			// Si todas las inserciones fueron exitosas, retorna true
@@ -159,8 +162,8 @@ public class ImpleDB implements Dao {
 			return false;
 		} finally {
 			try {
-				if (callableStatement != null) {
-					callableStatement.close();
+				if (stmt != null) {
+					stmt.close();
 				}
 			} catch (SQLException e) {
 			}
@@ -178,16 +181,15 @@ public class ImpleDB implements Dao {
 			// insercion de la tabla articulo
 			stmt = (conn.prepareStatement(ALTA_ARTICULO, Statement.RETURN_GENERATED_KEYS));
 			stmt.setString(1, art.getColor());
-			stmt.setString(2, art.getModelo());
-			stmt.setString(3, art.getTemporada().toString());
-			stmt.setFloat(4, art.getPrecio());
-			stmt.setFloat(5, art.getPorcentajeDecuento());
+			stmt.setString(2, art.getTemporada().toString());
+			stmt.setFloat(3, art.getPrecio());
+			stmt.setFloat(4, art.getPorcentajeDecuento());
+			stmt.setString(5, art.getNombreTipo());
 			stmt.executeUpdate();
 			resultSet = stmt.getGeneratedKeys();
 			if (resultSet.next()) {
 				cod = resultSet.getInt(cod);
 			}
-
 			return cod;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -287,7 +289,6 @@ public class ImpleDB implements Dao {
 	public Map<Integer, Tipo> listarTiposArticulos() {
 		Map<Integer, Tipo> tipoArticulo = new HashMap<>();
 		conn = ConnectionMysql.openConnection();
-
 		try {
 			stmt = conn.prepareStatement(CONSULTA_TIPO);
 			resultSet = stmt.executeQuery();
@@ -295,7 +296,7 @@ public class ImpleDB implements Dao {
 				Tipo tipo = new Tipo();
 				tipo.setCodTipo(resultSet.getInt("cod_tipo"));
 				tipo.setNombreTipo(resultSet.getString("nombre"));
-				tipo.setStok(resultSet.getInt("stock"));
+				tipo.setStock(resultSet.getInt("stock"));
 				tipoArticulo.put(tipo.getCodTipo(), tipo);
 			}
 
@@ -320,19 +321,21 @@ public class ImpleDB implements Dao {
 	}
 
 	@Override
-	public int introducirTipoArticulo(Tipo tipo) {// revisar si esto funciona
+	public int introducirTipoArticulo(Tipo tipo) {
 		conn = ConnectionMysql.openConnection();
 		int codigo = 0;
 		try {
-			comprobarTipo(tipo);
-			// insercion de la tabla tipo
+			// comprobamos que el tipo que se vaya a introducir no exista en la base de
+			// datos y si existe se llamara a un procedimiento en el que se actializara el
+			// stock y si el tipo de articulo no existe entonces se insertara como uno nuevo
 			stmt = (conn.prepareStatement(ALTA_TIPO, Statement.RETURN_GENERATED_KEYS));
-			stmt.setString(1, tipo.getNombreTipo());
-			stmt.setInt(2, tipo.getStok());
-			stmt.executeUpdate();
+			callableStatement = conn.prepareCall(ALTA_TIPO);
+			callableStatement.setString(1, tipo.getNombreTipo());
+			callableStatement.setInt(2, tipo.getStock());
+			callableStatement.execute();
 			resultSet = stmt.getGeneratedKeys();
 			if (resultSet.next()) {
-				codigo = resultSet.getInt(1);
+				codigo = resultSet.getInt(codigo);
 			}
 			return codigo;
 		} catch (SQLException e) {
@@ -344,38 +347,13 @@ public class ImpleDB implements Dao {
 					stmt.close();
 				}
 			} catch (SQLException e) {
-			}
-			if (conn != null) {
-				ConnectionMysql.closeConnection();
-			}
-		}
 
-	}
-
-	private boolean comprobarTipo(Tipo tipo) {
-//comprobamos que el tipo que se vaya a introducir no exista en la base de datos y si existe se llamara a un procedimiento en el que se actializara el stock
-
-		try {
-			stmt = (conn.prepareStatement(CONSULTA_TIPO));
-
-			stmt.setString(1, tipo.getNombreTipo());
-			stmt.setString(2, tipo.getStok().toString());
-			resultSet = stmt.executeQuery();
-			if (resultSet.next()) {
-				System.out.println(resultSet.getString("nombre"));
-				if (tipo.getNombreTipo().equalsIgnoreCase(resultSet.getString("nombre"))) {
-					callableStatement = conn.prepareCall(ACTUALIZARSTOCKTIPO);
-					callableStatement.setString(1, tipo.getNombreTipo());
-					callableStatement.setInt(2, tipo.getStok());
+				if (conn != null) {
+					ConnectionMysql.closeConnection();
 				}
-				return true;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+
 		}
-
-		return false;
-
 	}
 
 }

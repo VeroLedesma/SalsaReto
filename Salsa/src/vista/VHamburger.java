@@ -19,8 +19,6 @@ public class VHamburger extends JDialog implements ActionListener {
 	private JButton btnIndex, btnSettings, btnContact, btnAdministration, btnLogout;
 	private JPanel panel, panel2;
 
-	// Controlador
-	// private Controlador controladorRutas;
 	private VLogin login;
 	private Persona persona;
 	private boolean modal;
@@ -28,12 +26,12 @@ public class VHamburger extends JDialog implements ActionListener {
 	/**
 	 * Create the frame.
 	 * 
-	 * @param b
+	 * @param modal
 	 * @param main
 	 */
-	public VHamburger(VMain main, boolean b) {
+	public VHamburger(VMain main, boolean modal) {
 		super(main);
-		setModal(b);
+		setModal(modal);
 		Hamburguesa();
 		btnLogout.addActionListener(this);
 	}
@@ -78,9 +76,6 @@ public class VHamburger extends JDialog implements ActionListener {
 		btnLogout = new JButton("Cerrar sesión");
 		btnLogout.setBounds(254, 437, 176, 42);
 		contentPane.add(btnLogout);
-//		if (oscuro) {
-//			cambioFondo();
-//		}
 	}
 
 	@Override
@@ -106,15 +101,15 @@ public class VHamburger extends JDialog implements ActionListener {
 
 		this.dispose();
 		VLogin log = new VLogin(persona);
+		log.setLocationRelativeTo(this);
 		log.setVisible(true);
 	}
 
 	public void administracion() {
 
 		VAdministracion admin = new VAdministracion(this, true);
-
 		this.dispose();
-
+		admin.setLocationRelativeTo(this);
 		admin.setVisible(true);
 	}
 
@@ -123,7 +118,7 @@ public class VHamburger extends JDialog implements ActionListener {
 		VContacto contact = new VContacto(this, true);
 
 		this.dispose();
-
+		contact.setLocationRelativeTo(this);
 		contact.setVisible(true);
 	}
 
@@ -132,6 +127,7 @@ public class VHamburger extends JDialog implements ActionListener {
 		VMiLista settings = new VMiLista(this, true);
 
 		this.dispose();
+		settings.setLocationRelativeTo(this);
 		settings.setVisible(true);
 	}
 
@@ -140,20 +136,8 @@ public class VHamburger extends JDialog implements ActionListener {
 		VMain index = new VMain(login, modal);
 
 		this.dispose();
-	
+		index.setLocationRelativeTo(this);
 		index.setVisible(true);
 	}
-
-//	public void cambioFondo() {
-//		panel.setBackground(Color.WHITE);
-//		panel2.setBackground(Color.WHITE);
-//		btnIndex.setForeground(Color.WHITE);
-//		btnAdministration.setForeground(Color.WHITE);
-//		btnContact.setForeground(Color.WHITE);
-//		btnLogout.setForeground(Color.WHITE);
-//		btnSettings.setForeground(Color.WHITE);
-//		contentPane.setBackground(Color.DARK_GRAY);
-//
-//	}
 
 }
