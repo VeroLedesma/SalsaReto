@@ -29,6 +29,12 @@ import modelo.Sexo;
 import modelo.Trabajador;
 import modelo.Usuario;
 
+/**
+ * Esta ventana permite registrar a un usuario en la base de datos
+ * solo en caso de que todos los campos se rellenen correctamente
+ * cumpliendo con los valores que se piden en cada campo.
+ * @author Luis
+ */
 public class VRegister extends JDialog implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
@@ -49,14 +55,13 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 	private JButton btnVolver;
 
 	/**
-	 * Aparece una ventana para registrar un usuario o trabajador
-	 * en la base de datos
+	 * Constructor de la ventana VRegister
 	 * 
-	 * @param padre
-	 * @param modal
-	 * @param persona2
-	 * @param fila
-	 * @param btnNombre
+	 * @param padre Hace referencia a la ventana padre que es la de Login
+	 * @param modal Permite que no se pueda cambiar entre una ventana y otra
+	 * @param persona2 Hace referencia a la clase persona
+	 * @param fila Hace referencia a la fila que se seleccione
+	 * @param btnNombre Hace referencia al botón de modificación de datos
 	 */
 	public VRegister(VLogin padre, boolean modal, Persona persona2, int fila, String btnNombre) {
 		super(padre);
@@ -288,11 +293,13 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 	}
 
+	//Inicia un evento cuando clicas el botón
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		inicioSesion();
 	}
 
+	//Te envía a la ventana de inicio de sesión (Login)
 	protected void inicioSesion() {
 		VLogin log = new VLogin(per);
 		log.setLocationRelativeTo(this);
@@ -301,6 +308,12 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 	}
 
+	/**
+	 * Realiza el evento de enviar los datos a la base de datos.
+	 * Si no se rellenan los campos obligatorios, aparece un mensaje de error.
+	 * 
+	 * @param evento Inicia un evento de acción.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent evento) {
 
@@ -335,6 +348,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		}
 	}
 
+	// Permite modificar los datos de los usuarios o los trabajadores
 	private void modificar() {
 		boolean modificado;
 		System.out.println(per.getDni());
@@ -349,6 +363,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		}
 	}
 
+	//Te redirige a la ventana de ListarUsuarios
 	private void volver() {
 
 
@@ -359,6 +374,8 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 	}
 
+	//Comprueba que los campos obligatorios se han rellenado
+	//y realiza la comprobación de que el DNI y el email estén correctamente
 	private boolean camposObligatoriosCompletos() {
 
 		boolean correcto = false, dniValido = false, emailValido = false;
@@ -410,6 +427,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		return correcto;
 	}
 
+	//Permite seleccionar el usuario con un checkbox
 	private void seleccionarUsuario() {
 		if (checkBoxUsuario.isSelected()) {
 			// Deshabilitar el campo de número de seguridad social
@@ -421,7 +439,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 			checkBoxTrabajador.setSelected(false);
 		}
 	}
-
+	//Permite seleccionar el usuario de trabajador con un checkbox
 	private void seleccionarTrabajador() {
 		if (checkBoxTrabajador.isSelected()) {
 			// Deshabilitar el campo de número de seguridad social
@@ -435,6 +453,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 	}
 
+	//Permite registrar a una persona en la base de datos
 	private void registrarPersona() {
 		Persona persona = null;
 		if (checkBoxUsuario.isSelected()) {
@@ -460,6 +479,8 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		Controlador.registrarUsuario(persona);
 	}
 
+	//Esta parte realiza toda la lógica con la conexión de la base de datos 
+	//y si existe ese usuario.
 	private void cargarDatosComunes(Persona persona) {
 
 		persona.setApellido(textApellido.getText());
