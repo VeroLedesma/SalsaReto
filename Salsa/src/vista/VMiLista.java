@@ -19,7 +19,10 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
+/**
+ * Esta ventana permite ver una lista de deseos que el usuario a agregado a la misma.
+ * @author Luis
+ */
 public class VMiLista extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -34,6 +37,13 @@ public class VMiLista extends JDialog implements ActionListener {
 	// Comprobar si anda en modo diurno o nocturno
 	// private boolean oscuro;
 
+	
+	/**
+	 * Se visualiza una "Lista de deseos"
+	 * 
+	 * @param hamburger Hace referencia a la ventana Hamburger, que es el menu
+	 * @param b Actua como valor para el modal, es decir que no permite que se cambie entre ventanas
+	 */
 	public VMiLista(VHamburger hamburger, boolean b) {
 		super(hamburger);
 		setModal(b);
@@ -133,6 +143,11 @@ public class VMiLista extends JDialog implements ActionListener {
 		cargarPreferenciaTema();
 	}
 
+	/**
+	 * Permite iniciar una accion que vuelve a la ventana anterior
+	 * 
+	 * @param e Inicia una accion de evento
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnVolver)) {
@@ -141,6 +156,7 @@ public class VMiLista extends JDialog implements ActionListener {
 
 	}
 
+	
 	private void cargarPreferenciaTema() {
 		// Obtener las preferencias compartidas para la clase Ajustes
 		Preferences prefs = Preferences.userNodeForPackage(VMiLista.class);
@@ -151,6 +167,7 @@ public class VMiLista extends JDialog implements ActionListener {
 		// cambiarTema(oscuro ? 1 : 0);
 	}
 
+	//Permite volver a la ventana principal que es la de Hamburger
 	protected void volver() {
 
 		VHamburger ham = new VHamburger(main, false);

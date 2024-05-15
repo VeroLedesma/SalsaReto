@@ -3,13 +3,10 @@ package modelo;
 import java.time.LocalDate;
 
 /**
- * <<<<<<< HEAD Clase que representa a una persona.
+ *  La clase Persona representa a una persona con sus datos personales y métodos para validación.
  * 
- * @author melany, santi, vero ======= La clase Persona representa a una persona
- *         con sus datos personales y métodos para validación.
- * 
- * @autor Vero
- * @version 1.0 >>>>>>> fc1612582b416ac0111ffdcef2e175404bdf72b8
+ * @author melany, santi, vero
+ * @version 1.0
  */
 public class Persona {
 	private String dni, nombre, apellido, email, direccion, contrasena;
@@ -20,8 +17,7 @@ public class Persona {
 	/**
 	 * Obtiene el DNI de la persona.
 	 * 
-	 * @return el DNI de la persona
-	 * 
+	 * @return El DNI de la persona.
 	 */
 	public String getDni() {
 		return dni;
@@ -31,7 +27,6 @@ public class Persona {
 	 * Establece el DNI de la persona.
 	 * 
 	 * @param dni El DNI de la persona.
-	 * @param dni el nuevo DNI de la persona
 	 */
 	public void setDni(String dni) {
 		this.dni = dni;
@@ -75,7 +70,7 @@ public class Persona {
 
 	/**
 	 * Obtiene el email de la persona.
-	 *
+   *
 	 * @return El email de la persona.
 	 */
 	public String getEmail() {
@@ -104,7 +99,6 @@ public class Persona {
 	 * Establece la dirección de la persona.
 	 * 
 	 * @param direccion La dirección de la persona.
-	 * 
 	 */
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
@@ -112,8 +106,8 @@ public class Persona {
 
 	/**
 	 * Obtiene la fecha de nacimiento de la persona.
-	 * 
-	 * @return la fecha de nacimiento de la persona
+	 *
+	 * @return La fecha de nacimiento de la persona.
 	 */
 	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
@@ -141,7 +135,6 @@ public class Persona {
 	 * Establece el género de la persona.
 	 * 
 	 * @param genero El género de la persona.
-	 * @param genero el nuevo género de la persona
 	 */
 	public void setGenero(Sexo genero) {
 		this.genero = genero;
@@ -151,7 +144,6 @@ public class Persona {
 	 * Obtiene la contraseña de la persona.
 	 * 
 	 * @return La contraseña de la persona.
-	 * 
 	 */
 	public String getContrasena() {
 		return contrasena;
@@ -165,7 +157,6 @@ public class Persona {
 	public void setContrasena(String contrasena) {
 		this.contrasena = contrasena;
 	}
-
 	// Métodos de validación
 
 	/**
@@ -175,7 +166,8 @@ public class Persona {
 	 * @param email El email a validar.
 	 * @return true si el email es válido, false si no lo es.
 	 * @throws IllegalArgumentException Si el email proporcionado no es válido.
-	 */
+*/
+
 	public boolean validarEmail(String email) throws IllegalArgumentException {
 		try {
 			String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
@@ -191,14 +183,13 @@ public class Persona {
 	}
 
 	/**
+	 * Método para verificar la validez de un DNI.
 	 * 
-	 * Método para verificar la validez de un DNI. Valida el formato del DNI
-	 * proporcionado.
+	 * @author vero
 	 * 
-	 * @param dni el DNI a validar
-	 * @return true si el DNI es válido, false en caso contrario
-	 * @throws IllegalArgumentException si el DNI no es válido
-	 * 
+	 * @param dni El DNI a validar.
+	 * @return true si el DNI es válido, false si no lo es.
+	 * @throws IllegalArgumentException Si el DNI proporcionado no es válido.
 	 */
 	public boolean validarDNI(String dni) throws IllegalArgumentException {
 		try {

@@ -1,11 +1,28 @@
 package modelo;
-
 /**
- * @author melany, santi
+ * La enumeración Temporada representa las cuatro estaciones del año.
  * 
- *         Enumeración que representa las diferentes temporadas.
+ * @autor Vero
+ * @version 1.0
  */
 public enum Temporada {
+    /**
+     * La estación de la primavera.
+     */
+    PRIMAVERA,
 
-	PRIMAVERA, VERANO, OTONIO, INVIERNO;
+    /**
+     * La estación del verano.
+     */
+    VERANO,
+
+    /**
+     * La estación del otoño.
+     */
+    OTOÑO,
+
+    /**
+     * La estación del invierno.
+     */
+    INVIERNO;
 }
