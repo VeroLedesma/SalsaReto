@@ -14,6 +14,11 @@ import java.util.Map;
 
 import controlador.Dao;
 
+/**
+ * creada la clase para la gestion del enlace con la base dedatos.
+ * 
+ *
+ */
 public class ImpleDB implements Dao {
 
 	// Objeto para crear conexión mysql
