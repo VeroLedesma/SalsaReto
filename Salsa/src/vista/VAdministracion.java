@@ -97,10 +97,6 @@ public class VAdministracion extends JDialog implements ActionListener {
 		btnInsertarTipo.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnInsertarTipo.setBounds(194, 260, 234, 60);
 		contentPane.add(btnInsertarTipo);
-
-//		if (oscuro) {
-//			cambioFondo();
-//		}
 	}
 
 	@Override
@@ -121,14 +117,6 @@ public class VAdministracion extends JDialog implements ActionListener {
 			insertarTipo();
 		}
 	}
-
-//	private void cambioFondo() {
-//		contentPane.setBackground(Color.DARK_GRAY);
-//		panelAdvise.setBackground(Color.DARK_GRAY);
-//		lblAdvise1.setForeground(Color.WHITE);
-//		lblAdvise2.setForeground(Color.WHITE);
-//		lblAdvise3.setForeground(Color.WHITE);
-//	}
 
 	private void insertarTipo() {
 		VInsertarTipoArticulo tipo = new VInsertarTipoArticulo(this, true);

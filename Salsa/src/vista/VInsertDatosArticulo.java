@@ -140,7 +140,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		try {
 			tipoPrenda = Controlador.listarTipoArticulos();
 			for (Tipo tipo : tipoPrenda.values()) {
-				cbTipoPrenda.addItem(tipo.getNombreTipo());
+				cbTipoPrenda.addItem(tipo.getNombreTipo() + "" + tipo.getCodTipo());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

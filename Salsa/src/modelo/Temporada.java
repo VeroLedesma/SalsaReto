@@ -1,7 +1,11 @@
 package modelo;
 
-
+/**
+ * @author melany, santi
+ * 
+ *         Enumeración que representa las diferentes temporadas.
+ */
 public enum Temporada {
-	PRIMAVERA, VERANO, OTOÑO, INVIERNO;
 
+	PRIMAVERA, VERANO, OTONIO, INVIERNO;
 }

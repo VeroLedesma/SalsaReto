@@ -429,10 +429,8 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		if (checkBoxUsuario.isSelected()) {
 			persona = new Usuario();
 			cargarDatosComunes(persona);
-
 			((Usuario) persona)
 					.setFechaRegistro(dateFRegistro.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-
 		} else if (checkBoxTrabajador.isSelected()) {
 			persona = new Trabajador();
 
@@ -442,12 +440,11 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 			JOptionPane.showConfirmDialog(null, "¿Eres un encargado?", "Confirmación", JOptionPane.YES_NO_OPTION);
 			if (respuesta == JOptionPane.YES_OPTION) {
 				((Trabajador) persona).setEncargado(true);
+
 			} else if (respuesta == JOptionPane.NO_OPTION) {
 				((Trabajador) persona).setEncargado(false);
 			}
-
 		}
-
 		// Comprobamos a traves de la interfaz si la cuenta existe
 		Controlador.registrarUsuario(persona);
 	}
