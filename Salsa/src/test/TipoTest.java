@@ -32,7 +32,7 @@ class TipoTest {
 	}
 
 	@Test
-	public void testGetSetStok() {
+	public void testGetSetStock() {
 		Tipo tipo = new Tipo();
 
 		tipo.setStock(50);
