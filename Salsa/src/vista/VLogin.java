@@ -1,4 +1,3 @@
-
 package vista;
 
 import java.awt.Color;
@@ -23,6 +22,11 @@ import javax.swing.border.EmptyBorder;
 import controlador.Controlador;
 import modelo.Persona;
 
+/**
+ * La clase VLogin representa una ventana de inicio de sesión.
+ * Permite a los usuarios ingresar su correo electrónico y contraseña para acceder al sistema.
+ * Implementa ActionListener y MouseListener para manejar eventos de acción y de ratón.
+ */
 public class VLogin extends JFrame implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
@@ -31,15 +35,15 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	private JTextField inputEmail;
 	private JPasswordField inputPassword;
 	private JButton toggleButton, btnLogin;
-	// Lógica para la conexión
 	private Persona persona = new Persona();
 	private JLabel lblImagenLogin;
 
-	// Constructor vacio para el cierre de sesión
-
-	// Página de Inicio
+	/**
+	 * Constructor de la clase VLogin.
+	 * 
+	 * @param persona objeto Persona para manejar los datos del usuario
+	 */
 	public VLogin(Persona persona) {
-		// Página de Inicio
 		this.persona = persona;
 		setBounds(100, 100, 931, 574);
 		BodyLayout = new JPanel();
@@ -48,9 +52,10 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 		setContentPane(BodyLayout);
 		this.setLocationRelativeTo(null);
 		BodyLayout.setLayout(null);
+
 		ImageIcon icon = new ImageIcon(getClass().getResource("/assets/logo.png"));
 
-		// Division Login
+		// División del Login
 		panelLeft = new JPanel();
 		panelLeft.setBackground(new Color(255, 255, 255));
 		panelLeft.setBounds(0, 0, 416, 539);
@@ -64,18 +69,17 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 		ImageIcon imagen1 = new ImageIcon(imagen.getImage().getScaledInstance(lblImagenLogin.getWidth(),
 				lblImagenLogin.getHeight(), Image.SCALE_SMOOTH));
 		lblImagenLogin.setIcon(imagen1);
+
 		panelRight = new JPanel();
 		panelRight.setBackground(new Color(255, 255, 255));
 		panelRight.setBounds(414, 0, 501, 539);
 		BodyLayout.add(panelRight);
 		panelRight.setLayout(null);
 
-		// Establece el icono "nover" por defecto
+		// Botón de visualización/ocultación de contraseña
 		toggleButton = new JButton(new ImageIcon(getClass().getResource("/assets/icons/nover.png")));
 		toggleButton.setBounds(412, 313, 29, 20);
-		// Establece el botón como transparente
 		toggleButton.setOpaque(false);
-		// No rellena el área del botón
 		toggleButton.setContentAreaFilled(false);
 		toggleButton.setBorderPainted(false);
 		panelRight.add(toggleButton);
@@ -88,6 +92,7 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 				icon.getImage().getScaledInstance(lblLogo.getWidth(), lblLogo.getHeight(), Image.SCALE_SMOOTH));
 		lblLogo.setIcon(img);
 
+		// Campo de correo electrónico
 		labelEmail = new JLabel("Correo electrónico");
 		labelEmail.setFont(new Font("Tahoma", Font.BOLD, 14));
 		labelEmail.setBounds(74, 171, 157, 14);
@@ -99,6 +104,7 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 		inputEmail.setColumns(10);
 		panelRight.add(inputEmail);
 
+		// Campo de contraseña
 		labelPassword = new JLabel("Contraseña");
 		labelPassword.setFont(new Font("Tahoma", Font.BOLD, 14));
 		labelPassword.setBounds(74, 270, 123, 14);
@@ -108,11 +114,13 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 		inputPassword.setBounds(74, 295, 378, 51);
 		panelRight.add(inputPassword);
 
+		// Botón de inicio de sesión
 		btnLogin = new JButton("Iniciar sesión");
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnLogin.setBounds(74, 381, 378, 45);
 		panelRight.add(btnLogin);
 
+		// Enlace para registrar una nueva cuenta
 		labelNoRegister = new JLabel("¿No tienes cuenta? Click aquí para");
 		labelNoRegister.setFont(new Font("Tahoma", Font.BOLD, 13));
 		labelNoRegister.setBounds(74, 454, 227, 14);
@@ -126,26 +134,27 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 		linkRegister.setHorizontalAlignment(SwingConstants.LEFT);
 		panelRight.add(linkRegister);
 
-		// Botones de eventos
+		// Agregar listeners para eventos
 		linkRegister.addMouseListener(this);
 		btnLogin.addActionListener(this);
 		toggleButton.addActionListener(this);
-
 	}
 
-	// Visualizar/Desvisualizar la contraseña
+	/**
+	 * Alterna la visibilidad de la contraseña en el campo de entrada.
+	 */
 	private void togglePasswordVisibility() {
-		// Si el echoChar es '•', cambiar a mostrar texto, de lo contrario, ocultar
-		// texto
 		char echoChar = (inputPassword.getEchoChar() == '\u2022') ? '\u0000' : '\u2022';
-		// Establecer el echoChar según la lógica anterior
 		inputPassword.setEchoChar(echoChar);
-		// Cambiar el icono según el echoChar
 		toggleButton.setIcon((echoChar == '\u2022') ? new ImageIcon(getClass().getResource("/assets/icons/ver.png"))
 				: new ImageIcon(getClass().getResource("/assets/icons/nover.png")));
 	}
 
-	// Métodos para ahorrar los action listener
+	/**
+	 * Método para manejar eventos de clic del ratón.
+	 * 
+	 * @param e el evento de clic del ratón
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource().equals(linkRegister)) {
@@ -156,6 +165,11 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 		}
 	}
 
+	/**
+	 * Método para manejar eventos de acción.
+	 * 
+	 * @param e el evento de acción
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(toggleButton)) {
@@ -166,40 +180,40 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 		}
 	}
 
+	/**
+	 * Lógica para el inicio de sesión del usuario.
+	 */
 	public void logicaLogin() {
-		// Obtener los valores de correo electrónico y contraseña de los campos de
-		// entrada
 		String email = inputEmail.getText().trim();
 		String password = new String(inputPassword.getPassword());
 		boolean correcto = false, existe = false;
-		// Si la persona no tiene ningún dato le mandamos error
 		correcto = camposVacios(correcto);
-		if (correcto == false) {
+		if (!correcto) {
 			JOptionPane.showMessageDialog(this, "Por favor, introduzca todos los campos obligatorios.",
-					"Campos obligatorios incompletos", JOptionPane.ERROR_MESSAGE); // Muestra un mensaje de error
+					"Campos obligatorios incompletos", JOptionPane.ERROR_MESSAGE);
 			borrar();
 		} else {
 			existe = Controlador.iniciarSesion(email, password);
-
-			if (existe == true) {
-				// le enviamos un mensaje de bienvenida
+			if (existe) {
 				JOptionPane.showMessageDialog(null, "Bienvenido/a al sistema");
 				this.setVisible(false);
 				VMain vent = new VMain(this, true);
 				vent.setLocationRelativeTo(this);
 				vent.setVisible(true);
-
 				this.dispose();
-			} else if (existe == false) {
-				// si el inicio de sesion es incorrecto le enviaremos un mensaje de error
-				JOptionPane.showMessageDialog(this, "el email o la contraseña son incorrectos.",
-						"porfavor introduzca valores validos", JOptionPane.ERROR_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(this, "El email o la contraseña son incorrectos.",
+						"Por favor, introduzca valores válidos", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-
 	}
 
-	// Metodo para recoger los campos vacios de los input
+	/**
+	 * Comprueba si los campos de entrada están vacíos.
+	 * 
+	 * @param correcto booleano que indica si los campos están completos
+	 * @return true si los campos no están vacíos, false en caso contrario
+	 */
 	private boolean camposVacios(boolean correcto) {
 		if (inputEmail.getText().trim().isEmpty() || new String(inputPassword.getPassword()).trim().isEmpty()) {
 			correcto = false;
@@ -207,19 +221,18 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 			correcto = true;
 		}
 		return correcto;
-
 	}
 
-	// Limpiamos los datos tecleados del formulario
+	/**
+	 * Limpia los datos ingresados en el formulario.
+	 */
 	private void borrar() {
 		inputEmail.setText("");
-
 		inputPassword.setText("");
 		inputEmail.requestFocus();
 	}
 
-	// Implementación de los métodos MouseListener (no son necesarios, pero necesito
-	// implemenetarlos en la clase si quiero hacer lo de los eventos)
+	// Métodos vacíos para implementar MouseListener (necesarios para la clase)
 	@Override
 	public void mousePressed(MouseEvent e) {
 	}
@@ -235,5 +248,4 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
-
 }
