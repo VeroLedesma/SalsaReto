@@ -14,6 +14,11 @@ import java.util.Map;
 
 import controlador.Dao;
 
+/**
+ * creada la clase para la gestion del enlace con la base dedatos.
+ * 
+ *
+ */
 public class ImpleDB implements Dao {
 
 	// Objeto para crear conexión mysql
@@ -44,10 +49,9 @@ public class ImpleDB implements Dao {
 			resultSet = stmt.executeQuery();
 			while (resultSet.next()) {
 				Articulo art = new Articulo();
-
 				art.setCodArticulo(resultSet.getInt("cod_articulo"));
 				art.setColor(resultSet.getString("color"));
-				art.setTemporada(Temporada.valueOf(resultSet.getString("temporada").toUpperCase()));
+				art.setTemporada(Temporada.valueOf(resultSet.getString("temporada").toString()));
 				art.setPrecio(resultSet.getFloat("precio"));
 				art.setPorcentajeDecuento(resultSet.getFloat("descuento"));
 				articulo.add(art);
