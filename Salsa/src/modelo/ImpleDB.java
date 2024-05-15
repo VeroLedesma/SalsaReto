@@ -52,7 +52,7 @@ public class ImpleDB implements Dao {
 
 				art.setCodArticulo(resultSet.getInt("cod_articulo"));
 				art.setColor(resultSet.getString("color"));
-				art.setTemporada(Temporada.valueOf(resultSet.getString("temporada").toUpperCase()));
+				art.setTemporada(Temporada.valueOf(resultSet.getString("temporada").toString()));
 				art.setPrecio(resultSet.getFloat("precio"));
 				art.setPorcentajeDecuento(resultSet.getFloat("descuento"));
 				articulo.add(art);
