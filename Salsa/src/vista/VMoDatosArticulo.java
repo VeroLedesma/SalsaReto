@@ -22,6 +22,11 @@ import javax.swing.event.ListSelectionListener;
 import controlador.Controlador;
 import modelo.Articulo;
 
+/**
+ * En esta ventana se permite realizar las modificaciones de datos que requiera el Trabajador.
+ * Una vez realizados, se cambiarán los datos en la base de datos.
+ * @author Luis
+ */
 public class VMoDatosArticulo extends JDialog implements ActionListener, ListSelectionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -32,10 +37,10 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 	private JButton btnEliminar, btnVolver, btnModificar;
 
 	/**
-	 * Create the frame.
+	 * Constructor de la clase VMoDatosArticulo
 	 * 
-	 * @param modal
-	 * @param administracion
+	 * @param modal Hace que no se pueda alternar entre ventanas
+	 * @param administracion Hace referencia a la ventana de Administracion
 	 * 
 	 */
 	public VMoDatosArticulo(VAdministracion administracion, boolean modal) {
@@ -88,6 +93,7 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 
 	}
 
+	//Tabla donde se pueden modificar los datos
 	private void construirTabla() {
 		String titulos[] = { "COD", "COLOR", "MODELO", "TEMPORADA", "PRECIO", "DESCUENTO" };
 		String informacion[][];
@@ -103,6 +109,7 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 
 	}
 
+	//Se imprimen los datos de los articulos en la tabla
 	private String[][] obtenerMatriz() throws SQLException {
 
 		List<Articulo> articulos = Controlador.listarArticulos(); // Asumiendo que Controlador tiene un método para
@@ -121,6 +128,11 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 		return matrizInfo;
 	}
 
+	/**
+	 * Se crea un metodo que permite volver a la ventana anterior
+	 * 
+	 * @param e Permite realizar una accion de evento
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -129,6 +141,7 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 		}
 	}
 
+	//Se vuelve a la ventana anterior, que es la de administración
 	private void volver() {
 		VAdministracion admin = new VAdministracion(null, true);
 		this.dispose();
@@ -139,7 +152,7 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-//aqui añadiremos  la accion que se hara para eliminar o modificar el usuario
+//aqui añadiremos  la accion que se hará para eliminar o modificar el usuario
 
 	}
 

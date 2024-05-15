@@ -10,7 +10,14 @@ import java.time.LocalDate;
  */
 public class Usuario extends Persona {
 	private LocalDate fechaRegistro; // Fecha de registro del usuario
-
+    /**
+     * Obtiene la fecha de registro del usuario.
+     * 
+     * @return La fecha de registro del usuario.
+     */
+    public LocalDate getFechaRegistro() {
+        return fechaRegistro;
+    }
 	/**
 	 * Establece la fecha de registro del usuario.
 	 * 
@@ -19,14 +26,4 @@ public class Usuario extends Persona {
 	public void setFechaRegistro(LocalDate fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
-
-	/**
-	 * Obtiene la fecha de registro del usuario.
-	 * 
-	 * @return La fecha de registro del usuario.
-	 */
-	public LocalDate getFechaRegistro() {
-		return fechaRegistro;
-	}
-
 }

@@ -44,15 +44,9 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	// Página de Inicio
 	
 	/**
-	 * Se crea la ventana
-	 * 
-	 * @param persona
-=======
-	/**
 	 * Constructor de la clase VLogin.
 	 * 
 	 * @param persona objeto Persona para manejar los datos del usuario
->>>>>>> fc1612582b416ac0111ffdcef2e175404bdf72b8
 	 */
 	public VLogin(Persona persona) {
 		this.persona = persona;
