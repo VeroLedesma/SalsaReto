@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -14,8 +15,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 /**
- * La clase VMain representa la ventana principal de la aplicación.
- * Muestra diferentes categorías de artículos y un botón de menú.
+ * La clase VMain representa la ventana principal de la aplicación. Muestra
+ * diferentes categorías de artículos y un botón de menú.
  */
 public class VMain extends JDialog implements ActionListener {
 
@@ -25,8 +26,6 @@ public class VMain extends JDialog implements ActionListener {
 	private JButton btnCamisetas, btnSudaderas, btnPantalones, btnMenu;
 
 	private JScrollPane scrollPane;
-	// Interfaz
-
 
 	/**
 	 * Constructor de la clase VMain.
@@ -53,7 +52,6 @@ public class VMain extends JDialog implements ActionListener {
 		logo.setIcon(img);
 		BodyLayout.add(logo);
 
-
 		// Contenedor para la rejilla de artículos
 
 		itemsPanel = new JPanel();
@@ -73,13 +71,11 @@ public class VMain extends JDialog implements ActionListener {
 
 		btnSudaderas.setBounds(825, 146, 165, 46);
 		BodyLayout.add(btnSudaderas);
-		
+
 		btnPantalones = new JButton("Pantalones");
 		btnPantalones.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		btnPantalones.setBounds(563, 146, 165, 46);
-
-
 
 		BodyLayout.add(btnPantalones);
 
@@ -90,7 +86,6 @@ public class VMain extends JDialog implements ActionListener {
 		btnMenu.setBounds(925, 10, 113, 30);
 		BodyLayout.add(btnMenu);
 
-
 		JButton btnTodos = new JButton("Todos los articulos");
 		btnTodos.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnTodos.setBounds(10, 150, 181, 38);
@@ -100,9 +95,8 @@ public class VMain extends JDialog implements ActionListener {
 		scrollPane.setBounds(10, 226, 1048, 428);
 		BodyLayout.add(scrollPane);
 
-
 		// Agrega elementos a la rejilla de artículos
-		for (int i = 0; i < 8; i++) {//Por ejemplo aqui se agregan 8 elementos
+		for (int i = 0; i < 8; i++) {// Por ejemplo aqui se agregan 8 elementos
 
 			JPanel item = new JPanel();
 			item.setBackground(Color.GRAY);
