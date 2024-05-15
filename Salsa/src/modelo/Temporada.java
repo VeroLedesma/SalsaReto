@@ -1,16 +1,5 @@
 package modelo;
-
 /**
-<<<<<<< HEAD
- * @author melany, santi
- * 
- *         Enumeración que representa las diferentes temporadas.
- */
-public enum Temporada {
-
-	PRIMAVERA, VERANO, OTONIO, INVIERNO;
-}
-=======
  * La enumeración Temporada representa las cuatro estaciones del año.
  * 
  * @autor Vero
@@ -37,4 +26,4 @@ public enum Temporada {
      */
     INVIERNO;
 }
->>>>>>> fc1612582b416ac0111ffdcef2e175404bdf72b8
+

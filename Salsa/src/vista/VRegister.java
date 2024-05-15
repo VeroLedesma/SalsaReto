@@ -48,6 +48,16 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 	private Persona per = new Persona();
 	private JButton btnVolver;
 
+	/**
+	 * Aparece una ventana para registrar un usuario o trabajador
+	 * en la base de datos
+	 * 
+	 * @param padre
+	 * @param modal
+	 * @param persona2
+	 * @param fila
+	 * @param btnNombre
+	 */
 	public VRegister(VLogin padre, boolean modal, Persona persona2, int fila, String btnNombre) {
 		super(padre);
 		this.per = persona2;
