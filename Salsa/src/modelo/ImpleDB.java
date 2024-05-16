@@ -27,16 +27,17 @@ public class ImpleDB implements Dao {
 	private ResultSet resultSet;
 	private CallableStatement callableStatement;
 	// Consultas a la Base de Datos
-	private final String CONSULTA_USUARIO = "SELECT dni, nombre, apellido,fechaNac,contrasena,  direccion, email, genero FROM persona ";
+	private final String CONSULTA_PERSONA = "SELECT dni, nombre, apellido,fechaNac,contrasena,  direccion, email, genero FROM persona ";
 	private final String ALTA_PERSONA = "INSERT INTO persona (dni, nombre, apellido, fechaNac, contrasena, direccion, email, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	private final String ASIGNACIONUSUARIO = "{CALL setPersonaInvitado(?,?,?)}";
 	private final String ASIGNACIONTRABAJADOR = "{CALL setTrabajador(?,?,?,?)}";
 	private final String ALTA_ARTICULO = "INSERT INTO articulo (color, temporada, precio, descuento, cod_tipo) VALUES (  ?, ?, ?, ?, ?)";
 	private final String CONSULTA_COMPROBAR_USUARIO = "SELECT dni, nombre, apellido,fechaNac, direccion, email, genero FROM persona WHERE email=? AND contrasena=?";
-	private final String MODIFICACION_USUARIO = "UPDATE persona SET dni=?, nombre = ?, apellido = ?, fechaNac= ?, contrasena=?, direccion = ?, email = ?, genero= ? WHERE dni = ?";
+	private final String MODIFICACION_USUARIO = "UPDATE persona SET nombre = ?, apellido = ?,  contrasena=?, direccion = ?, email = ?, genero= ? WHERE dni = ?";
 	private final String CONSULTA_ARTICULO = "SELECT cod_articulo,color,temporada, precio,descuento,cod_tipo FROM articulo";
 	private final String CONSULTA_TIPO = "SELECT cod_tipo, nombre, stock FROM tipo";
 	private final String ALTA_TIPO = "{CALL actualizar_o_insertar_stock(?,?)}";
+	private final String BUSCAR_ENCARGADO = "SELECT comprobarEncargado() AS Encargado";
 
 	@Override
 	public List<Articulo> listarArticulos() {
@@ -51,7 +52,7 @@ public class ImpleDB implements Dao {
 				Articulo art = new Articulo();
 				art.setCodArticulo(resultSet.getInt("cod_articulo"));
 				art.setColor(resultSet.getString("color"));
-				art.setTemporada(Temporada.valueOf(resultSet.getString("temporada").toString()));
+				art.setTemporada(Temporada.valueOf(resultSet.getString("temporada").toString().toUpperCase()));
 				art.setPrecio(resultSet.getFloat("precio"));
 				art.setPorcentajeDecuento(resultSet.getFloat("descuento"));
 				articulo.add(art);
@@ -83,7 +84,7 @@ public class ImpleDB implements Dao {
 		conn = ConnectionMysql.openConnection();
 
 		try {
-			stmt = conn.prepareStatement(CONSULTA_USUARIO);
+			stmt = conn.prepareStatement(CONSULTA_PERSONA);
 			resultSet = stmt.executeQuery();
 			while (resultSet.next()) {
 				Persona per = new Persona();
@@ -136,15 +137,17 @@ public class ImpleDB implements Dao {
 			// Inserción en la tabla trabajador llamando a un procedimiento creado en la
 			// base de datos que le asiganra el rol de empleado
 			if (per instanceof Trabajador) {
-				CallableStatement callableStatement = conn.prepareCall(ASIGNACIONTRABAJADOR);
+				callableStatement = conn.prepareCall(ASIGNACIONTRABAJADOR);
 				callableStatement.setString(1, per.getDni());
 				callableStatement.setString(2, ((Trabajador) per).getNnss());
 				callableStatement.setString(3, per.getContrasena());
 
 				if (((Trabajador) per).isEncargado() == true) { //
+					System.out.println("El trabajador es encargado" + ((Trabajador) per).isEncargado());
 					callableStatement.setInt(4, 1);
 
-				} else if (((Trabajador) per).isEncargado() == false) {
+				} else {
+					System.out.println("El trabajador es trabajador normal" + ((Trabajador) per).isEncargado());
 					callableStatement.setInt(4, 0);
 				}
 				callableStatement.execute();
@@ -152,11 +155,11 @@ public class ImpleDB implements Dao {
 			} else if (per instanceof Usuario) {
 				// Inserción en la tabla usuario llamando a un procedimiento creado en la base
 				// de datos que le asignara el rol de invitado cuyos permisos estan definidos
-				CallableStatement callableStatement1 = conn.prepareCall(ASIGNACIONUSUARIO);
-				callableStatement1.setString(1, per.getDni());
-				callableStatement1.setString(2, ((Usuario) per).getFechaRegistro().toString());
-				callableStatement1.setString(3, per.getContrasena());
-				callableStatement1.execute();
+				callableStatement = conn.prepareCall(ASIGNACIONUSUARIO);
+				callableStatement.setString(1, per.getDni());
+				callableStatement.setString(2, ((Usuario) per).getFechaRegistro().toString());
+				callableStatement.setString(3, per.getContrasena());
+				callableStatement.execute();
 			}
 
 			// Si todas las inserciones fueron exitosas, retorna true
@@ -178,9 +181,8 @@ public class ImpleDB implements Dao {
 	}
 
 	@Override
-	public int altaArticulo(Articulo art) {
+	public boolean altaArticulo(Articulo art) {
 		conn = ConnectionMysql.openConnection();
-		int cod = 0;
 		try {
 			// insercion de la tabla articulo
 			stmt = (conn.prepareStatement(ALTA_ARTICULO, Statement.RETURN_GENERATED_KEYS));
@@ -188,16 +190,13 @@ public class ImpleDB implements Dao {
 			stmt.setString(2, art.getTemporada().toString());
 			stmt.setFloat(3, art.getPrecio());
 			stmt.setFloat(4, art.getPorcentajeDecuento());
-			stmt.setString(5, art.getNombreTipo());
+			stmt.setInt(5, Integer.parseInt(art.getNombreTipo().split("_")[1]));
 			stmt.executeUpdate();
-			resultSet = stmt.getGeneratedKeys();
-			if (resultSet.next()) {
-				cod = resultSet.getInt(cod);
-			}
-			return cod;
+
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return -1;
+			return false;
 		} finally {
 			try {
 				if (stmt != null) {
@@ -221,7 +220,6 @@ public class ImpleDB implements Dao {
 			stmt = conn.prepareStatement(CONSULTA_COMPROBAR_USUARIO);
 			stmt.setString(1, email);
 			stmt.setString(2, contrasena);
-
 			resultSet = stmt.executeQuery();
 
 			while (resultSet.next()) {
@@ -257,21 +255,18 @@ public class ImpleDB implements Dao {
 		try {
 
 			stmt = (conn.prepareStatement(MODIFICACION_USUARIO));
-			System.out.println("dentro de la query");
-			stmt.setString(1, per.getDni());
-			stmt.setString(2, per.getNombre());
-			stmt.setString(3, per.getApellido());
-			stmt.setString(4, per.getFechaNacimiento().toString());
-			stmt.setString(5, per.getContrasena());
-			stmt.setString(6, per.getDireccion());
-			stmt.setString(7, per.getEmail());
-			stmt.setString(8, per.getGenero().toString());
 
-			modificado = stmt.execute();
-			System.out.println(stmt.executeUpdate());
-//			if (rowsAffected) {
-//				modificado = true;
-//			}
+			stmt.setString(1, per.getNombre());
+			stmt.setString(2, per.getApellido());
+			stmt.setString(3, per.getContrasena());
+			stmt.setString(4, per.getDireccion());
+			stmt.setString(5, per.getEmail());
+			stmt.setString(6, per.getGenero().toString());
+			stmt.setString(7, per.getDni());
+			int lineaAfectada = stmt.executeUpdate();
+			if (lineaAfectada > 0) {
+				modificado = true;
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -360,4 +355,35 @@ public class ImpleDB implements Dao {
 		}
 	}
 
+	@Override
+	public int comprobarEncargado() {
+		conn = ConnectionMysql.openConnection();
+		int existe = 0;
+		try {
+			// llamamos a un a funcion que nos buscara en la bhase de
+			// datos si hay o no un encargado, si la funcion devuelve 1 significa que un
+			// encargado ya existe entonces ya no se dara de alta otro encargado
+			stmt = conn.prepareStatement(BUSCAR_ENCARGADO);
+			resultSet = stmt.executeQuery();
+			if (resultSet.next()) {
+				existe = resultSet.getInt("Encargado");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+			} catch (SQLException e) {
+
+				if (conn != null) {
+					ConnectionMysql.closeConnection();
+				}
+			}
+		}
+		return existe;
+
+	}
 }

@@ -1,10 +1,13 @@
 package vista;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,7 +15,11 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import controlador.Controlador;
+import modelo.Articulo;
 
 /**
  * La clase VMain representa la ventana principal de la aplicación. Muestra
@@ -94,24 +101,46 @@ public class VMain extends JDialog implements ActionListener {
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 226, 1048, 428);
 		BodyLayout.add(scrollPane);
+// MIRAR ESTO EN CASM ES DE CHAT GPT
 
-		// Agrega elementos a la rejilla de artículos
-		for (int i = 0; i < 8; i++) {// Por ejemplo aqui se agregan 8 elementos
+		List<Articulo> articulos = null;
+		try {
+			articulos = Controlador.listarArticulos();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} // Obtener la lista de artículos desde la base de
+			// datos
+		for (Articulo articulo : articulos) {
+			// Crear un panel para cada artículo
+			JPanel panel = new JPanel();
+			panel.setLayout(new BorderLayout());
 
-			JPanel item = new JPanel();
-			item.setBackground(Color.GRAY);
-			itemsPanel.add(item);
+			// Crear una etiqueta para mostrar la imagen del artículo (asumiendo que la
+			// imagen está almacenada en la base de datos)
+			JLabel imagenLabel = new JLabel(new ImageIcon(icon.getImage()));
+			panel.add(imagenLabel, BorderLayout.CENTER);
+
+			// Crear una etiqueta para mostrar el nombre del artículo
+			JLabel nombreLabel = new JLabel(articulo.getNombreTipo());
+			nombreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			panel.add(nombreLabel, BorderLayout.SOUTH);
+
+			// Crear una etiqueta para mostrar el precio del artículo
+			JLabel precioLabel = new JLabel("$" + articulo.getPrecio());
+			precioLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			panel.add(precioLabel, BorderLayout.NORTH);
+			add(panel); // Agregar el panel del artículo al panel principal
 		}
 	}
 
-	/**
+	/*
 	 * Maneja los eventos de acción de los botones.
 	 * 
-	 * @param e el evento de acción
+	 * @param evento el evento de acción
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btnMenu)) {
+	public void actionPerformed(ActionEvent evento) {
+		if (evento.getSource().equals(btnMenu)) {
 			irAlMenu();
 		}
 	}

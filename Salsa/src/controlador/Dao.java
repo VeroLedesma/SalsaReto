@@ -21,7 +21,7 @@ public interface Dao {
 	 * @param art el objeto Articulo a dar de alta.
 	 * @return el ID del artículo recién creado.
 	 */
-	public int altaArticulo(Articulo art);
+	public boolean altaArticulo(Articulo art);
 
 	/**
 	 * Registra un nuevo usuario.
@@ -76,4 +76,7 @@ public interface Dao {
 	 * @return true si la modificación fue exitosa, false en caso contrario.
 	 */
 	public boolean modificarUsuario(Persona per);
+	// public boolean consultaUsuario(Persona per);
+
+	public int comprobarEncargado();
 }

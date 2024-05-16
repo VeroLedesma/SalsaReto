@@ -26,8 +26,9 @@ import modelo.Temporada;
 import modelo.Tipo;
 
 /**
- * La clase VInsertDatosArticulo representa un diálogo para insertar datos de artículos.
- * Hereda de JDialog e implementa ActionListener para manejar eventos de botones.
+ * La clase VInsertDatosArticulo representa un diálogo para insertar datos de
+ * artículos. Hereda de JDialog e implementa ActionListener para manejar eventos
+ * de botones.
  */
 public class VInsertDatosArticulo extends JDialog implements ActionListener {
 
@@ -43,7 +44,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 	 * Constructor de la clase VInsertDatosArticulo.
 	 * 
 	 * @param administracion referencia a la ventana de administración
-	 * @param modal indica si el diálogo es modal
+	 * @param modal          indica si el diálogo es modal
 	 */
 	public VInsertDatosArticulo(VAdministracion administracion, boolean modal) {
 		super(administracion);
@@ -154,7 +155,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		try {
 			tipoPrenda = Controlador.listarTipoArticulos();
 			for (Tipo tipo : tipoPrenda.values()) {
-				cbTipoPrenda.addItem(tipo.getNombreTipo() + "" + tipo.getCodTipo());
+				cbTipoPrenda.addItem(tipo.getNombreTipo() + "_" + tipo.getCodTipo());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -226,7 +227,8 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 	}
 
 	/**
-	 * Carga los datos del artículo desde los campos de texto y llama al controlador para insertar el artículo.
+	 * Carga los datos del artículo desde los campos de texto y llama al controlador
+	 * para insertar el artículo.
 	 * 
 	 * @param articulo el objeto Articulo a cargar con los datos del formulario
 	 * @throws CreateException si ocurre un error al crear el artículo
@@ -242,6 +244,6 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		articulo.setTemporada((Temporada) comboBoxTemporada.getSelectedItem());
 		articulo.setNombreTipo((String) cbTipoPrenda.getSelectedItem());
 
-		int cod = Controlador.altaArticulo(articulo);
+		Controlador.altaArticulo(articulo);
 	}
 }

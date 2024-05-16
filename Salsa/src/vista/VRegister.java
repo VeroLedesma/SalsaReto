@@ -30,9 +30,10 @@ import modelo.Trabajador;
 import modelo.Usuario;
 
 /**
- * Esta ventana permite registrar a un usuario en la base de datos
- * solo en caso de que todos los campos se rellenen correctamente
- * cumpliendo con los valores que se piden en cada campo.
+ * Esta ventana permite registrar a un usuario en la base de datos solo en caso
+ * de que todos los campos se rellenen correctamente cumpliendo con los valores
+ * que se piden en cada campo.
+ * 
  * @author Luis
  */
 public class VRegister extends JDialog implements ActionListener, MouseListener {
@@ -57,10 +58,10 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 	/**
 	 * Constructor de la ventana VRegister
 	 * 
-	 * @param padre Hace referencia a la ventana padre que es la de Login
-	 * @param modal Permite que no se pueda cambiar entre una ventana y otra
-	 * @param persona2 Hace referencia a la clase persona
-	 * @param fila Hace referencia a la fila que se seleccione
+	 * @param padre     Hace referencia a la ventana padre que es la de Login
+	 * @param modal     Permite que no se pueda cambiar entre una ventana y otra
+	 * @param persona2  Hace referencia a la clase persona
+	 * @param fila      Hace referencia a la fila que se seleccione
 	 * @param btnNombre Hace referencia al botón de modificación de datos
 	 */
 	public VRegister(VLogin padre, boolean modal, Persona persona2, int fila, String btnNombre) {
@@ -276,6 +277,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 			textApellido.setText(persona2.getApellido());
 			dateFechaNacimiento.setDate(java.sql.Date.valueOf(persona2.getFechaNacimiento()));
 			passContrasena.setText(persona2.getContrasena());
+			passConfirmar.setText(persona2.getContrasena());
 			textDireccion.setText(persona2.getDireccion());
 			textEmail.setText(persona2.getEmail());
 			comboBoxGenero.setSelectedItem(persona2.getGenero());
@@ -293,13 +295,13 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 	}
 
-	//Inicia un evento cuando clicas el botón
+	// Inicia un evento cuando clicas el botón
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		inicioSesion();
 	}
 
-	//Te envía a la ventana de inicio de sesión (Login)
+	// Te envía a la ventana de inicio de sesión (Login)
 	protected void inicioSesion() {
 		VLogin log = new VLogin(per);
 		log.setLocationRelativeTo(this);
@@ -309,8 +311,8 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 	}
 
 	/**
-	 * Realiza el evento de enviar los datos a la base de datos.
-	 * Si no se rellenan los campos obligatorios, aparece un mensaje de error.
+	 * Realiza el evento de enviar los datos a la base de datos. Si no se rellenan
+	 * los campos obligatorios, aparece un mensaje de error.
 	 * 
 	 * @param evento Inicia un evento de acción.
 	 */
@@ -363,7 +365,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		}
 	}
 
-	//Te redirige a la ventana de ListarUsuarios
+	// Te redirige a la ventana de ListarUsuarios
 	private void volver() {
 
 		VListarUsuarios ven = new VListarUsuarios(null, true);
@@ -373,8 +375,8 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 	}
 
-	//Comprueba que los campos obligatorios se han rellenado
-	//y realiza la comprobación de que el DNI y el email estén correctamente
+	// Comprueba que los campos obligatorios se han rellenado
+	// y realiza la comprobación de que el DNI y el email estén correctamente
 	private boolean camposObligatoriosCompletos() {
 
 		boolean correcto = false, dniValido = false, emailValido = false;
@@ -426,7 +428,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		return correcto;
 	}
 
-	//Permite seleccionar el usuario con un checkbox
+	// Permite seleccionar el usuario con un checkbox
 	private void seleccionarUsuario() {
 		if (checkBoxUsuario.isSelected()) {
 			// Deshabilitar el campo de número de seguridad social
@@ -438,7 +440,8 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 			checkBoxTrabajador.setSelected(false);
 		}
 	}
-	//Permite seleccionar el usuario de trabajador con un checkbox
+
+	// Permite seleccionar el usuario de trabajador con un checkbox
 	private void seleccionarTrabajador() {
 		if (checkBoxTrabajador.isSelected()) {
 			// Deshabilitar el campo de número de seguridad social
@@ -452,7 +455,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 	}
 
-	//Permite registrar a una persona en la base de datos
+	// Permite registrar a una persona en la base de datos
 	private void registrarPersona() {
 		Persona persona = null;
 		if (checkBoxUsuario.isSelected()) {
@@ -465,21 +468,40 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 			cargarDatosComunes(persona);
 			((Trabajador) persona).setNnss(textNumeroSS.getText());
-			int respuesta = 0;
-			JOptionPane.showConfirmDialog(null, "¿Eres un encargado?", "Confirmación", JOptionPane.YES_NO_OPTION);
-			if (respuesta == JOptionPane.YES_OPTION) {
-				((Trabajador) persona).setEncargado(true);
-
-			} else if (respuesta == JOptionPane.NO_OPTION) {
-				((Trabajador) persona).setEncargado(false);
-			}
+			boolean existe = comprobarEncargado();
+			((Trabajador) persona).setEncargado(existe);
 		}
 		// Comprobamos a traves de la interfaz si la cuenta existe
 		Controlador.registrarUsuario(persona);
 	}
 
-	//Esta parte realiza toda la lógica con la conexión de la base de datos 
-	//y si existe ese usuario.
+	private boolean comprobarEncargado() {
+		int existe = 0;
+		boolean existe_1 = false;
+		// este metodo recibira lo que la funcion le devuelva desde la imlpementacion a
+		// la base de datos
+		// y si un encargado no existe se le preguntara si es un encargado o no
+		existe = Controlador.comprobarEncargado();
+		if (existe == 0) {
+			int respuesta = JOptionPane.showConfirmDialog(null, "¿Eres un encargado?", "Confirmación",
+					JOptionPane.YES_NO_OPTION);
+			if (respuesta == 0) {// si su respuesta es si, se le dara los permisos que tendra un encargado en la
+									// base de datos
+				existe_1 = true;
+
+			} else {// si su respuesta es no entonces se guardara como un empleado normal
+				existe_1 = false;
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Se ha registrado correctamente");
+			existe_1 = false;
+		}
+		return existe_1;
+
+	}
+
+	// Esta parte realiza toda la lógica con la conexión de la base de datos
+	// y si existe ese usuario.
 	private void cargarDatosComunes(Persona persona) {
 
 		persona.setApellido(textApellido.getText());
