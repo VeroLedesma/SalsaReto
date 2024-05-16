@@ -97,9 +97,15 @@ public class Controlador {
 	 * @param art el objeto Articulo a dar de alta.
 	 * @return el ID del artículo recién creado.
 	 */
-	public static int altaArticulo(Articulo art) {
+	public static boolean altaArticulo(Articulo art) {
 		Dao dao = new ImpleDB();
 		return dao.altaArticulo(art);
 	}
 
+	public static int comprobarEncargado() {
+		Dao dao = new ImpleDB();
+
+		return dao.comprobarEncargado();
+
+	}
 }

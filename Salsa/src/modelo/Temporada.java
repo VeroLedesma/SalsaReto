@@ -1,4 +1,5 @@
 package modelo;
+
 /**
  * La enumeración Temporada representa las cuatro estaciones del año.
  * 
@@ -6,23 +7,23 @@ package modelo;
  * @version 1.0
  */
 public enum Temporada {
-    /**
-     * La estación de la primavera.
-     */
-    PRIMAVERA,
+	/**
+	 * La estación de la primavera.
+	 */
+	PRIMAVERA,
 
-    /**
-     * La estación del verano.
-     */
-    VERANO,
+	/**
+	 * La estación del verano.
+	 */
+	VERANO,
 
-    /**
-     * La estación del otoño.
-     */
-    OTOÑO,
+	/**
+	 * La estación del otoño.
+	 */
+	OTONIO,
 
-    /**
-     * La estación del invierno.
-     */
-    INVIERNO;
+	/**
+	 * La estación del invierno.
+	 */
+	INVIERNO;
 }
