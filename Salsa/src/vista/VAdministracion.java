@@ -24,7 +24,7 @@ public class VAdministracion extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, panelAdvise;
 	private JLabel lblAdvise1, lblAdvise2, lblAdvise3, lblLogo;
-	private JButton btnVolver, btnModificarDatosArticulo, btnInsertarNuevoArticulo, btnListarUsuarios, btnInsertarTipo;
+	private JButton btnVolver, btnMostrarDatosArticulo, btnInsertarNuevoArticulo, btnListarUsuarios, btnInsertarTipo;
 
 	private VMain main;
 
@@ -76,11 +76,11 @@ public class VAdministracion extends JDialog implements ActionListener {
 		contentPane.add(lblLogo);
 
 		// Botón para mostrar datos de un artículo
-		btnModificarDatosArticulo = new JButton("Mostrar Datos Artículo");
-		btnModificarDatosArticulo.addActionListener(this);
-		btnModificarDatosArticulo.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnModificarDatosArticulo.setBounds(194, 400, 234, 60);
-		contentPane.add(btnModificarDatosArticulo);
+		btnMostrarDatosArticulo = new JButton("Mostrar Datos Artículo");
+		btnMostrarDatosArticulo.addActionListener(this);
+		btnMostrarDatosArticulo.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnMostrarDatosArticulo.setBounds(194, 400, 234, 60);
+		contentPane.add(btnMostrarDatosArticulo);
 
 		// Botón para insertar un nuevo artículo
 		btnInsertarNuevoArticulo = new JButton("Insertar Nuevo Artículo");
@@ -118,7 +118,7 @@ public class VAdministracion extends JDialog implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btnModificarDatosArticulo)) {
+		if (e.getSource().equals(btnMostrarDatosArticulo)) {
 			moDatosArticulo();
 		} else if (e.getSource().equals(btnInsertarNuevoArticulo)) {
 			insertDat();

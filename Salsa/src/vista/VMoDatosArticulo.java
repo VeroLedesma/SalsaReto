@@ -139,8 +139,8 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 
 	// Se vuelve a la ventana anterior, que es la de administración
 	private void volver() {
-		VAdministracion admin = new VAdministracion(null, true);
 		this.dispose();
+		VAdministracion admin = new VAdministracion(null, true);
 		admin.setLocationRelativeTo(this);
 		admin.setVisible(true);
 
@@ -171,7 +171,7 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 		int fila = tableDatosArticulo.getSelectedRow();
 		boolean eliminar = Controlador
 				.eliminarArticulo(Integer.parseInt(tableDatosArticulo.getValueAt(fila, 0).toString()));
-		volver();
+
 		return eliminar;
 
 	}

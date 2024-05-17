@@ -57,7 +57,6 @@ public class VMiLista extends JDialog implements ActionListener, ListSelectionLi
 		this.email = email;
 		setModal(b);
 
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 733, 589);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
