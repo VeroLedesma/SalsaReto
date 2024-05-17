@@ -31,11 +31,11 @@ public class ImpleDB implements Dao {
 	private final String ALTA_PERSONA = "INSERT INTO persona (dni, nombre, apellido, fechaNac, contrasena, direccion, email, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	private final String ASIGNACIONUSUARIO = "{CALL setPersonaInvitado(?,?,?)}";
 	private final String ASIGNACIONTRABAJADOR = "{CALL setTrabajador(?,?,?,?)}";
-	private final String ALTA_ARTICULO = "INSERT INTO articulo (color, temporada, precio, descuento, cod_tipo) VALUES (  ?, ?, ?, ?, ?)";
+	private final String ALTA_ARTICULO = "INSERT INTO articulo (color, temporada, precio, descuento, nombreImg, cod_tipo) VALUES (  ?, ?, ?, ?, ?, ?)";
 	private final String CONSULTA_COMPROBAR_USUARIO = "SELECT dni, nombre, apellido,fechaNac, direccion, email, genero FROM persona WHERE email=? AND contrasena=?";
 	private final String MODIFICACION_ARTICULO = "UPDATE articulo SET color = ?, temporada = ?, precio=?, descuento= ? , cod_tipo=? WHERE cod_articulo = ?";
 	private final String MODIFICACION_USUARIO = "UPDATE persona SET nombre = ?, apellido = ?,  contrasena=?, direccion = ?, email = ?, genero= ? WHERE dni = ?";
-	private final String CONSULTA_ARTICULO = "SELECT a.cod_articulo,a.color,a.temporada, a.precio,a.descuento,t.nombre FROM articulo a JOIN tipo t ON a.cod_tipo = t.cod_tipo";
+	private final String CONSULTA_ARTICULO = "SELECT a.cod_articulo,a.color,a.temporada, a.precio,a.descuento,t.nombre, a.nombreImg FROM articulo a JOIN tipo t ON a.cod_tipo = t.cod_tipo";
 	private final String CONSULTA_TIPO = "SELECT cod_tipo, nombre, stock FROM tipo";
 	private final String ALTA_TIPO = "{CALL actualizar_o_insertar_stock(?,?)}";
 	private final String BUSCAR_ENCARGADO = "SELECT comprobarEncargado() AS Encargado";
@@ -61,6 +61,7 @@ public class ImpleDB implements Dao {
 				art.setTemporada(Temporada.valueOf(resultSet.getString("temporada").toString().toUpperCase()));
 				art.setPrecio(resultSet.getFloat("precio"));
 				art.setPorcentajeDecuento(resultSet.getFloat("descuento"));
+				art.setNombreImg(resultSet.getString("nombreImg"));
 				art.setNombreTipo(resultSet.getString("nombre"));
 				articulo.add(art);
 			}
@@ -197,7 +198,8 @@ public class ImpleDB implements Dao {
 			stmt.setString(2, art.getTemporada().toString());
 			stmt.setFloat(3, art.getPrecio());
 			stmt.setFloat(4, art.getPorcentajeDecuento());
-			stmt.setInt(5, Integer.parseInt(art.getNombreTipo().split("_")[1]));
+			stmt.setString(5, art.getNombreImg());
+			stmt.setInt(6, Integer.parseInt(art.getNombreTipo().split("_")[1]));
 			stmt.executeUpdate();
 
 			return true;

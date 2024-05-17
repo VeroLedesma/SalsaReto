@@ -34,7 +34,7 @@ import modelo.Usuario;
  * de que todos los campos se rellenen correctamente cumpliendo con los valores
  * que se piden en cada campo.
  * 
- * @author Luis
+ * @author Luis, vero, melany, santi
  */
 public class VRegister extends JDialog implements ActionListener, MouseListener {
 

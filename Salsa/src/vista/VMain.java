@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,6 +20,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
+import controlador.Controlador;
+import modelo.Articulo;
+
 /**
  * La clase VMain representa la ventana principal de la aplicación. Muestra
  * diferentes categorías de artículos y un botón de menú.
@@ -26,10 +31,10 @@ public class VMain extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel BodyLayout, itemsPanel;
-	private JLabel logo, lblImagen1, lblImagen3, lblImagen2;
-	private JButton btnMenu, btnAñiadirMiLista;
+	private JLabel logo;
+	private JButton btnMenu, btnAniadirMiLista;
 
-	private JScrollPane scrollPane, scrollPane_1;
+	private JScrollPane scrollPane;
 	private String email;
 
 	/**
@@ -37,7 +42,7 @@ public class VMain extends JDialog implements ActionListener {
 	 * 
 	 * @param login el JFrame padre desde el cual se abre este diálogo
 	 * @param modal indica si el diálogo es modal
-	 * @param email
+	 * @param email se le pasa el email
 	 * @wbp.parser.constructor
 	 */
 	public VMain(VLogin login, boolean modal, String email) {
@@ -81,7 +86,7 @@ public class VMain extends JDialog implements ActionListener {
 		BodyLayout.add(btnTodos);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(10, 332, 1058, 440);
 		BodyLayout.add(scrollPane);
 
@@ -89,45 +94,49 @@ public class VMain extends JDialog implements ActionListener {
 		scrollPane.setViewportView(panel);
 		panel.setLayout(null);
 
-		lblImagen1 = new JLabel("6");
-		lblImagen1.setBounds(10, 28, 391, 359);
-		panel.add(lblImagen1);
-		lblImagen1.setIcon(new ImageIcon(getClass().getResource("/assets/3.jpg")));
-		lblImagen2 = new JLabel("7");
-		lblImagen2.setBounds(395, 28, 313, 359);
-		panel.add(lblImagen2);
-		lblImagen2.setIcon(new ImageIcon(getClass().getResource("/assets/2.jpg")));
-		lblImagen3 = new JLabel("8");
-		lblImagen3.setBounds(733, 28, 313, 359);
-		panel.add(lblImagen3);
-		lblImagen3.setIcon(new ImageIcon(getClass().getResource("/assets/1.jpg")));
+		visualizarArt(panel);
 
-		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(0, 0, 2, 2);
-		BodyLayout.add(scrollPane_1);
+		btnAniadirMiLista = new JButton("Ver mi lista");
+		btnAniadirMiLista.addActionListener(this);
+		btnAniadirMiLista.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnAniadirMiLista.setBounds(894, 267, 174, 40);
+		BodyLayout.add(btnAniadirMiLista);
+		btnAniadirMiLista.addActionListener(this);
 
-		btnAñiadirMiLista = new JButton("Ver mi lista");
-		btnAñiadirMiLista.addActionListener(this);
-		btnAñiadirMiLista.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnAñiadirMiLista.setBounds(894, 267, 174, 40);
-		BodyLayout.add(btnAñiadirMiLista);
-		lblImagen1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// Mostrar el cuadro de diálogo
-				String[] opciones = { "Añadir", "Cancelar" };
-				int respuesta = JOptionPane.showOptionDialog(null, "¿Deseas añadir algo?", "Añadir",
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
-				JLabel sourceLabel = (JLabel) e.getSource();
-				// Manejar la respuesta
-				if (respuesta == JOptionPane.YES_OPTION) {
-					aniadirLista(Integer.parseInt(sourceLabel.getText()));
-					// Aquí puedes añadir la lógica para añadir el ítem
-				} else {
-					System.out.println("Has cancelado la operación.");
-				}
+	}
+
+	private void visualizarArt(JPanel panel) {
+		try {
+			List<Articulo> listArts = Controlador.listarArticulos();
+			for (Articulo art : listArts) {
+				JLabel lblImagen1 = new JLabel(String.valueOf(art.getCodArticulo()));
+				lblImagen1.setBounds(10, 28, 391, 359);
+				panel.add(lblImagen1);
+				lblImagen1.setIcon(new ImageIcon(getClass().getResource("/assets/" + art.getNombreImg())));
+
+				lblImagen1.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						// Mostrar el cuadro de diálogo
+						String[] opciones = { "Añadir", "Cancelar" };
+						int respuesta = JOptionPane.showOptionDialog(null, "¿Deseas añadir algo?", "Añadir",
+								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+						JLabel sourceLabel = (JLabel) e.getSource();
+						// Manejar la respuesta
+						if (respuesta == JOptionPane.YES_OPTION) {
+							aniadirLista(Integer.parseInt(sourceLabel.getText()));
+							// Aquí puedes añadir la lógica para añadir el ítem
+						} else {
+							System.out.println("Has cancelado la operación.");
+						}
+					}
+				});
+
 			}
-		});
+
+		} catch (SQLException e) {
+
+		}
 
 	}
 
@@ -141,28 +150,27 @@ public class VMain extends JDialog implements ActionListener {
 		if (evento.getSource().equals(btnMenu)) {
 			irAlMenu();
 		}
-		if (evento.getSource().equals(btnAñiadirMiLista)) {
+		if (evento.getSource().equals(btnAniadirMiLista)) {
 			miLista();
 		}
 
 	}
 
 	private void miLista() {
-		VMiLista miLista = new VMiLista(this, true, email, 0);
+		VMiLista miLista = new VMiLista(this, true, email, null);
 		this.dispose();
 		miLista.setLocationRelativeTo(this);
 		miLista.setVisible(true);
 	}
 
 	/**
-	 * Muestra la ventana de ajustes.
+	 * Muestra la ventana de miLista
 	 */
 	private void aniadirLista(int codArt) {
 
 		VMiLista miLista = new VMiLista(this, true, email, codArt);
-		this.dispose();
-		miLista.setLocationRelativeTo(this);
-		miLista.setVisible(true);
+		miLista.setVisible(false);
+
 	}
 
 	/**

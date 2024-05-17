@@ -41,6 +41,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 	private JButton btnSubirDatos, btnVolver;
 	private int pantallaDiferente;
 	private Articulo articulo = new Articulo();
+	private JTextField tfImagen;
 
 	/**
 	 * Constructor de la clase VInsertDatosArticulo.
@@ -87,7 +88,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 
 		// Etiqueta para el nombre del tipo de prenda
 		JLabel lblNombreTipo = new JLabel("Nombre del tipo de prenda");
-		lblNombreTipo.setBounds(526, 274, 225, 35);
+		lblNombreTipo.setBounds(526, 228, 225, 35);
 		lblNombreTipo.setFont(new Font("Dialog", Font.BOLD, 14));
 		contentPanel.add(lblNombreTipo);
 
@@ -143,8 +144,18 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		cbTipoPrenda.setModel(new DefaultComboBoxModel<>());
 		cbTipoPrenda.setToolTipText("");
 		cbTipoPrenda.setEditable(true);
-		cbTipoPrenda.setBounds(526, 316, 225, 35);
+		cbTipoPrenda.setBounds(526, 273, 225, 35);
 		contentPanel.add(cbTipoPrenda);
+
+		JLabel lblNombreImagen = new JLabel("Nombre de la imagen");
+		lblNombreImagen.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNombreImagen.setBounds(526, 329, 225, 22);
+		contentPanel.add(lblNombreImagen);
+
+		tfImagen = new JTextField();
+		tfImagen.setBounds(526, 361, 225, 35);
+		contentPanel.add(tfImagen);
+		tfImagen.setColumns(10);
 		// Cargar tipos de prenda
 		cargarTipoPrenda();
 		if (modificar.equalsIgnoreCase("modificar")) {
@@ -273,6 +284,7 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		articulo.setPrecio(precio2);
 		articulo.setTemporada((Temporada) comboBoxTemporada.getSelectedItem());
 		articulo.setNombreTipo((String) cbTipoPrenda.getSelectedItem());
+		articulo.setNombreImg(tfImagen.getText());
 
 		Controlador.altaArticulo(articulo);
 	}

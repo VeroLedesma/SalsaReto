@@ -16,7 +16,8 @@ import modelo.Usuario;
 public class Controlador {
 	/**
 	 * Lista todos los usuarios.
-	 *
+	 ** 
+	 * @author melany, santi
 	 * @return una lista de objetos Persona.
 	 * @throws SQLException si ocurre un error en la base de datos.
 	 */

@@ -11,7 +11,7 @@ package modelo;
 public class Articulo {
 	private Integer codArticulo;
 	private Float porcentajeDecuento, precio;
-	private String color, nombreTipo;
+	private String color, nombreTipo, nombreImg;
 	private Temporada temporada;
 
 	// Getters y Setters
@@ -123,6 +123,14 @@ public class Articulo {
 	 */
 	public void setNombreTipo(String nombreTipo) {
 		this.nombreTipo = nombreTipo;
+	}
+
+	public String getNombreImg() {
+		return nombreImg;
+	}
+
+	public void setNombreImg(String nombreImg) {
+		this.nombreImg = nombreImg;
 	}
 
 }

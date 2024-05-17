@@ -154,6 +154,7 @@ public class VAdministracion extends JDialog implements ActionListener {
 	/**
 	 * Abre la ventana para modificar datos de un artículo existente.
 	 */
+
 	protected void moDatosArticulo() {
 		VMoDatosArticulo modArt = new VMoDatosArticulo(this, true);
 		this.dispose();

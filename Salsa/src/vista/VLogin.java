@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -183,7 +184,11 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 			togglePasswordVisibility();
 		}
 		if (evento.getSource().equals(btnLogin)) {
-			logicaLogin();
+			try {
+				logicaLogin();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -191,7 +196,7 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	 *
 	 * Lógica para el inicio de sesión del usuario.
 	 */
-	public void logicaLogin() {
+	public void logicaLogin() throws SQLException {
 		String email = inputEmail.getText().trim();
 		String password = new String(inputPassword.getPassword());
 		boolean correcto = false, existe = false;
@@ -205,7 +210,8 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 			if (existe) {
 				JOptionPane.showMessageDialog(null, "Bienvenido/a al sistema");
 				this.setVisible(false);
-				VMain vent = new VMain(this, true, email);
+				VMain vent = null;
+				vent = new VMain(this, true, email);
 				vent.setLocationRelativeTo(this);
 				vent.setVisible(true);
 				this.dispose();

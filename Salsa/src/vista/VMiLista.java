@@ -52,7 +52,7 @@ public class VMiLista extends JDialog implements ActionListener, ListSelectionLi
 	 *              cambie entre ventanas
 	 * @param email
 	 */
-	public VMiLista(VMain vMain, boolean b, String email, int codArt) {
+	public VMiLista(VMain vMain, boolean b, String email, Integer codArt) {
 		super(vMain);
 		this.email = email;
 		setModal(b);
@@ -82,7 +82,9 @@ public class VMiLista extends JDialog implements ActionListener, ListSelectionLi
 		separator.setBounds(10, 125, 709, 2);
 		contentPane.add(separator);
 
-		aniadiAmiLista(codArt);
+		if (codArt != null) {
+			aniadiAmiLista(codArt);
+		}
 	}
 
 	/**
