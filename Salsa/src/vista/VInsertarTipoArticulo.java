@@ -27,7 +27,7 @@ public class VInsertarTipoArticulo extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField tfNombre, tfStock;
-	private JButton btnVolver, btnEliminar, btnInsertarDatos;
+	private JButton btnVolver, btnInsertarDatos;
 
 	/**
 	 * Constructor de la clase VInsertarTipoArticulo.
@@ -82,16 +82,9 @@ public class VInsertarTipoArticulo extends JDialog implements ActionListener {
 		// Botón insertar datos
 		btnInsertarDatos = new JButton("Insertar datos");
 		btnInsertarDatos.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnInsertarDatos.setBounds(57, 410, 176, 31);
+		btnInsertarDatos.setBounds(296, 384, 176, 31);
 		btnInsertarDatos.addActionListener(this);
 		contentPanel.add(btnInsertarDatos);
-
-		// Botón eliminar
-		btnEliminar = new JButton("Eliminar");
-		btnEliminar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnEliminar.setBounds(462, 410, 176, 31);
-		btnEliminar.addActionListener(this);
-		contentPanel.add(btnEliminar);
 	}
 
 	/**
