@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -17,8 +18,9 @@ import controlador.Controlador;
 import modelo.Tipo;
 
 /**
- * La clase VInsertarTipoArticulo representa un diálogo para insertar tipos de artículos.
- * Hereda de JDialog e implementa ActionListener para manejar eventos de botones.
+ * La clase VInsertarTipoArticulo representa un diálogo para insertar tipos de
+ * artículos. Hereda de JDialog e implementa ActionListener para manejar eventos
+ * de botones.
  */
 public class VInsertarTipoArticulo extends JDialog implements ActionListener {
 
@@ -31,7 +33,7 @@ public class VInsertarTipoArticulo extends JDialog implements ActionListener {
 	 * Constructor de la clase VInsertarTipoArticulo.
 	 * 
 	 * @param vAdministracion referencia a la ventana de administración
-	 * @param modal indica si el diálogo es modal
+	 * @param modal           indica si el diálogo es modal
 	 */
 	public VInsertarTipoArticulo(VAdministracion vAdministracion, boolean modal) {
 		super(vAdministracion);
@@ -135,13 +137,20 @@ public class VInsertarTipoArticulo extends JDialog implements ActionListener {
 	}
 
 	/**
-	 * Carga los datos del tipo de artículo desde los campos de texto y llama al controlador para insertar el tipo.
+	 * Carga los datos del tipo de artículo desde los campos de texto y llama al
+	 * controlador para insertar el tipo.
 	 * 
 	 * @param tipo el objeto Tipo a cargar con los datos del formulario
 	 */
 	private void cargarDatosTipo(Tipo tipo) {
+		boolean existe = false;
 		tipo.setNombreTipo(tfNombre.getText());
 		tipo.setStock(Integer.parseInt(tfStock.getText()));
-		int codigo = Controlador.altaTipoArticulo(tipo);
+		existe = Controlador.altaTipoArticulo(tipo);
+		if (existe == false) {
+			JOptionPane.showMessageDialog(null, "Se ha modificado el stock por que el tipo de articulo ya existe");
+		} else {
+			JOptionPane.showMessageDialog(null, "se ha insertado el tipo correctamente");
+		}
 	}
 }

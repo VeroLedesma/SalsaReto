@@ -49,6 +49,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 	private JPasswordField passConfirmar, passContrasena;
 	private JComboBox<Sexo> comboBoxGenero;
 	private JCheckBox checkBoxUsuario, checkBoxTrabajador;
+	private JCheckBox checkBoxUsuario_1;
 
 	// Lógica para la conexión
 	// private Controlador controladorRutas;
@@ -156,10 +157,10 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 
 		btnRegistro = new JButton();
 		btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnRegistro.setForeground(new Color(0, 64, 128));
+		btnRegistro.setForeground(new Color(0, 64, 0));
 		btnRegistro.addActionListener(this);
 		btnRegistro.setForeground(Color.BLACK);
-		btnRegistro.setBackground(new Color(255, 255, 255));
+		btnRegistro.setBackground(new Color(192, 192, 192));
 		btnRegistro.setBounds(227, 575, 286, 38);
 		getContentPane().add(btnRegistro);
 
@@ -181,12 +182,13 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		lblCamposObligatorios.setBounds(122, 550, 286, 14);
 		getContentPane().add(lblCamposObligatorios);
 
-		checkBoxUsuario = new JCheckBox("Usuario", false);
+		checkBoxUsuario_1 = new JCheckBox("Usuario", false);
+		checkBoxUsuario_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 
-		checkBoxUsuario.setBackground(new Color(255, 255, 255));
-		getContentPane().add(checkBoxUsuario);
-		checkBoxUsuario.setBounds(64, 507, 99, 23);
-		getContentPane().add(checkBoxUsuario);
+		checkBoxUsuario_1.setBackground(new Color(255, 255, 255));
+		getContentPane().add(checkBoxUsuario_1);
+		checkBoxUsuario_1.setBounds(64, 507, 99, 23);
+		getContentPane().add(checkBoxUsuario_1);
 
 		checkBoxTrabajador = new JCheckBox("Trabajador", false);
 
@@ -266,7 +268,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		getContentPane().add(lblPregunta);
 
 		// Botones de eventos
-		checkBoxUsuario.addActionListener(this);
+		checkBoxUsuario_1.addActionListener(this);
 		checkBoxTrabajador.addActionListener(this);
 
 		// aqui los campos que se rellenen en los textfield, si el boton es modificar
@@ -281,6 +283,11 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 			textDireccion.setText(persona2.getDireccion());
 			textEmail.setText(persona2.getEmail());
 			comboBoxGenero.setSelectedItem(persona2.getGenero());
+			if (persona2 instanceof Trabajador) {
+				checkBoxTrabajador.isSelected();
+			} else {
+				checkBoxUsuario.isSelected();
+			}
 			btnRegistro.setText("Modificar");
 		} else {// si el boton es registro se abre la ventana del login
 			btnRegistro.setText("Enviar datos");
@@ -320,7 +327,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 	public void actionPerformed(ActionEvent evento) {
 
 		if (evento.getSource().equals(btnRegistro)) {
-			System.out.println("entrando en el registro");
+
 			if (btnRegistro.getText().equalsIgnoreCase("Enviar datos")) {
 				if (camposObligatoriosCompletos() == true) {
 					registrarPersona();
@@ -330,7 +337,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 				modificar();
 			}
 		}
-		if (evento.getSource().equals(checkBoxUsuario)) {
+		if (evento.getSource().equals(checkBoxUsuario_1)) {
 			seleccionarUsuario();
 		}
 		if (evento.getSource().equals(checkBoxTrabajador)) {
@@ -353,10 +360,17 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 	// Permite modificar los datos de los usuarios o los trabajadores
 	private void modificar() {
 		boolean modificado;
-		System.out.println(per.getDni());
 		Persona per = cargarDatosComunes();
-		modificado = Controlador.modificarUsuario(per);
 
+		if (per instanceof Trabajador) {
+
+			checkBoxTrabajador.setSelected(true);
+
+		} else if (per instanceof Usuario) {
+			checkBoxUsuario.setSelected(true);
+		}
+
+		modificado = Controlador.modificarUsuario(per);
 		System.out.println(modificado);
 		if (modificado == true) {
 			JOptionPane.showMessageDialog(null, "se ha modificado correctamente");
@@ -393,7 +407,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 		// Verificar que todos los campos obligatorios estén completos
 		if (!textNombre.getText().isEmpty() && contrasena.length >= 5 && contrasena.length <= 8 && dniValido
 				&& emailValido && !email.isEmpty() && confirmarContrasena.length > 0
-				&& (checkBoxUsuario.isSelected() || checkBoxTrabajador.isSelected())
+				&& (checkBoxUsuario_1.isSelected() || checkBoxTrabajador.isSelected())
 				&& dateFechaNacimiento.getDate() != null) {
 			correcto = true;
 		} else {
@@ -415,7 +429,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 			} else if (confirmarContrasena.length == 0) {
 				JOptionPane.showMessageDialog(this, "Por favor, confirme su contraseña.", "Campo obligatorio vacío",
 						JOptionPane.ERROR_MESSAGE);
-			} else if (!(checkBoxUsuario.isSelected() || checkBoxTrabajador.isSelected())) {
+			} else if (!(checkBoxUsuario_1.isSelected() || checkBoxTrabajador.isSelected())) {
 				JOptionPane.showMessageDialog(this, "Por favor, seleccione si es Usuario o Trabajador.",
 						"Campo obligatorio no seleccionado", JOptionPane.ERROR_MESSAGE);
 			} else if (dateFechaNacimiento.getDate() == null) {
@@ -424,13 +438,12 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 			}
 			correcto = false;
 		}
-
 		return correcto;
 	}
 
 	// Permite seleccionar el usuario con un checkbox
 	private void seleccionarUsuario() {
-		if (checkBoxUsuario.isSelected()) {
+		if (checkBoxUsuario_1.isSelected()) {
 			// Deshabilitar el campo de número de seguridad social
 			lblNmeroSeguridadSocial.setVisible(false);
 			textNumeroSS.setVisible(false);
@@ -450,7 +463,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 			// Mostrar el label y el campo de fecha de registro
 			lblFechaDeRegistro.setVisible(false);
 			dateFRegistro.setVisible(false);
-			checkBoxUsuario.setSelected(false);
+			checkBoxUsuario_1.setSelected(false);
 		}
 
 	}
@@ -458,7 +471,7 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 	// Permite registrar a una persona en la base de datos
 	private void registrarPersona() {
 		Persona persona = null;
-		if (checkBoxUsuario.isSelected()) {
+		if (checkBoxUsuario_1.isSelected()) {
 			persona = new Usuario();
 			cargarDatosComunes(persona);
 			((Usuario) persona)
@@ -517,16 +530,18 @@ public class VRegister extends JDialog implements ActionListener, MouseListener 
 	}
 
 	private Persona cargarDatosComunes() {
-		Persona per = new Persona();
-		per.setApellido(textApellido.getText());
-		per.setNombre(textNombre.getText());
-		per.setDni(textDni.getText());
-		per.setEmail(textEmail.getText());
-		per.setFechaNacimiento(dateFechaNacimiento.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		per.setDireccion(textDireccion.getText());
-		per.setContrasena(new String(passContrasena.getPassword()));
-		per.setGenero((Sexo) comboBoxGenero.getSelectedItem());
-		return per;
+		//
+		Persona persona = new Persona();
+		persona.setApellido(textApellido.getText());
+		persona.setNombre(textNombre.getText());
+		persona.setDni(textDni.getText());
+		persona.setEmail(textEmail.getText());
+		persona.setFechaNacimiento(
+				dateFechaNacimiento.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+		persona.setDireccion(textDireccion.getText());
+		persona.setContrasena(new String(passContrasena.getPassword()));
+		persona.setGenero((Sexo) comboBoxGenero.getSelectedItem());
+		return persona;
 
 	}
 	// Implementación de los métodos MouseListener (no son necesarios, pero necesito

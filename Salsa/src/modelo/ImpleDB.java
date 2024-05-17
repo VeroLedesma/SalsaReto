@@ -33,11 +33,17 @@ public class ImpleDB implements Dao {
 	private final String ASIGNACIONTRABAJADOR = "{CALL setTrabajador(?,?,?,?)}";
 	private final String ALTA_ARTICULO = "INSERT INTO articulo (color, temporada, precio, descuento, cod_tipo) VALUES (  ?, ?, ?, ?, ?)";
 	private final String CONSULTA_COMPROBAR_USUARIO = "SELECT dni, nombre, apellido,fechaNac, direccion, email, genero FROM persona WHERE email=? AND contrasena=?";
+	private final String MODIFICACION_ARTICULO = "UPDATE articulo SET color = ?, temporada = ?, precio=?, descuento= ? , cod_tipo=? WHERE cod_articulo = ?";
 	private final String MODIFICACION_USUARIO = "UPDATE persona SET nombre = ?, apellido = ?,  contrasena=?, direccion = ?, email = ?, genero= ? WHERE dni = ?";
-	private final String CONSULTA_ARTICULO = "SELECT cod_articulo,color,temporada, precio,descuento,cod_tipo FROM articulo";
+	private final String CONSULTA_ARTICULO = "SELECT a.cod_articulo,a.color,a.temporada, a.precio,a.descuento,t.nombre FROM articulo a JOIN tipo t ON a.cod_tipo = t.cod_tipo";
 	private final String CONSULTA_TIPO = "SELECT cod_tipo, nombre, stock FROM tipo";
 	private final String ALTA_TIPO = "{CALL actualizar_o_insertar_stock(?,?)}";
 	private final String BUSCAR_ENCARGADO = "SELECT comprobarEncargado() AS Encargado";
+	private final String ELIMINAR_PERSONA = "DELETE FROM persona where dni=? ";
+	private final String ELIMINAR_ARTICULO = "DELETE FROM articulo where cod_articulo=?";
+	private final String BUSCAR_USUARIO = "SELECT u.dni, u.fechaReg FROM usuario u, persona p WHERE u.dni = p.dni AND p.email=?";
+	private final String BUSCAR_ARTICULO = "SELECT cod_articulo, color, temporada, precio, descuento, cod_tipo FROM articulo WHERE cod_articulo = ?";
+	private final String ALTA_COMPRA = "INSERT INTO compra (cantidad, dni, cod_articulo) VALUES (1, ?, ?)";
 
 	@Override
 	public List<Articulo> listarArticulos() {
@@ -55,6 +61,7 @@ public class ImpleDB implements Dao {
 				art.setTemporada(Temporada.valueOf(resultSet.getString("temporada").toString().toUpperCase()));
 				art.setPrecio(resultSet.getFloat("precio"));
 				art.setPorcentajeDecuento(resultSet.getFloat("descuento"));
+				art.setNombreTipo(resultSet.getString("nombre"));
 				articulo.add(art);
 			}
 
@@ -264,6 +271,7 @@ public class ImpleDB implements Dao {
 			stmt.setString(6, per.getGenero().toString());
 			stmt.setString(7, per.getDni());
 			int lineaAfectada = stmt.executeUpdate();
+
 			if (lineaAfectada > 0) {
 				modificado = true;
 			}
@@ -285,7 +293,7 @@ public class ImpleDB implements Dao {
 	}
 
 	@Override
-	public Map<Integer, Tipo> listarTiposArticulos() {
+	public Map<Integer, Tipo> listarTiposArticulos() { // verificar si se usa
 		Map<Integer, Tipo> tipoArticulo = new HashMap<>();
 		conn = ConnectionMysql.openConnection();
 		try {
@@ -320,9 +328,9 @@ public class ImpleDB implements Dao {
 	}
 
 	@Override
-	public int introducirTipoArticulo(Tipo tipo) {
+	public boolean introducirTipoArticulo(Tipo tipo) {
 		conn = ConnectionMysql.openConnection();
-		int codigo = 0;
+
 		try {
 			// comprobamos que el tipo que se vaya a introducir no exista en la base de
 			// datos y si existe se llamara a un procedimiento en el que se actializara el
@@ -331,15 +339,11 @@ public class ImpleDB implements Dao {
 			callableStatement = conn.prepareCall(ALTA_TIPO);
 			callableStatement.setString(1, tipo.getNombreTipo());
 			callableStatement.setInt(2, tipo.getStock());
-			callableStatement.execute();
-			resultSet = stmt.getGeneratedKeys();
-			if (resultSet.next()) {
-				codigo = resultSet.getInt(codigo);
-			}
-			return codigo;
+			boolean existe = callableStatement.execute();
+			return existe;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return -1;
+			return false;
 		} finally {
 			try {
 				if (stmt != null) {
@@ -386,4 +390,202 @@ public class ImpleDB implements Dao {
 		return existe;
 
 	}
+
+	@Override
+	public boolean eliminarArticulo(int art) {
+
+		conn = ConnectionMysql.openConnection();
+		try {
+			stmt = conn.prepareStatement(ELIMINAR_ARTICULO);
+			stmt.setInt(1, art);
+			stmt.execute();
+			return true;
+		} catch (SQLException excepcion) {
+			excepcion.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+			} catch (SQLException e) {
+
+				if (conn != null) {
+					ConnectionMysql.closeConnection();
+				}
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean eliminarPersona(Persona per) {
+		conn = ConnectionMysql.openConnection();
+		try {
+			stmt = conn.prepareStatement(ELIMINAR_PERSONA);
+			stmt.setString(1, per.getDni());
+			stmt.execute();
+			return true;
+		} catch (SQLException excepcion) {
+			excepcion.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+			} catch (SQLException e) {
+
+				if (conn != null) {
+					ConnectionMysql.closeConnection();
+				}
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean modificarArticulo(Articulo art) {
+
+		conn = ConnectionMysql.openConnection();
+		boolean modificado = false;
+		try {
+
+			stmt = (conn.prepareStatement(CONSULTA_TIPO.concat(" WHERE nombre=?")));
+			stmt.setString(1, art.getNombreTipo());
+			resultSet = stmt.executeQuery();
+			Tipo tipo = new Tipo();
+			if (resultSet.next()) {
+				tipo.setCodTipo(resultSet.getInt("cod_tipo"));
+				tipo.setNombreTipo(resultSet.getString("nombre"));
+				tipo.setStock(resultSet.getInt("stock"));
+			}
+			System.out.println(tipo.getNombreTipo());
+			stmt = (conn.prepareStatement(MODIFICACION_ARTICULO));
+			stmt.setString(1, art.getColor());
+			stmt.setString(2, art.getTemporada().toString());
+			stmt.setFloat(3, art.getPrecio());
+			stmt.setFloat(4, art.getPorcentajeDecuento());
+			stmt.setInt(5, tipo.getCodTipo());
+			stmt.setInt(6, art.getCodArticulo());
+			int lineaAfectada = stmt.executeUpdate();
+
+			System.out.println(lineaAfectada);
+			if (lineaAfectada > 0) {
+				modificado = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Error al intentar modificar el artículo.");
+
+		} finally {
+			if (resultSet != null) {
+				try {
+					resultSet.close();
+				} catch (SQLException e) {
+					System.out.println("Error al cerrar el ResultSet.");
+					e.printStackTrace();
+				}
+			}
+
+			// Cerrar el PreparedStatement
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					System.out.println("Error al cerrar el PreparedStatement.");
+					e.printStackTrace();
+				}
+			}
+
+			// Cerrar la conexión a la base de datos
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					System.out.println("Error en el cierre de la conexión.");
+					e.printStackTrace();
+				}
+			}
+
+		}
+		return modificado;
+	}
+
+	@Override
+	public Usuario obtenerUsuario(String email) {
+		conn = ConnectionMysql.openConnection();
+		Usuario nuevo = new Usuario();
+		try {
+			stmt = (conn.prepareStatement(BUSCAR_USUARIO));
+			stmt.setString(1, email);
+			resultSet = stmt.executeQuery();
+			if (resultSet.next()) {
+				nuevo.setDni(resultSet.getString("dni"));
+				nuevo.setFechaRegistro(LocalDate.parse(resultSet.getString("fechaReg")));
+			}
+			return nuevo;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return nuevo;
+	}
+
+	@Override
+	public Articulo obtenerArticulo(int codArt) {
+		conn = ConnectionMysql.openConnection();
+		Articulo articulo = new Articulo();
+		int codTipo = 0;
+		Tipo tipo = new Tipo();
+
+		try {
+			stmt = (conn.prepareStatement(BUSCAR_ARTICULO));
+			stmt.setInt(1, codArt);
+			resultSet = stmt.executeQuery();
+			if (resultSet.next()) {
+				articulo.setCodArticulo(Integer.parseInt(resultSet.getString("cod_articulo")));
+				articulo.setColor(resultSet.getString("color"));
+				articulo.setTemporada(Temporada.valueOf(resultSet.getString("temporada").toUpperCase()));
+				articulo.setPrecio(Float.parseFloat(resultSet.getString("precio")));
+				articulo.setPorcentajeDecuento(resultSet.getFloat("descuento"));
+				codTipo = Integer.parseInt(resultSet.getString("cod_tipo"));
+			}
+
+			stmt = (conn.prepareStatement(CONSULTA_TIPO.concat(" WHERE cod_tipo = ?")));
+			stmt.setInt(1, codTipo);
+			resultSet = stmt.executeQuery();
+			if (resultSet.next()) {
+				tipo.setCodTipo(Integer.parseInt(resultSet.getString("cod_tipo")));
+				tipo.setNombreTipo(resultSet.getString("nombre"));
+				tipo.setStock(Integer.parseInt(resultSet.getString("stock")));
+			}
+
+			articulo.setNombreTipo(tipo.getNombreTipo());
+			return articulo;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return articulo;
+	}
+
+	@Override
+	public boolean aniadirCompra(String dni, int codArticulo) {
+		conn = ConnectionMysql.openConnection();
+		try {
+			stmt = (conn.prepareStatement(ALTA_COMPRA));
+			stmt.setString(1, dni);
+			stmt.setInt(2, codArticulo);
+			stmt.executeUpdate();
+
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }

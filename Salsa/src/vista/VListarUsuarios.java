@@ -24,8 +24,9 @@ import modelo.Persona;
 import modelo.Sexo;
 
 /**
- * La clase VListarUsuarios representa una ventana de diálogo para listar y gestionar usuarios.
- * Hereda de JDialog e implementa ActionListener y ListSelectionListener para manejar eventos.
+ * La clase VListarUsuarios representa una ventana de diálogo para listar y
+ * gestionar usuarios. Hereda de JDialog e implementa ActionListener y
+ * ListSelectionListener para manejar eventos.
  */
 public class VListarUsuarios extends JDialog implements ActionListener, ListSelectionListener {
 
@@ -40,7 +41,7 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 	 * Constructor de la clase VListarUsuarios.
 	 * 
 	 * @param administracion referencia a la ventana de administración
-	 * @param modal indica si el diálogo es modal
+	 * @param modal          indica si el diálogo es modal
 	 */
 	public VListarUsuarios(VAdministracion administracion, boolean modal) {
 		super(administracion);
@@ -82,8 +83,7 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 	 * Construye la tabla con los datos de los usuarios.
 	 */
 	private void construirTabla() {
-		String titulos[] = { "DNI", "NOMBRE", "APELLIDO", "FECHA NACIMIENTO", "CONTRASEÑA", "DIRECCION", "EMAIL",
-				"GENERO" };
+		String titulos[] = { "DNI", "NOMBRE", "APELLIDO", "FECHA NACIMIENTO", "DIRECCION", "EMAIL", "GENERO" };
 		String informacion[][];
 		try {
 			informacion = obtenerMatriz(); // Obtenemos la matriz de información de los usuarios
@@ -105,16 +105,15 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 	 */
 	private String[][] obtenerMatriz() throws SQLException {
 		List<Persona> personas = Controlador.listarUsuarios();
-		String matrizInfo[][] = new String[personas.size()][8];
+		String matrizInfo[][] = new String[personas.size()][7];
 		for (int indice = 0; indice < personas.size(); indice++) {
 			matrizInfo[indice][0] = personas.get(indice).getDni();
 			matrizInfo[indice][1] = personas.get(indice).getNombre();
 			matrizInfo[indice][2] = personas.get(indice).getApellido();
 			matrizInfo[indice][3] = personas.get(indice).getFechaNacimiento().toString();
-			matrizInfo[indice][4] = personas.get(indice).getContrasena();
-			matrizInfo[indice][5] = personas.get(indice).getDireccion();
-			matrizInfo[indice][6] = personas.get(indice).getEmail();
-			matrizInfo[indice][7] = personas.get(indice).getGenero().toString();
+			matrizInfo[indice][4] = personas.get(indice).getDireccion();
+			matrizInfo[indice][5] = personas.get(indice).getEmail();
+			matrizInfo[indice][6] = personas.get(indice).getGenero().toString();
 		}
 		return matrizInfo;
 	}
@@ -159,16 +158,16 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 	 */
 	private void modificarActualizarUsuario() {
 		int fila = tableDatosUsuario.getSelectedRow(); // Se obtiene el número de la fila seleccionada
-		if (fila != -1) { // Si la fila seleccionada es diferente de -1, se obtiene la información de la fila seleccionada
+		if (fila != -1) { // Si la fila seleccionada es diferente de -1, se obtiene la información de la
+							// fila seleccionada
 			Persona per = new Persona();
 			per.setDni(tableDatosUsuario.getValueAt(fila, 0).toString());
 			per.setNombre(tableDatosUsuario.getValueAt(fila, 1).toString());
 			per.setApellido(tableDatosUsuario.getValueAt(fila, 2).toString());
 			per.setFechaNacimiento(LocalDate.parse(tableDatosUsuario.getValueAt(fila, 3).toString()));
-			per.setContrasena(tableDatosUsuario.getValueAt(fila, 4).toString());
-			per.setDireccion(tableDatosUsuario.getValueAt(fila, 5).toString());
-			per.setEmail(tableDatosUsuario.getValueAt(fila, 6).toString());
-			per.setGenero(Sexo.valueOf(tableDatosUsuario.getValueAt(fila, 7).toString()));
+			per.setDireccion(tableDatosUsuario.getValueAt(fila, 4).toString());
+			per.setEmail(tableDatosUsuario.getValueAt(fila, 5).toString());
+			per.setGenero(Sexo.valueOf(tableDatosUsuario.getValueAt(fila, 6).toString()));
 
 			VRegister modificacion = new VRegister(null, true, per, fila, "modificar");
 			this.dispose();
@@ -187,7 +186,4 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 		admin.setVisible(true);
 	}
 
-
 }
-
-

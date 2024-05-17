@@ -23,9 +23,10 @@ import controlador.Controlador;
 import modelo.Persona;
 
 /**
- * La clase VLogin representa una ventana de inicio de sesión.
- * Permite a los usuarios ingresar su correo electrónico y contraseña para acceder al sistema.
- * Implementa ActionListener y MouseListener para manejar eventos de acción y de ratón.
+ * La clase VLogin representa una ventana de inicio de sesión. Permite a los
+ * usuarios ingresar su correo electrónico y contraseña para acceder al sistema.
+ * Implementa ActionListener y MouseListener para manejar eventos de acción y de
+ * ratón.
  */
 public class VLogin extends JFrame implements ActionListener, MouseListener {
 
@@ -38,11 +39,10 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	private Persona persona = new Persona();
 	private JLabel lblImagenLogin;
 
-
 	// Constructor vacio para el cierre de sesión
 
 	// Página de Inicio
-	
+
 	/**
 	 * Constructor de la clase VLogin.
 	 * 
@@ -145,8 +145,6 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 		toggleButton.addActionListener(this);
 	}
 
-
-
 	// Visualizar/Desvisualizar la contraseña
 	/**
 	 * Alterna la visibilidad de la contraseña en el campo de entrada.
@@ -158,16 +156,15 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 				: new ImageIcon(getClass().getResource("/assets/icons/nover.png")));
 	}
 
-
 	// Métodos para ahorrar los action listener
 	/**
 	 * Método para manejar eventos de clic del ratón.
 	 * 
-	 * @param e el evento de clic del ratón
+	 * @param evento el evento de clic del ratón
 	 */
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (e.getSource().equals(linkRegister)) {
+	public void mouseClicked(MouseEvent evento) {
+		if (evento.getSource().equals(linkRegister)) {
 			VRegister registro = new VRegister(this, true, persona, 0, "");
 			setVisible(false);
 			registro.setLocationRelativeTo(this);
@@ -178,14 +175,14 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 	/**
 	 * Método para manejar eventos de acción.
 	 * 
-	 * @param e el evento de acción
+	 * @param evento el evento de acción
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(toggleButton)) {
+	public void actionPerformed(ActionEvent evento) {
+		if (evento.getSource().equals(toggleButton)) {
 			togglePasswordVisibility();
 		}
-		if (e.getSource().equals(btnLogin)) {
+		if (evento.getSource().equals(btnLogin)) {
 			logicaLogin();
 		}
 	}
@@ -208,7 +205,7 @@ public class VLogin extends JFrame implements ActionListener, MouseListener {
 			if (existe) {
 				JOptionPane.showMessageDialog(null, "Bienvenido/a al sistema");
 				this.setVisible(false);
-				VMain vent = new VMain(this, true);
+				VMain vent = new VMain(this, true, email);
 				vent.setLocationRelativeTo(this);
 				vent.setVisible(true);
 				this.dispose();

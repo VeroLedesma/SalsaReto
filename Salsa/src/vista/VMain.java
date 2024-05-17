@@ -1,25 +1,21 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.List;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
-import controlador.Controlador;
-import modelo.Articulo;
 
 /**
  * La clase VMain representa la ventana principal de la aplicación. Muestra
@@ -29,108 +25,107 @@ public class VMain extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel BodyLayout, itemsPanel;
-	private JLabel logo;
-	private JButton btnCamisetas, btnSudaderas, btnPantalones, btnMenu;
+	private JLabel logo, lblImagen1, lblImagen3, lblImagen2;
+	private JButton btnMenu, btnAñiadirMiLista;
 
-	private JScrollPane scrollPane;
+	private JScrollPane scrollPane, scrollPane_1;
+	private String email;
 
 	/**
 	 * Constructor de la clase VMain.
 	 * 
 	 * @param login el JFrame padre desde el cual se abre este diálogo
 	 * @param modal indica si el diálogo es modal
+	 * @param email
+	 * @wbp.parser.constructor
 	 */
-	public VMain(VLogin login, boolean modal) {
+	public VMain(VLogin login, boolean modal, String email) {
 		super(login);
 		setModal(modal);
-		setBounds(100, 100, 1082, 836);
+		this.email = email;
+		setBounds(100, 100, 1098, 834);
 		BodyLayout = new JPanel();
 		BodyLayout.setBackground(new Color(255, 255, 255));
 		BodyLayout.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(BodyLayout);
-		BodyLayout.setLayout(null);
 
 		// Logo centrado
 		logo = new JLabel("");
-		logo.setBounds(348, 21, 342, 76);
+		logo.setBounds(288, 63, 419, 83);
 		ImageIcon icon = new ImageIcon(getClass().getResource("/assets/logo.png"));
 		ImageIcon img = new ImageIcon(
 				icon.getImage().getScaledInstance(logo.getWidth(), logo.getHeight(), Image.SCALE_SMOOTH));
+		BodyLayout.setLayout(null);
+		BodyLayout.setLayout(null);
 		logo.setIcon(img);
 		BodyLayout.add(logo);
 
 		// Contenedor para la rejilla de artículos
 
 		itemsPanel = new JPanel();
-		itemsPanel.setBounds(10, 226, 1048, 428);
+		itemsPanel.setBounds(10, 168, 1058, 89);
 		BodyLayout.add(itemsPanel);
 		itemsPanel.setLayout(null);
 
-		// Botones para las categorías de artículos
-		btnCamisetas = new JButton("Camisetas");
-		btnCamisetas.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnCamisetas.addActionListener(this);
-		btnCamisetas.setBounds(280, 146, 165, 46);
-		BodyLayout.add(btnCamisetas);
-
-		btnSudaderas = new JButton("Sudaderas");
-		btnSudaderas.setFont(new Font("Tahoma", Font.BOLD, 14));
-
-		btnSudaderas.setBounds(825, 146, 165, 46);
-		BodyLayout.add(btnSudaderas);
-
-		btnPantalones = new JButton("Pantalones");
-		btnPantalones.setFont(new Font("Tahoma", Font.BOLD, 14));
-
-		btnPantalones.setBounds(563, 146, 165, 46);
-
-		BodyLayout.add(btnPantalones);
-
 		// Botón de menú
 		btnMenu = new JButton("Menu");
+		btnMenu.setBounds(921, 58, 147, 46);
 		btnMenu.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnMenu.addActionListener(this);
-		btnMenu.setBounds(925, 10, 113, 30);
 		BodyLayout.add(btnMenu);
 
-		JButton btnTodos = new JButton("Todos los articulos");
+		JButton btnTodos = new JButton("Articulos Destacados");
+		btnTodos.setBounds(20, 267, 221, 55);
 		btnTodos.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnTodos.setBounds(10, 150, 181, 38);
 		BodyLayout.add(btnTodos);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 226, 1048, 428);
+		scrollPane.setBounds(10, 332, 1058, 440);
 		BodyLayout.add(scrollPane);
-// MIRAR ESTO EN CASM ES DE CHAT GPT
 
-		List<Articulo> articulos = null;
-		try {
-			articulos = Controlador.listarArticulos();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} // Obtener la lista de artículos desde la base de
-			// datos
-		for (Articulo articulo : articulos) {
-			// Crear un panel para cada artículo
-			JPanel panel = new JPanel();
-			panel.setLayout(new BorderLayout());
+		JPanel panel = new JPanel();
+		scrollPane.setViewportView(panel);
+		panel.setLayout(null);
 
-			// Crear una etiqueta para mostrar la imagen del artículo (asumiendo que la
-			// imagen está almacenada en la base de datos)
-			JLabel imagenLabel = new JLabel(new ImageIcon(icon.getImage()));
-			panel.add(imagenLabel, BorderLayout.CENTER);
+		lblImagen1 = new JLabel("6");
+		lblImagen1.setBounds(10, 28, 391, 359);
+		panel.add(lblImagen1);
+		lblImagen1.setIcon(new ImageIcon(getClass().getResource("/assets/3.jpg")));
+		lblImagen2 = new JLabel("7");
+		lblImagen2.setBounds(395, 28, 313, 359);
+		panel.add(lblImagen2);
+		lblImagen2.setIcon(new ImageIcon(getClass().getResource("/assets/2.jpg")));
+		lblImagen3 = new JLabel("8");
+		lblImagen3.setBounds(733, 28, 313, 359);
+		panel.add(lblImagen3);
+		lblImagen3.setIcon(new ImageIcon(getClass().getResource("/assets/1.jpg")));
 
-			// Crear una etiqueta para mostrar el nombre del artículo
-			JLabel nombreLabel = new JLabel(articulo.getNombreTipo());
-			nombreLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			panel.add(nombreLabel, BorderLayout.SOUTH);
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(0, 0, 2, 2);
+		BodyLayout.add(scrollPane_1);
 
-			// Crear una etiqueta para mostrar el precio del artículo
-			JLabel precioLabel = new JLabel("$" + articulo.getPrecio());
-			precioLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			panel.add(precioLabel, BorderLayout.NORTH);
-			add(panel); // Agregar el panel del artículo al panel principal
-		}
+		btnAñiadirMiLista = new JButton("Ver mi lista");
+		btnAñiadirMiLista.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnAñiadirMiLista.setBounds(894, 267, 174, 40);
+		BodyLayout.add(btnAñiadirMiLista);
+		lblImagen1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Mostrar el cuadro de diálogo
+				String[] opciones = { "Añadir", "Cancelar" };
+				int respuesta = JOptionPane.showOptionDialog(null, "¿Deseas añadir algo?", "Añadir",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+				JLabel sourceLabel = (JLabel) e.getSource();
+				// Manejar la respuesta
+				if (respuesta == JOptionPane.YES_OPTION) {
+					AniadirLista(Integer.parseInt(sourceLabel.getText()));
+					// Aquí puedes añadir la lógica para añadir el ítem
+				} else {
+					System.out.println("Has cancelado la operación.");
+				}
+			}
+		});
+
 	}
 
 	/*
@@ -143,6 +138,18 @@ public class VMain extends JDialog implements ActionListener {
 		if (evento.getSource().equals(btnMenu)) {
 			irAlMenu();
 		}
+
+	}
+
+	/**
+	 * Muestra la ventana de ajustes.
+	 */
+	private void AniadirLista(int codArt) {
+
+		VMiLista miLista = new VMiLista(this, true, email, codArt);
+		this.dispose();
+		miLista.setLocationRelativeTo(this);
+		miLista.setVisible(true);
 	}
 
 	/**
