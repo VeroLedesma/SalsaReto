@@ -1,54 +1,64 @@
 package vista;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.prefs.Preferences;
+import java.sql.SQLException;
+import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JSlider;
-import javax.swing.JTextField;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
+import controlador.Controlador;
+import modelo.Articulo;
+import modelo.Usuario;
+
 /**
- * Esta ventana permite ver una lista de deseos que el usuario a agregado a la misma.
+ * Esta ventana permite ver una lista de deseos que el usuario a agregado a la
+ * misma.
+ * 
  * @author Luis
  */
-public class VMiLista extends JDialog implements ActionListener {
+public class VMiLista extends JDialog implements ActionListener, ListSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JLabel logo, labelTema, labelClaro, labelOscuro, lblTiendaIdioma, lblEmail, lblUsuario;
-	private JSlider slider;
-	private JComboBox comboBox;
-	private JSeparator separator_2;
-	private JTextField textField, textField_1;
+	private JLabel logo;
 	private JButton btnVolver;
 	private VMain main;
+	private String email;
+	private JTable tableDatosMisArticulos;
+	private DefaultTableModel modelo;
+	private JScrollPane scrollPane;
 	// Comprobar si anda en modo diurno o nocturno
 	// private boolean oscuro;
 
-	
 	/**
 	 * Se visualiza una "Lista de deseos"
 	 * 
-	 * @param hamburger Hace referencia a la ventana Hamburger, que es el menu
-	 * @param b Actua como valor para el modal, es decir que no permite que se cambie entre ventanas
+	 * @param vMain Hace referencia a la ventana Hamburger, que es el menu
+	 * @param b     Actua como valor para el modal, es decir que no permite que se
+	 *              cambie entre ventanas
+	 * @param email
 	 */
-	public VMiLista(VHamburger hamburger, boolean b) {
-		super(hamburger);
+	public VMiLista(VMain vMain, boolean b, String email, int codArt) {
+		super(vMain);
+		this.email = email;
 		setModal(b);
+
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 626, 472);
+		setBounds(100, 100, 733, 589);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -56,30 +66,13 @@ public class VMiLista extends JDialog implements ActionListener {
 
 		logo = new JLabel("");
 		logo.setIcon(new ImageIcon(getClass().getResource("/assets/logo.png")));
-		logo.setBounds(177, 42, 245, 51);
+		logo.setBounds(217, 28, 245, 51);
 		logo.setBackground(Color.WHITE);
 		contentPane.add(logo);
-
-		slider = new JSlider();
-		slider.setBounds(203, 188, 200, 22);
-		slider.setMinimum(0);
-		slider.setMaximum(1);
-		// slider.setValue(oscuro ? 1 : 0);
-		slider.setOpaque(false);
-		contentPane.add(slider);
-
-		labelTema = new JLabel("Tema");
-		labelTema.setFont(new Font("Tahoma", Font.BOLD, 10));
-		labelTema.setBounds(281, 162, 59, 21);
-		contentPane.add(labelTema);
-
-		labelClaro = new JLabel("Claro");
-		labelClaro.setBounds(164, 185, 38, 22);
-		contentPane.add(labelClaro);
-
-		labelOscuro = new JLabel("Oscuro");
-		labelOscuro.setBounds(409, 185, 48, 22);
-		contentPane.add(labelOscuro);
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(34, 131, 677, 252);
+		contentPane.add(scrollPane);
+		construirTabla();
 
 		btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(this);
@@ -87,67 +80,46 @@ public class VMiLista extends JDialog implements ActionListener {
 		contentPane.add(btnVolver);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(10, 125, 592, 2);
+		separator.setBounds(10, 125, 709, 2);
 		contentPane.add(separator);
 
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(164, 239, 276, 2);
-		contentPane.add(separator_1);
-
-		comboBox = new JComboBox();
-		comboBox.setModel(
-				new DefaultComboBoxModel(new String[] { "Español", "Portugués", "Inglés", "Ruso", "Alemán", "Sueco" }));
-		comboBox.setToolTipText("");
-		comboBox.setSelectedIndex(-1);
-		comboBox.setBounds(269, 251, 134, 21);
-		contentPane.add(comboBox);
-
-		lblTiendaIdioma = new JLabel("Idioma Tienda");
-		lblTiendaIdioma.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblTiendaIdioma.setBounds(177, 255, 93, 13);
-		contentPane.add(lblTiendaIdioma);
-
-		separator_2 = new JSeparator();
-		separator_2.setBounds(164, 282, 276, 2);
-		contentPane.add(separator_2);
-
-		lblUsuario = new JLabel("Nombre de Usuario");
-		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblUsuario.setBounds(149, 298, 99, 13);
-		contentPane.add(lblUsuario);
-
-		textField = new JTextField();
-		textField.setBounds(258, 291, 145, 28);
-		contentPane.add(textField);
-		textField.setColumns(10);
-
-		lblEmail = new JLabel("Email");
-		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblEmail.setBounds(217, 344, 31, 13);
-		contentPane.add(lblEmail);
-
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(258, 337, 145, 28);
-		contentPane.add(textField_1);
-
-		// Registra un ChangeListener para detectar cambios en el JSlider
-		slider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				// cambiarTema(slider.getValue()); // Llama al método cambiarTema con el valor
-				// actual del slider
-			}
-		});
-
-		cargarPreferenciaTema();
+		aniadiAmiLista(codArt);
 	}
 
 	/**
-	 * Permite iniciar una accion que vuelve a la ventana anterior
-	 * 
-	 * @param e Inicia una accion de evento
+	 * Muestra la ventana del main
 	 */
+	private void construirTabla() {
+		String titulos[] = { "COLOR", "TEMPORADA", "PRECIO", "DESCUENTO", "NOMBRE TIPO" };
+		String informacion[][];
+		try {
+
+			informacion = obtenerMatriz(); // Obtenemos la matriz de información de los usuarios
+			modelo = new DefaultTableModel(informacion, titulos); // Establecemos el modelo por defecto de la tabla
+			tableDatosMisArticulos = new JTable(modelo); // Agregamos el modelo a la tabla
+			tableDatosMisArticulos.setDefaultEditor(Object.class, null); // Esto hace que la tabla deje de ser editable
+			scrollPane.setViewportView(tableDatosMisArticulos);
+			tableDatosMisArticulos.getSelectionModel().addListSelectionListener(this);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String[][] obtenerMatriz() throws SQLException {
+		List<Articulo> articulos = Controlador.listarArticulos(); // Asumiendo que Controlador tiene un método para
+		// obtener la lista de Articulos
+
+		String matrizInfo[][] = new String[articulos.size()][6];
+		for (int indice = 0; indice < articulos.size(); indice++) {
+			matrizInfo[indice][0] = articulos.get(indice).getColor() + "";
+			matrizInfo[indice][1] = articulos.get(indice).getTemporada() + "";
+			matrizInfo[indice][2] = articulos.get(indice).getPrecio() + "";
+			matrizInfo[indice][3] = articulos.get(indice).getPorcentajeDecuento() + "";
+			matrizInfo[indice][4] = articulos.get(indice).getNombreTipo() + "";
+		}
+		return matrizInfo;
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnVolver)) {
@@ -156,74 +128,38 @@ public class VMiLista extends JDialog implements ActionListener {
 
 	}
 
-	
-	private void cargarPreferenciaTema() {
-		// Obtener las preferencias compartidas para la clase Ajustes
-		Preferences prefs = Preferences.userNodeForPackage(VMiLista.class);
-		// Obtener la preferencia del tema guardada, con un valor predeterminado de
-		// falso (tema claro)
-		// oscuro = prefs.getBoolean("temaOscuro", true);
-		// Aplicar el tema según la preferencia cargada
-		// cambiarTema(oscuro ? 1 : 0);
-	}
-
-	//Permite volver a la ventana principal que es la de Hamburger
-	protected void volver() {
-
-		VHamburger ham = new VHamburger(main, false);
-
+	private void volver() {
+		VMain ven = new VMain(null, true, email);
 		this.dispose();
-		ham.setLocationRelativeTo(this);
-		ham.setVisible(true);
+		ven.setLocationRelativeTo(this);
+		ven.setVisible(true);
 	}
 
-	// Método para cambiar el tema de la aplicación según el valor del slider
-//	private void cambiarTema(int valor) {
-//		if (valor == 0) {
-//			// Cambiar al tema claro
-//			contentPane.setBackground(Color.WHITE);
-//			labelTema.setForeground(Color.BLACK);
-//			labelClaro.setForeground(Color.BLACK);
-//			labelOscuro.setForeground(Color.BLACK);
-//			lblTiendaIdioma.setForeground(Color.BLACK);
-//			lblUsuario.setForeground(Color.BLACK);
-//			lblEmail.setForeground(Color.BLACK);
-//
-//			// Guardar selección tema claro
-//			oscuro = false;
-//
-//		} else if (valor == 1) {
-//			// Cambiar al tema oscuro
-//			contentPane.setBackground(Color.DARK_GRAY);
-//			labelTema.setForeground(Color.WHITE);
-//			labelClaro.setForeground(Color.WHITE);
-//			labelOscuro.setForeground(Color.WHITE);
-//			lblTiendaIdioma.setForeground(Color.WHITE);
-//			lblUsuario.setForeground(Color.WHITE);
-//			lblEmail.setForeground(Color.WHITE);
-//
-//			// Guardar selección tema oscuro
-//			oscuro = true;
-//		}
-//	}
+	private void aniadiAmiLista(int codArt) {
+		Usuario usuario = Controlador.obtenerUsuario(email);
+		Articulo articulo = Controlador.obtenerArticulo(codArt);
+		Controlador.aniadirCompra(usuario.getDni(), articulo.getCodArticulo());
 
-	// Método para guardar la selección del tema
-	// private void guardarPreferenciaTema() {
-	// Obtener las preferencias compartidas para la clase Ajustes
-	// Preferences prefs = Preferences.userNodeForPackage(Ajustes.class);
-	// Guardar la preferencia del tema
-	// prefs.putBoolean("temaOscuro", oscuro);
-	// }
+	}
 
-	// Sobreescribe el método setVisible para guardar la preferencia del tema al
-	// cerrar la ventana
-//	@Override
-//	public void setVisible(boolean visible) {
-//		super.setVisible(visible);
-//		// Si la ventana se está cerrando, guardar la preferencia del tema
-//		if (!visible) {
-//			guardarPreferenciaTema();
-//		}
-//	}
+	@Override
+	public void valueChanged(ListSelectionEvent evento) {
+		int respuesta = 0;
 
+		if (!evento.getValueIsAdjusting()) {
+			respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres eliminar un articulo?", "Confirmación",
+					JOptionPane.YES_NO_OPTION);
+			if (respuesta == 0) {
+				eliminarArticulo();
+			}
+		}
+	}
+
+	private boolean eliminarArticulo() {
+		int fila = tableDatosMisArticulos.getSelectedRow();
+		boolean eliminar = Controlador
+				.eliminarArticulo(Integer.parseInt(tableDatosMisArticulos.getValueAt(fila, 0).toString()));
+		volver();
+		return eliminar;
+	}
 }

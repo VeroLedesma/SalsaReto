@@ -7,11 +7,11 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,25 +21,27 @@ import javax.swing.event.ListSelectionListener;
 
 import controlador.Controlador;
 import modelo.Articulo;
+import modelo.Temporada;
 
 /**
- * En esta ventana se permite realizar las modificaciones de datos que requiera el Trabajador.
- * Una vez realizados, se cambiarán los datos en la base de datos.
+ * En esta ventana se permite realizar las modificaciones de datos que requiera
+ * el Trabajador. Una vez realizados, se cambiarán los datos en la base de
+ * datos.
+ * 
  * @author Luis
  */
 public class VMoDatosArticulo extends JDialog implements ActionListener, ListSelectionListener {
 
 	private static final long serialVersionUID = 1L;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private final JPanel contentPane = new JPanel();
 	private JTable tableDatosArticulo;
 	private JScrollPane scrollPane;
-	private JButton btnEliminar, btnVolver, btnModificar;
+	private JButton btnEliminar, btnVolver;
 
 	/**
 	 * Constructor de la clase VMoDatosArticulo
 	 * 
-	 * @param modal Hace que no se pueda alternar entre ventanas
+	 * @param modal          Hace que no se pueda alternar entre ventanas
 	 * @param administracion Hace referencia a la ventana de Administracion
 	 * 
 	 */
@@ -75,32 +77,27 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 		construirTabla();
 		btnVolver = new JButton("Volver");
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnVolver.setBounds(58, 458, 97, 34);
+		btnVolver.setBounds(55, 475, 97, 34);
 		btnVolver.addActionListener(this);
 		contentPane.add(btnVolver);
 
-		btnModificar = new JButton("Modificar");
-		btnModificar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnModificar.setBounds(597, 458, 114, 34);
-		btnModificar.addActionListener(this);
-		contentPane.add(btnModificar);
-
 		btnEliminar = new JButton("Eliminar Articulo");
 		btnEliminar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnEliminar.setBounds(273, 458, 170, 34);
+		btnEliminar.setBounds(519, 475, 170, 34);
 		btnEliminar.addActionListener(this);
 		contentPane.add(btnEliminar);
 
 	}
 
-	//Tabla donde se pueden modificar los datos
+	// Tabla donde se muestran los datos del articulo y si seleccionas una fila te
+	// dirige a una ventana para poder modificar algunos datos
 	private void construirTabla() {
-		String titulos[] = { "COD", "COLOR", "MODELO", "TEMPORADA", "PRECIO", "DESCUENTO" };
+		String titulos[] = { "COD", "COLOR", "TEMPORADA", "PRECIO", "DESCUENTO", "NOMBRE TIPO ARTICULO" };
 		String informacion[][];
 		try {
 			informacion = obtenerMatriz();
 			tableDatosArticulo = new JTable(informacion, titulos);
-			tableDatosArticulo.setDefaultEditor(Object.class, null);
+			tableDatosArticulo.setDefaultEditor(Object.class, null);// esto hace que la tabla no pueda editarse
 			scrollPane.setViewportView(tableDatosArticulo);
 			tableDatosArticulo.getSelectionModel().addListSelectionListener(this);
 		} catch (SQLException e) {
@@ -109,21 +106,20 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 
 	}
 
-	//Se imprimen los datos de los articulos en la tabla
+	// Se imprimen los datos de los articulos en la tabla
 	private String[][] obtenerMatriz() throws SQLException {
 
 		List<Articulo> articulos = Controlador.listarArticulos(); // Asumiendo que Controlador tiene un método para
 																	// obtener la lista de Articulos
 
 		String matrizInfo[][] = new String[articulos.size()][6];
-		for (int i = 0; i < articulos.size(); i++) {
-			matrizInfo[i][0] = articulos.get(i).getCodArticulo() + "";
-			matrizInfo[i][1] = articulos.get(i).getColor() + "";
-			matrizInfo[i][2] = articulos.get(i).toString() + "";
-			matrizInfo[i][3] = articulos.get(i).getTemporada() + "";
-			matrizInfo[i][4] = articulos.get(i).getPrecio() + "";
-			matrizInfo[i][5] = articulos.get(i).getPorcentajeDecuento() + "";
-
+		for (int indice = 0; indice < articulos.size(); indice++) {
+			matrizInfo[indice][0] = articulos.get(indice).getCodArticulo() + "";
+			matrizInfo[indice][1] = articulos.get(indice).getColor() + "";
+			matrizInfo[indice][2] = articulos.get(indice).getTemporada() + "";
+			matrizInfo[indice][3] = articulos.get(indice).getPrecio() + "";
+			matrizInfo[indice][4] = articulos.get(indice).getPorcentajeDecuento() + "";
+			matrizInfo[indice][5] = articulos.get(indice).getNombreTipo() + "";
 		}
 		return matrizInfo;
 	}
@@ -141,7 +137,7 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 		}
 	}
 
-	//Se vuelve a la ventana anterior, que es la de administración
+	// Se vuelve a la ventana anterior, que es la de administración
 	private void volver() {
 		VAdministracion admin = new VAdministracion(null, true);
 		this.dispose();
@@ -151,9 +147,50 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 	}
 
 	@Override
-	public void valueChanged(ListSelectionEvent e) {
+	public void valueChanged(ListSelectionEvent evento) {
 //aqui añadiremos  la accion que se hará para eliminar o modificar el usuario
+		int respuesta = 0;
+		if (!evento.getValueIsAdjusting()) {
+
+			respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres modificar un articulo?", "Confirmación",
+					JOptionPane.YES_NO_OPTION);
+			if (respuesta == 0) {
+				modificarArticulo();
+			} else {
+				respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres eliminar un articulo?", "Confirmación",
+						JOptionPane.YES_NO_OPTION);
+				if (respuesta == 0) {
+					eliminarArticulo();
+				}
+			}
+		}
 
 	}
 
+	private boolean eliminarArticulo() {
+		int fila = tableDatosArticulo.getSelectedRow();
+		boolean eliminar = Controlador
+				.eliminarArticulo(Integer.parseInt(tableDatosArticulo.getValueAt(fila, 0).toString()));
+		volver();
+		return eliminar;
+
+	}
+
+	private void modificarArticulo() {
+		int fila = tableDatosArticulo.getSelectedRow(); // Se obtiene el número de la fila seleccionada
+		if (fila != -1) { // Si la fila seleccionada es diferente de -1, se obtiene la información de la
+							// fila seleccionada
+			Articulo articulo = new Articulo();
+			articulo.setCodArticulo(Integer.parseInt(tableDatosArticulo.getValueAt(fila, 0).toString()));
+			articulo.setColor(tableDatosArticulo.getValueAt(fila, 1).toString());
+			articulo.setTemporada(Temporada.valueOf(tableDatosArticulo.getValueAt(fila, 2).toString()));
+			articulo.setPrecio(Float.parseFloat(tableDatosArticulo.getValueAt(fila, 3).toString()));
+			articulo.setPorcentajeDecuento(Float.parseFloat(tableDatosArticulo.getValueAt(fila, 4).toString()));
+			articulo.setNombreTipo(tableDatosArticulo.getValueAt(fila, 5).toString());
+			VInsertDatosArticulo modificacion = new VInsertDatosArticulo(null, true, articulo, fila, 1, "modificar");
+			this.dispose();
+			modificacion.setLocationRelativeTo(this);
+			modificacion.setVisible(true);
+		}
+	}
 }

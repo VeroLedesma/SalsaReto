@@ -6,6 +6,7 @@ import java.util.Map;
 import modelo.Articulo;
 import modelo.Persona;
 import modelo.Tipo;
+import modelo.Usuario;
 
 /**
  * Interfaz que define las operaciones de acceso a datos.
@@ -14,7 +15,6 @@ import modelo.Tipo;
  * 
  */
 public interface Dao {
-
 	/**
 	 * Da de alta un nuevo artículo.
 	 *
@@ -37,7 +37,7 @@ public interface Dao {
 	 * @param tipo el objeto Tipo a introducir.
 	 * @return el ID del tipo de artículo recién creado.
 	 */
-	public int introducirTipoArticulo(Tipo tipo);
+	public boolean introducirTipoArticulo(Tipo tipo);
 
 	/**
 	 * Lista todos los usuarios.
@@ -76,7 +76,18 @@ public interface Dao {
 	 * @return true si la modificación fue exitosa, false en caso contrario.
 	 */
 	public boolean modificarUsuario(Persona per);
-	// public boolean consultaUsuario(Persona per);
+
+	public boolean modificarArticulo(Articulo art);
 
 	public int comprobarEncargado();
+
+	public boolean eliminarArticulo(int art);
+
+	public boolean eliminarPersona(Persona per);
+
+	public Usuario obtenerUsuario(String email);
+
+	public Articulo obtenerArticulo(int codArt);
+
+	public boolean aniadirCompra(String dni, int codArticulo);
 }

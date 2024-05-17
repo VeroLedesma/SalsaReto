@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,16 +40,23 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 	private JComboBox<Temporada> comboBoxTemporada;
 	private JComboBox<String> cbTipoPrenda;
 	private Map<Integer, Tipo> tipoPrenda = new HashMap<>();
-	private JButton btnSubirDatos, btnVolver, btnModificar;
+	private JButton btnSubirDatos, btnVolver;
+	private int pantallaDiferente;
+	private Articulo articulo = new Articulo();
 
 	/**
 	 * Constructor de la clase VInsertDatosArticulo.
 	 * 
 	 * @param administracion referencia a la ventana de administración
 	 * @param modal          indica si el diálogo es modal
+	 * @param fila
+	 * @param articulo
 	 */
-	public VInsertDatosArticulo(VAdministracion administracion, boolean modal) {
+	public VInsertDatosArticulo(VAdministracion administracion, boolean modal, Articulo articulo, int fila,
+			int pantallaDiferente, String modificar) {
 		super(administracion);
+		this.articulo = articulo;
+
 		setModal(modal);
 		setBounds(100, 100, 862, 641);
 		getContentPane().setLayout(new BorderLayout());
@@ -96,9 +105,9 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		contentPanel.add(tfPrecio);
 
 		// Botón subir datos
-		btnSubirDatos = new JButton("Subir Datos");
+		btnSubirDatos = new JButton();
 		btnSubirDatos.addActionListener(this);
-		btnSubirDatos.setBounds(143, 488, 203, 60);
+		btnSubirDatos.setBounds(326, 488, 203, 60);
 		btnSubirDatos.setFont(new Font("Dialog", Font.BOLD, 18));
 		contentPanel.add(btnSubirDatos);
 
@@ -123,18 +132,13 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		comboBoxTemporada.setBounds(107, 165, 196, 28);
 		contentPanel.add(comboBoxTemporada);
 
-		// Botón modificar
-		btnModificar = new JButton("Modificar");
-		btnModificar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnModificar.setBounds(567, 489, 155, 60);
-		contentPanel.add(btnModificar);
-
 		// Botón volver
 		btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(this);
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnVolver.setBounds(722, 10, 113, 35);
 		contentPanel.add(btnVolver);
+		this.pantallaDiferente = pantallaDiferente;
 
 		// ComboBox para el tipo de prenda
 		cbTipoPrenda = new JComboBox<String>();
@@ -143,9 +147,26 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		cbTipoPrenda.setEditable(true);
 		cbTipoPrenda.setBounds(526, 316, 225, 35);
 		contentPanel.add(cbTipoPrenda);
-
 		// Cargar tipos de prenda
 		cargarTipoPrenda();
+		if (modificar.equalsIgnoreCase("modificar")) {
+			tfColor.setText(articulo.getColor());
+			comboBoxTemporada.setSelectedItem(articulo.getTemporada());
+			tfPrecio.setText(String.valueOf(articulo.getPrecio()));
+			tfPorcentaje.setText(String.valueOf(articulo.getPorcentajeDecuento()));
+			cbTipoPrenda.setSelectedItem(articulo.getNombreTipo());
+			btnSubirDatos.setText("Modificar");
+
+		} else {
+			btnSubirDatos.setText("Subir Datos");
+			addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosed(WindowEvent evento) {
+					administracion.setVisible(true);
+				}
+			});
+		}
+
 	}
 
 	/**
@@ -166,38 +187,54 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 	/**
 	 * Maneja los eventos de los botones en el diálogo.
 	 * 
-	 * @param e el evento de acción
+	 * @param evento el evento de acción
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(btnSubirDatos)) {
-			subirDatos();
+	public void actionPerformed(ActionEvent evento) {
+		if (evento.getSource().equals(btnSubirDatos)) {
+			if (btnSubirDatos.getText().equalsIgnoreCase("Subir datos")) {
+				subirDatos();
+			} else if (btnSubirDatos.getText().equalsIgnoreCase("Modificar")) {
+				System.out.println("antes de modificar");
+				modificar();
+			}
+		}
+		if (evento.getSource().equals(btnVolver)) {
+			volver(pantallaDiferente);
 		}
 
-		if (e.getSource().equals(btnVolver)) {
-			volver();
-		}
-
-		if (e.getSource().equals(btnModificar)) {
-			modificarDatos();
-		}
 	}
 
-	/**
-	 * Método para modificar los datos de un artículo (sin implementación).
-	 */
-	private void modificarDatos() {
-		// Implementación de modificación
+	private void modificar() {
+		boolean modificado;
+		Articulo art = cargarDatosArticulo();
+		modificado = Controlador.modificarArticulo(art);
+		if (modificado == true) {
+			JOptionPane.showMessageDialog(null, "se ha modificado correctamente");
+		} else {
+			JOptionPane.showMessageDialog(this, "No se ha modificado nada", null, JOptionPane.ERROR_MESSAGE);
+		}
+
 	}
 
 	/**
 	 * Vuelve a la ventana de administración.
+	 * 
+	 * @param pantallaDiferente
 	 */
-	private void volver() {
-		VAdministracion ven = new VAdministracion(null, true);
-		this.dispose();
-		ven.setLocationRelativeTo(this);
-		ven.setVisible(true);
+	private void volver(int pantallaDiferente) {
+		if (pantallaDiferente == 0) {
+			VAdministracion ven = new VAdministracion(null, true);
+			this.dispose();
+			ven.setLocationRelativeTo(this);
+			ven.setVisible(true);
+
+		} else {
+			VMoDatosArticulo ven = new VMoDatosArticulo(null, true);
+			this.dispose();
+			ven.setLocationRelativeTo(this);
+			ven.setVisible(true);
+		}
 	}
 
 	/**
@@ -245,5 +282,19 @@ public class VInsertDatosArticulo extends JDialog implements ActionListener {
 		articulo.setNombreTipo((String) cbTipoPrenda.getSelectedItem());
 
 		Controlador.altaArticulo(articulo);
+	}
+
+	public Articulo cargarDatosArticulo() {
+		// este metod devuelve un articulo cargandolo asi en la pantalla
+		String porcentaje = tfPorcentaje.getText();
+		float porcent = Float.parseFloat(porcentaje);
+		articulo.setPorcentajeDecuento(porcent);
+		String precio = tfPrecio.getText();
+		Float precio2 = Float.parseFloat(precio);
+		articulo.setPrecio(precio2);
+		articulo.setTemporada((Temporada) comboBoxTemporada.getSelectedItem());
+		articulo.setNombreTipo((String) cbTipoPrenda.getSelectedItem());
+
+		return articulo;
 	}
 }

@@ -8,6 +8,7 @@ import modelo.Articulo;
 import modelo.ImpleDB;
 import modelo.Persona;
 import modelo.Tipo;
+import modelo.Usuario;
 
 /**
  * Clase Controlador que maneja la lógica de la aplicación.
@@ -57,6 +58,11 @@ public class Controlador {
 		return dao.modificarUsuario(per);
 	}
 
+	public static boolean modificarArticulo(Articulo art) {
+		Dao dao = new ImpleDB();
+		return dao.modificarArticulo(art);
+	}
+
 	/**
 	 * Inicia sesión con las credenciales proporcionadas.
 	 *
@@ -86,7 +92,7 @@ public class Controlador {
 	 * @param tipo el objeto Tipo a dar de alta.
 	 * @return el ID del tipo de artículo recién creado.
 	 */
-	public static int altaTipoArticulo(Tipo tipo) {
+	public static boolean altaTipoArticulo(Tipo tipo) {
 		Dao dao = new ImpleDB();
 		return dao.introducirTipoArticulo(tipo);
 	}
@@ -102,10 +108,37 @@ public class Controlador {
 		return dao.altaArticulo(art);
 	}
 
+	public static Usuario obtenerUsuario(String email) {
+		Dao dao = new ImpleDB();
+		return dao.obtenerUsuario(email);
+	}
+
 	public static int comprobarEncargado() {
 		Dao dao = new ImpleDB();
 
 		return dao.comprobarEncargado();
 
 	}
+
+	public static boolean eliminarArticulo(int art) {
+		Dao dao = new ImpleDB();
+		return dao.eliminarArticulo(art);
+	}
+
+	public static boolean eliminarPersona(Persona per) {
+		Dao dao = new ImpleDB();
+		return dao.eliminarPersona(per);
+	}
+
+	public static Articulo obtenerArticulo(int codArt) {
+		Dao dao = new ImpleDB();
+		return dao.obtenerArticulo(codArt);
+	}
+
+	public static boolean aniadirCompra(String dni, int codArticulo) {
+		Dao dao = new ImpleDB();
+		return dao.aniadirCompra(dni, codArticulo);
+
+	}
+
 }
