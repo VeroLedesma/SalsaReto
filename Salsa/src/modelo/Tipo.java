@@ -1,32 +1,66 @@
 package modelo;
 
+
+/**
+ * La clase Tipo representa un tipo de artículo con su código, nombre y stock.
+ */
 public class Tipo {
-	private Integer codTipo;
-	private String nombreTipo;
-	private Integer stok;
+    private Integer codTipo; // Código del tipo de artículo
+    private String nombreTipo; // Nombre del tipo de artículo
+    private Integer stock; // Stock del tipo de artículo
 
-	public Integer getCodTipo() {
-		return codTipo;
-	}
+    /**
+     * Obtiene el código del tipo de artículo.
+     * 
+     * @return El código del tipo de artículo.
+     */
+    public Integer getCodTipo() {
+        return codTipo;
+    }
 
-	public void setCodTipo(Integer codTipo) {
-		this.codTipo = codTipo;
-	}
+    /**
+     * Establece el código del tipo de artículo.
+     * 
+     * @param codTipo El nuevo código del tipo de artículo.
+     */
+    public void setCodTipo(Integer codTipo) {
+        this.codTipo = codTipo;
+    }
 
-	public String getNombreTipo() {
-		return nombreTipo;
-	}
+    /**
+     * Obtiene el nombre del tipo de artículo.
+     * 
+     * @return El nombre del tipo de artículo.
+     */
+    public String getNombreTipo() {
+        return nombreTipo;
+    }
 
-	public void setNombreTipo(String nombreTipo) {
-		this.nombreTipo = nombreTipo;
-	}
+    /**
+     * Establece el nombre del tipo de artículo.
+     * 
+     * @param nombreTipo El nuevo nombre del tipo de artículo.
+     */
+    public void setNombreTipo(String nombreTipo) {
+        this.nombreTipo = nombreTipo;
+    }
 
-	public Integer getStok() {
-		return stok;
-	}
+    /**
+     * Obtiene el stock del tipo de artículo.
+     * 
+     * @return El stock del tipo de artículo.
+     */
+    public Integer getStock() {
+        return stock;
+    }
 
-	public void setStok(Integer stok) {
-		this.stok = stok;
-	}
-
+    /**
+     * Establece el stock del tipo de artículo.
+     * 
+     * @param stok El nuevo stock del tipo de artículo.
+     */
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
 }
+
