@@ -419,11 +419,11 @@ public class ImpleDB implements Dao {
 	}
 
 	@Override
-	public boolean eliminarPersona(Persona per) {
+	public boolean eliminarPersona(String per) {
 		conn = ConnectionMysql.openConnection();
 		try {
 			stmt = conn.prepareStatement(ELIMINAR_PERSONA);
-			stmt.setString(1, per.getDni());
+			stmt.setString(1, per);
 			stmt.execute();
 			return true;
 		} catch (SQLException excepcion) {

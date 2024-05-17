@@ -125,7 +125,7 @@ public class Controlador {
 		return dao.eliminarArticulo(art);
 	}
 
-	public static boolean eliminarPersona(Persona per) {
+	public static boolean eliminarPersona(String per) {
 		Dao dao = new ImpleDB();
 		return dao.eliminarPersona(per);
 	}

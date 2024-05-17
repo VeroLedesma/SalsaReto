@@ -83,7 +83,7 @@ public interface Dao {
 
 	public boolean eliminarArticulo(int art);
 
-	public boolean eliminarPersona(Persona per);
+	public boolean eliminarPersona(String per);
 
 	public Usuario obtenerUsuario(String email);
 

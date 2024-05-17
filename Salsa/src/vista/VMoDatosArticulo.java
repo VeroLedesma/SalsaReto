@@ -36,7 +36,7 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 	private final JPanel contentPane = new JPanel();
 	private JTable tableDatosArticulo;
 	private JScrollPane scrollPane;
-	private JButton btnEliminar, btnVolver;
+	private JButton btnVolver;
 
 	/**
 	 * Constructor de la clase VMoDatosArticulo
@@ -49,7 +49,7 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 		super(administracion);
 		setModal(modal);
 
-		setBounds(100, 100, 715, 573);
+		setBounds(100, 100, 753, 571);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		contentPane.setLayout(null);
@@ -77,15 +77,9 @@ public class VMoDatosArticulo extends JDialog implements ActionListener, ListSel
 		construirTabla();
 		btnVolver = new JButton("Volver");
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnVolver.setBounds(55, 475, 97, 34);
+		btnVolver.setBounds(273, 464, 152, 51);
 		btnVolver.addActionListener(this);
 		contentPane.add(btnVolver);
-
-		btnEliminar = new JButton("Eliminar Articulo");
-		btnEliminar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnEliminar.setBounds(519, 475, 170, 34);
-		btnEliminar.addActionListener(this);
-		contentPane.add(btnEliminar);
 
 	}
 

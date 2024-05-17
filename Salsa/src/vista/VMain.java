@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -80,6 +81,7 @@ public class VMain extends JDialog implements ActionListener {
 		BodyLayout.add(btnTodos);
 
 		scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setBounds(10, 332, 1058, 440);
 		BodyLayout.add(scrollPane);
 
@@ -105,6 +107,7 @@ public class VMain extends JDialog implements ActionListener {
 		BodyLayout.add(scrollPane_1);
 
 		btnAñiadirMiLista = new JButton("Ver mi lista");
+		btnAñiadirMiLista.addActionListener(this);
 		btnAñiadirMiLista.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnAñiadirMiLista.setBounds(894, 267, 174, 40);
 		BodyLayout.add(btnAñiadirMiLista);
@@ -118,7 +121,7 @@ public class VMain extends JDialog implements ActionListener {
 				JLabel sourceLabel = (JLabel) e.getSource();
 				// Manejar la respuesta
 				if (respuesta == JOptionPane.YES_OPTION) {
-					AniadirLista(Integer.parseInt(sourceLabel.getText()));
+					aniadirLista(Integer.parseInt(sourceLabel.getText()));
 					// Aquí puedes añadir la lógica para añadir el ítem
 				} else {
 					System.out.println("Has cancelado la operación.");
@@ -138,13 +141,23 @@ public class VMain extends JDialog implements ActionListener {
 		if (evento.getSource().equals(btnMenu)) {
 			irAlMenu();
 		}
+		if (evento.getSource().equals(btnAñiadirMiLista)) {
+			miLista();
+		}
 
+	}
+
+	private void miLista() {
+		VMiLista miLista = new VMiLista(this, true, email, 0);
+		this.dispose();
+		miLista.setLocationRelativeTo(this);
+		miLista.setVisible(true);
 	}
 
 	/**
 	 * Muestra la ventana de ajustes.
 	 */
-	private void AniadirLista(int codArt) {
+	private void aniadirLista(int codArt) {
 
 		VMiLista miLista = new VMiLista(this, true, email, codArt);
 		this.dispose();

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -34,7 +35,7 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 	private final JPanel contentPane = new JPanel();
 	private JTable tableDatosUsuario;
 	private JScrollPane scrollPane;
-	private JButton btnEliminar, btnVolver;
+	private JButton btnVolver;
 	private DefaultTableModel modelo;
 
 	/**
@@ -67,16 +68,9 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 		// Botón Volver
 		btnVolver = new JButton("Volver");
 		btnVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnVolver.setBounds(94, 539, 97, 34);
+		btnVolver.setBounds(286, 490, 165, 38);
 		btnVolver.addActionListener(this);
 		contentPane.add(btnVolver);
-
-		// Botón Eliminar Usuario
-		btnEliminar = new JButton("Eliminar Usuario");
-		btnEliminar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnEliminar.setBounds(469, 539, 170, 34);
-		btnEliminar.addActionListener(this);
-		contentPane.add(btnEliminar);
 	}
 
 	/**
@@ -128,10 +122,6 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 		if (evento.getSource().equals(btnVolver)) {
 			volver();
 		}
-
-		if (evento.getSource().equals(btnEliminar)) {
-			eliminarUsuario();
-		}
 	}
 
 	/**
@@ -141,16 +131,34 @@ public class VListarUsuarios extends JDialog implements ActionListener, ListSele
 	 */
 	@Override
 	public void valueChanged(ListSelectionEvent evento) {
+
+		int respuesta = 0;
 		if (!evento.getValueIsAdjusting()) {
-			modificarActualizarUsuario();
+
+			respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres modificar un usuario?", "Confirmación",
+					JOptionPane.YES_NO_OPTION);
+			if (respuesta == 0) {
+				modificarActualizarUsuario();
+			} else {
+				respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres eliminar un usuario?", "Confirmación",
+						JOptionPane.YES_NO_OPTION);
+				if (respuesta == 0) {
+					eliminarUsuario();
+				}
+			}
 		}
 	}
 
 	/**
-	 * Elimina el usuario seleccionado (sin implementación).
+	 * Elimina el usuario seleccionado
+	 * 
 	 */
-	private void eliminarUsuario() {
-		// Implementación para eliminar un usuario pendiente
+	private boolean eliminarUsuario() {
+		int fila = tableDatosUsuario.getSelectedRow();
+		boolean eliminar = Controlador.eliminarPersona((tableDatosUsuario.getValueAt(fila, 0).toString()));
+
+		return eliminar;
+
 	}
 
 	/**
